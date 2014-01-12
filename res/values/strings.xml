@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Snake 2</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="classicGame">Classic Survival</string>
+    <string name="v2Game">Power-ups Survival</string>
+
+</resources>
