@@ -1,6 +1,7 @@
 package com.byte_games.snake2;
 
-import com.byte_games.snake2.GraphicsHelper.Size;
+import com.byte_games.snake2.engine.TerrainGen;
+import com.byte_games.snake2.engine.GraphicsHelper.Size;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -34,7 +35,7 @@ public class SplashActivity extends Activity {
 		    	float Unit = BigBox.getWidth() / 90;
 		    	Size SizeOfScreen = new Size(90, (int) (BigBox.getHeight() / Unit));
 
-		    	canvasBackground = com.byte_games.snake2.GraphicsHelper.makeGameBackground(canvasBackground, Unit, SizeOfScreen, new Size(15, 10));
+		    	canvasBackground = TerrainGen.makeGameBackground(canvasBackground, Unit, SizeOfScreen, new Size(15, 10), getBaseContext());
 
 		    	android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
 		    	BigBox.setBackgroundDrawable(Background);
@@ -43,10 +44,10 @@ public class SplashActivity extends Activity {
 	}
 	
 	public void play(View sourceView) {
-		if (sourceView.getId() == R.id.ButtonPlayV2) {
-			startActivity(new Intent(this, v2GameActivity.class));
+		if (sourceView.getId() == R.id.buttonPlayArcade) {
+			startActivity(new Intent(this, ArcadeModeActivity.class));
 		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
-			startActivity(new Intent(this, ClassicGameActivity.class));
+			startActivity(new Intent(this, ClassicModeActivity.class));
 		}
 	}
 }

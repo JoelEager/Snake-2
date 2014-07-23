@@ -10,23 +10,23 @@
     tools:context=".SplashActivity" >
 
     <Button
-        android:id="@+id/ButtonPlayV2"
+        android:id="@+id/buttonPlayArcade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:onClick="play"
-        android:text="@string/v2Game" />
+        android:text="@string/arcadeMode" />
 
     <Button
         android:id="@+id/buttonPlayClassic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ButtonPlayV2"
+        android:layout_alignLeft="@+id/buttonPlayArcade"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/ButtonPlayV2"
+        android:layout_below="@+id/buttonPlayArcade"
         android:onClick="play"
-        android:text="@string/classicGame" />
+        android:text="@string/classicMode" />
 
 </RelativeLayout>
