@@ -12,6 +12,7 @@ public class GameActivity extends Activity {
 	protected Context myContext;
 	protected SnakeEngine myEngine;
 	protected float Unit;
+	protected final int EngineTickRate = 20; //in milisecs - 50 FPS
 	
 	public void finshSetup() {
 		//Empty sub to be over-ridden by sub-classes

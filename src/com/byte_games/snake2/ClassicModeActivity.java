@@ -31,7 +31,7 @@ public class ClassicModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode CurrentMode = Mode.Right;
 	private Mode OldMode = Mode.Paused;
-	private double Speed = 0.17;
+	private double Speed = 0.25;
 	private List<Location> Snake = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
@@ -49,7 +49,7 @@ public class ClassicModeActivity extends GameActivity {
 		Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 
 		//Setup renderer and start draw thread
-		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), 10, myContext, this);
+		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
 		myEngine.myThread.setRunning(true);
 	}
 	
@@ -308,9 +308,9 @@ public class ClassicModeActivity extends GameActivity {
 						Snake.get(Snake.size() - 1).CopyTo(NewTail);
 						Snake.add(NewTail);
 						if (Snake.size() % 3 == 0) {
-							if (Speed >= .3 && Speed < .5) {
+							if (Speed >= .5 && Speed < .75) {
 								Speed += .01;
-							} else if (Speed < .3) {
+							} else if (Speed < .5) {
 								Speed += .05;
 							}
 						}

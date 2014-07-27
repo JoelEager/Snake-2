@@ -50,7 +50,7 @@ public class ArcadeModeActivity extends GameActivity {
 		Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 
 		//Setup renderer and start draw thread
-		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), 10, myContext, this);
+		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
 		myEngine.myThread.setRunning(true);
 	}
 	
