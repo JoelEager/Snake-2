@@ -16,20 +16,20 @@
         <activity
             android:name="com.byte_games.snake2.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="sensorLandscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.byte_games.snake2.ClassicModeActivity" 
-            android:screenOrientation="landscape">
+            android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.byte_games.snake2.SplashActivity" />
         </activity>
         <activity android:name="com.byte_games.snake2.ArcadeModeActivity" 
-            android:screenOrientation="landscape">
+            android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.byte_games.snake2.SplashActivity" />
