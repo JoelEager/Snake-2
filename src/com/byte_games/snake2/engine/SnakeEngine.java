@@ -11,11 +11,11 @@ import android.view.SurfaceHolder;
 	 * 		This engine contains all the back end components that are shared between game modes.
 	 * 		The game activity classes modify this and the other engine classes to add custom logic.
 	 * 
-	 * SnakeEngine consists of:
-	 * 		> MyThread (subclass to SnakeEngine) - Provides the game clock and manages game engine thread
-	 * 		> Ticker - Contains a function that MyThread calls every tick. That function handles rendering 
-	 * 			and game logic. Activities override this class and fill in the function.
-	 * 		> SESurfaceView - The upgraded SurfaceView that SnakeEngine	renders to.
+	 * The SnakeEngine package also contains these additional classes:
+	 * 		> MyThread (subclass to SnakeEngine) - Provides the game clock and manages game engine thread.
+	 * 		> Ticker - Contains the function that myThread calls every tick. That function handles rendering 
+	 * 			and game logic. Game activities must override this class and fill in the function.
+	 * 		> SESurfaceView - The upgraded SurfaceView that SnakeEngine renders to.
 	 * 		> GraphicsHelper - Classes, values, and functions to help with drawing tasks.
 	 * 		> TerrainGen - Uses data in terrainData.xml to generate randomized terrain data.
 	 * 
