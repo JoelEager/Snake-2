@@ -34,17 +34,17 @@ public final class R {
         public static final int bigBox=0x7f070000;
         public static final int buttonPlayArcade=0x7f07000f;
         public static final int buttonPlayClassic=0x7f070010;
-        public static final int imgDown=0x7f070008;
-        public static final int imgLeft=0x7f070004;
-        public static final int imgPause=0x7f070007;
-        public static final int imgRight=0x7f070009;
-        public static final int imgUp=0x7f070006;
-        public static final int imgUse=0x7f070005;
-        public static final int panelL=0x7f070003;
-        public static final int panelR=0x7f070002;
-        public static final int panelT=0x7f07000a;
+        public static final int imgDown=0x7f07000a;
+        public static final int imgLeft=0x7f070006;
+        public static final int imgPause=0x7f070009;
+        public static final int imgRight=0x7f07000b;
+        public static final int imgUp=0x7f070008;
+        public static final int imgUse=0x7f070007;
+        public static final int panelL=0x7f070004;
+        public static final int panelR=0x7f070003;
+        public static final int panelT=0x7f070002;
         public static final int surfaceView=0x7f070001;
-        public static final int textScore=0x7f07000b;
+        public static final int textScore=0x7f070005;
         public static final int textTitle=0x7f07000e;
         public static final int viewPlaceholderL=0x7f07000c;
     }

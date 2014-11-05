@@ -12,15 +12,36 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/panelT"
         android:layout_toLeftOf="@+id/panelR"
         android:layout_toRightOf="@+id/panelL" />
 
     <RelativeLayout
+        android:id="@+id/panelT"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/panelR"
+        android:layout_toRightOf="@+id/panelL"
+        android:background="#000000" >
+
+        <TextView
+            android:id="@+id/textScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Score"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/panelL"
-        android:layout_width="25dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
-        android:background="#505050" >
+        android:background="#000000" >
 
         <ImageView
             android:id="@+id/imgLeft"
@@ -58,12 +79,12 @@
 
     <RelativeLayout
         android:id="@+id/panelR"
-        android:layout_width="25dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="#505050" >
+        android:background="#000000" >
 
         <ImageView
             android:id="@+id/imgPause"
