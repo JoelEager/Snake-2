@@ -4,11 +4,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 
 import com.byte_games.snake2.engine.SnakeEngine;
 import com.byte_games.snake2.engine.GraphicsHelper.*;
 
-public class GameActivity extends Activity {
+abstract public class GameActivity extends Activity {
 	protected Context myContext;
 	protected SnakeEngine myEngine;
 	protected float Unit;
@@ -35,4 +36,26 @@ public class GameActivity extends Activity {
 	}
 
 	public enum Mode{Left, Right, Up, Down, Paused}
+	
+	@Override
+	public void onBackPressed(){
+	     PauseGame();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		PauseGame();
+	}
+	
+	public void PauseGame() {
+		//Empty sub to be over-ridden by sub-classes
+	}
+	
+	protected void HideNavBar() {
+		//Hides the nav bar
+		View decorView = this.getWindow().getDecorView();
+		int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE;
+		decorView.setSystemUiVisibility(uiOptions);
+	}
 }

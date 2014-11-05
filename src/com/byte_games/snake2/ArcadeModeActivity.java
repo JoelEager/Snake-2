@@ -55,12 +55,6 @@ public class ArcadeModeActivity extends GameActivity {
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
-		PauseGame();
-	}
-	
-	@Override
 	protected void onDestroy() {
 		//Kill thread
 		myEngine.myThread.setRunning(false);
@@ -139,7 +133,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private final Handler ThreadHelper = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
-			if(msg.what == TH_ShowDeathDialog){
+			if (msg.what == TH_ShowDeathDialog) {
 				CurrentMode = Mode.Paused;
 				AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
 				builder.setTitle("You died.");
@@ -159,7 +153,7 @@ public class ArcadeModeActivity extends GameActivity {
 				});
 				builder.create();
 				builder.show();
-			} else if(msg.what == TH_UpdateActionBar) {
+			} else if (msg.what == TH_UpdateActionBar) {
 				int Inches = Snake.size() * 2;
 				int Feet = Inches / 12;
 				Inches -= Feet * 12;
@@ -193,13 +187,15 @@ public class ArcadeModeActivity extends GameActivity {
 				PauseGame();
 			}
 		}
+
+		HideNavBar();
 	}
 	
 	public void use(View sourceView) {
 		Toast.makeText(getApplicationContext(), "Boom!", Toast.LENGTH_SHORT).show();
 	}
 	
-	private void PauseGame() {
+	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
 			CurrentMode = Mode.Paused;
@@ -211,6 +207,7 @@ public class ArcadeModeActivity extends GameActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					CurrentMode = OldMode;
 					Boxy = null;
+					HideNavBar();
 				}
 			});
 			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {

@@ -25,7 +25,7 @@ public class SplashActivity extends Activity {
 		RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);
 		ViewTreeObserver vto = BigBox.getViewTreeObserver(); 
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { 
-		    @Override 
+		    @Override
 		    public void onGlobalLayout() {
 		    	//Make background
 		    	RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);

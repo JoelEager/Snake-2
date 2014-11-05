@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -35,12 +36,14 @@ public class ClassicModeActivity extends GameActivity {
 	private List<Location> Snake = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
+	private TextView ScoreText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_classic);
 		myContext = getBaseContext();
+		ScoreText = (TextView) findViewById(R.id.textScore);
 		
 		//Setup game variables
 		Snake.add(new Location(10, 10));
@@ -51,12 +54,6 @@ public class ClassicModeActivity extends GameActivity {
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
 		myEngine.myThread.setRunning(true);
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		PauseGame();
 	}
 	
 	@Override
@@ -87,8 +84,9 @@ public class ClassicModeActivity extends GameActivity {
 			RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.bigBox);
 			RelativeLayout PanelL = (RelativeLayout) findViewById(R.id.panelL);
 			RelativeLayout PanelR = (RelativeLayout) findViewById(R.id.panelR);
+			RelativeLayout PanelT = (RelativeLayout) findViewById(R.id.panelT);
 
-			Unit = BigBox.getHeight() / (GraphicsHelper.SizeOfGame.Y + 1);
+			Unit = (BigBox.getHeight() - PanelT.getHeight()) / (GraphicsHelper.SizeOfGame.Y + 1);
 			float GameX = Unit * (GraphicsHelper.SizeOfGame.X + 1);
 			float PanelX = (BigBox.getWidth() - GameX) / 2;
 
@@ -99,8 +97,8 @@ public class ClassicModeActivity extends GameActivity {
 			LayoutDim.width = (int) Math.floor(PanelX); 
 			PanelR.setLayoutParams(LayoutDim);
 			
-			//Make Panel's Background
-			Bitmap bmpBackground = Bitmap.createBitmap((int) (25 * Unit), (int) (60 * Unit), Bitmap.Config.ARGB_8888);
+			//Make background for all the panels 
+			Bitmap bmpBackground = Bitmap.createBitmap(BigBox.getWidth(), BigBox.getHeight(), Bitmap.Config.ARGB_8888);
 			Canvas canvasBackground = new Canvas(bmpBackground);
 			canvasBackground.drawColor(Color.parseColor("#505050"));
 			
@@ -109,7 +107,7 @@ public class ClassicModeActivity extends GameActivity {
 			Rocks[1].setColor(Color.parseColor("#353535"));
 			Rocks[2].setColor(Color.parseColor("#303030"));
 			
-			int EndPixX = (int) ((PanelX / Unit) + 1);
+			int EndPixX = (int) ((BigBox.getWidth() / Unit) + 1);
 			int EndPixY = (int) ((BigBox.getHeight() / Unit) + 1);
 			
 			for (int countX = 0; countX <= EndPixX; countX++) {
@@ -117,14 +115,15 @@ public class ClassicModeActivity extends GameActivity {
 					GraphicsHelper.addPixel(canvasBackground, new Location(countX, countY), Rocks[(int) (Math.random() * ((2) + 1))], Unit);
 				}
 			}
-
+			
 			android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
-			Background.setTileModeXY(android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP);
-			Background.setBounds(0, 0, (int) PanelX, BigBox.getHeight());
-			Background.setGravity(Gravity.CLIP_HORIZONTAL|Gravity.RIGHT);
+			PanelT.setBackgroundDrawable(Background);
+			Background.setGravity(Gravity.RIGHT);
 			PanelL.setBackgroundDrawable(Background);
 			Background.setGravity(Gravity.LEFT);
 			PanelR.setBackgroundDrawable(Background);
+			
+			HideNavBar();
 			
 			DoneSetup = true;
 		}
@@ -138,7 +137,7 @@ public class ClassicModeActivity extends GameActivity {
 	private final Handler ThreadHelper = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if(msg.what == TH_ShowDeathDialog){
+			if (msg.what == TH_ShowDeathDialog) {
 				CurrentMode = Mode.Paused;
 				AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
 				builder.setTitle("You died.");
@@ -158,7 +157,7 @@ public class ClassicModeActivity extends GameActivity {
 				});
 				builder.create();
 				builder.show();
-			} else if(msg.what == TH_UpdateActionBar) {
+			} else if (msg.what == TH_UpdateActionBar) {
 				int Inches = Snake.size() * 2;
 				int Feet = Inches / 12;
 				Inches -= Feet * 12;
@@ -173,7 +172,7 @@ public class ClassicModeActivity extends GameActivity {
 				} else {
 					Text += Inches + " inches long";
 				}
-				setTitle(Text);
+				ScoreText.setText(Text);
 			}
 		}
 	};
@@ -192,9 +191,12 @@ public class ClassicModeActivity extends GameActivity {
 				PauseGame();
 			}
 		}
+
+		HideNavBar();
 	}
 	
-	private void PauseGame() {
+	@Override
+	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
 			CurrentMode = Mode.Paused;
@@ -206,6 +208,7 @@ public class ClassicModeActivity extends GameActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					CurrentMode = OldMode;
 					Boxy = null;
+					HideNavBar();
 				}
 			});
 			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
