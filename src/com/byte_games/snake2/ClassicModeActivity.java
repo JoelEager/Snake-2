@@ -140,7 +140,6 @@ public class ClassicModeActivity extends GameActivity {
 			if (msg.what == TH_ShowDeathDialog) {
 				CurrentMode = Mode.Paused;
 				AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
-				builder.setTitle("You died.");
 				builder.setMessage((String) msg.obj);
 				builder.setCancelable(false);
 				builder.setPositiveButton("Return to menu", new DialogInterface.OnClickListener() {
@@ -322,7 +321,7 @@ public class ClassicModeActivity extends GameActivity {
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 						//Wall hit!
 						CurrentMode = Mode.Paused;
-						ThreadHelper.obtainMessage(TH_ShowDeathDialog, "Ouch, that wall must've hurt!").sendToTarget();
+						ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 					}
 				}
 			}
