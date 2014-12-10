@@ -16,7 +16,6 @@ import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
@@ -30,7 +29,6 @@ import android.graphics.Paint;
 
 public class ClassicModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
-	private Mode CurrentMode = Mode.Right;
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.25;
 	private List<Location> Snake = new ArrayList<Location>();
@@ -54,6 +52,8 @@ public class ClassicModeActivity extends GameActivity {
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
 		myEngine.myThread.setRunning(true);
+        
+        myEngine.Surface.setOnTouchListener(gestureListener);
 	}
 	
 	@Override
@@ -175,24 +175,6 @@ public class ClassicModeActivity extends GameActivity {
 			}
 		}
 	};
-	
-	public void changeMode(View sourceView) {
-		if (CurrentMode != Mode.Paused) {
-			if (sourceView.getId() == R.id.imgLeft) {
-				CurrentMode = Mode.Left;
-			} else if (sourceView.getId() == R.id.imgRight) {
-				CurrentMode = Mode.Right;
-			} else if (sourceView.getId() == R.id.imgUp) {
-				CurrentMode = Mode.Up;
-			} else if (sourceView.getId() == R.id.imgDown) {
-				CurrentMode = Mode.Down;
-			} else if (sourceView.getId() == R.id.imgPause) {
-				PauseGame();
-			}
-		}
-
-		HideNavBar();
-	}
 	
 	@Override
 	public void PauseGame() {
