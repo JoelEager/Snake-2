@@ -232,7 +232,8 @@ public class ClassicModeActivity extends GameActivity {
 				bmpBackground = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
 				Canvas canvasBackground = new Canvas(bmpBackground);
 				canvasBackground.drawColor(Color.parseColor("#005000"));
-				canvasBackground = TerrainGen.makeGameBackground(canvasBackground, Unit, GraphicsHelper.SizeOfGame, GraphicsHelper.BackgroundBiomeSize, getBaseContext());
+				TerrainGen myTerrainGen = new TerrainGen(Unit, GraphicsHelper.SizeOfGame, GraphicsHelper.BackgroundBiomeSize, getBaseContext());
+				canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
 				
 				//Make Rocky Background
 				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), (int) (CanvasIn.getHeight() - ((GraphicsHelper.SizeOfGame.Y + 1) * Unit)), Bitmap.Config.ARGB_8888);

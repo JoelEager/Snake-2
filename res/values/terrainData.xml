@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="Lake_1">	Line 0: 
 							Line 1:                ~1,6~1,7~1,8~1,9~1,10~
 							Line 2:         ~2,4~2,5~2,6~2,7~2,8~2,9~2,10~2,11~
@@ -131,4 +130,29 @@
 							Line 10:
 	</string>
 
+    <string-array name="BiomeDefs">
+        <item>@string/Lake_1</item>
+        <item>@string/Lake_2</item>
+        <item>@string/Lake_3</item>
+        <item>@string/Lake_4</item>
+        <item>@string/Lake_5</item>
+        <item>@string/Rock_1</item>
+        <item>@string/Rock_2</item>
+        <item>@string/Rock_3</item>
+        <item>@string/Rock_4</item>
+        <item>@string/Rock_5</item>
+    </string-array>
+    
+	<string-array name="BiomeTypes">
+        <item>Lake</item>
+        <item>Lake</item>
+        <item>Lake</item>
+        <item>Lake</item>
+        <item>Lake</item>
+        <item>Rock</item>
+        <item>Rock</item>
+        <item>Rock</item>
+        <item>Rock</item>
+        <item>Rock</item>
+    </string-array>
 </resources>

@@ -35,7 +35,8 @@ public class SplashActivity extends Activity {
 		    	float Unit = BigBox.getWidth() / 90;
 		    	Size SizeOfScreen = new Size(90, (int) (BigBox.getHeight() / Unit));
 
-		    	canvasBackground = TerrainGen.makeGameBackground(canvasBackground, Unit, SizeOfScreen, new Size(15, 10), getBaseContext());
+		    	TerrainGen myTerrainGen = new TerrainGen(Unit, SizeOfScreen, new Size(15, 10), getBaseContext());
+		    	canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
 
 		    	android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
 		    	BigBox.setBackgroundDrawable(Background);
