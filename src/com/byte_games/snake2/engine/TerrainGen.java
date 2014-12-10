@@ -40,7 +40,7 @@ public class TerrainGen {
 				Location myUpperLeft = new Location(countX, countY);
 				Location myLowerRight = new Location(countX + (BackgroundBiomeSize.X - 1), countY + (BackgroundBiomeSize.Y - 1));
 				
-				int BiomeType = (int) (Math.random() * ((10) + 1));
+				int BiomeType = (int) (Math.random() * ((13) + 1));
 				
 				if (BiomeType == 0 || BiomeType == 1 || BiomeType == 2 || BiomeType == 3) {
 					//Grass patch
@@ -89,6 +89,32 @@ public class TerrainGen {
 						}
 					}
 				} else if (BiomeType == 7) {
+					final String Terrain = myContext.getString(R.string.Lake_4);
+
+					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
+						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
+							String ThisPoint = "~" + (countInnerY - myUpperLeft.Y) + "," + (countInnerX - myUpperLeft.X) + "~";
+							if (Terrain.contains(ThisPoint)) {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Water[(int) (Math.random() * ((2) + 1))], UnitIn);
+							} else {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Grass[(int) (Math.random() * ((4) + 1))], UnitIn);
+							}
+						}
+					}
+				} else if (BiomeType == 8) {
+					final String Terrain = myContext.getString(R.string.Lake_5);
+
+					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
+						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
+							String ThisPoint = "~" + (countInnerY - myUpperLeft.Y) + "," + (countInnerX - myUpperLeft.X) + "~";
+							if (Terrain.contains(ThisPoint)) {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Water[(int) (Math.random() * ((2) + 1))], UnitIn);
+							} else {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Grass[(int) (Math.random() * ((4) + 1))], UnitIn);
+							}
+						}
+					}
+				} else if (BiomeType == 9) {
 					final String Terrain = myContext.getString(R.string.Rock_1);
 
 					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
@@ -101,7 +127,7 @@ public class TerrainGen {
 							}
 						}
 					}
-				} else if (BiomeType == 8) {
+				} else if (BiomeType == 10) {
 					final String Terrain = myContext.getString(R.string.Rock_2);
 
 					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
@@ -114,8 +140,34 @@ public class TerrainGen {
 							}
 						}
 					}
-				} else if (BiomeType == 9 || BiomeType == 10) {
+				} else if (BiomeType == 11) {
 					final String Terrain = myContext.getString(R.string.Rock_3);
+
+					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
+						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
+							String ThisPoint = "~" + (countInnerY - myUpperLeft.Y) + "," + (countInnerX - myUpperLeft.X) + "~";
+							if (Terrain.contains(ThisPoint)) {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Rock[(int) (Math.random() * ((2) + 1))], UnitIn);
+							} else {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Grass[(int) (Math.random() * ((4) + 1))], UnitIn);
+							}
+						}
+					}
+				} else if (BiomeType == 12) {
+					final String Terrain = myContext.getString(R.string.Rock_4);
+
+					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
+						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
+							String ThisPoint = "~" + (countInnerY - myUpperLeft.Y) + "," + (countInnerX - myUpperLeft.X) + "~";
+							if (Terrain.contains(ThisPoint)) {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Rock[(int) (Math.random() * ((2) + 1))], UnitIn);
+							} else {
+								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), colors_Grass[(int) (Math.random() * ((4) + 1))], UnitIn);
+							}
+						}
+					}
+				} else if (BiomeType == 13) {
+					final String Terrain = myContext.getString(R.string.Rock_5);
 
 					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
 						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
