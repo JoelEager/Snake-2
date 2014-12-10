@@ -101,8 +101,8 @@ abstract public class GameActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 	}
 	
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private static final int SWIPE_MIN_DISTANCE = 50;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 100;
 	private GestureDetector gestureDetector;
 	View.OnTouchListener gestureListener;
 	
@@ -130,7 +130,7 @@ abstract public class GameActivity extends Activity {
 					}
 				}
 			} catch (Exception e) {
-				android.util.Log.v("SwipeData", e.toString());
+				//Do nothing
 			}
 			return false;
 		}
