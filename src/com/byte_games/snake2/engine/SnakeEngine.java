@@ -23,13 +23,13 @@ import android.view.SurfaceHolder;
 	 */
 	
 public class SnakeEngine {
-	//Public and private variables:
+	//Public and private variables
 	public SESurfaceView Surface;
 	public Ticker myTicker;
 	public MyThread myThread;
 	private int TickDelay; //in milisecs
 	
-	//Set up:
+	//Set up
 	public SnakeEngine(SESurfaceView inSurface, Ticker overridenTicker, int inTickDelay, Context myContext, GameActivity Owner) {
 		Surface = inSurface;
 		myTicker = overridenTicker;

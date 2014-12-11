@@ -59,12 +59,12 @@ public class GraphicsHelper {
 		}
 	}
 	
-
-	public static final Size SizeOfGame = new Size(60, 40); //Zero-based
-	public static final Size BackgroundBiomeSize = new Size(15, 10);
-	
 	public static Canvas addPixel(Canvas CanvasIn, Location Where, Paint Color, float Unit) {
 		CanvasIn.drawRect(Where.X * Unit, Where.Y * Unit, (Where.X * Unit) + Unit, (Where.Y * Unit) + Unit, Color);
 		return CanvasIn;
 	}
+	
+	//Hardcoded global values for Snake 2 graphics
+	public static final Size SizeOfGame = new Size(60, 40); //Zero-based
+	public static final Size BackgroundBiomeSize = new Size(15, 10);
 }
