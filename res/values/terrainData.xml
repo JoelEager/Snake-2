@@ -129,6 +129,32 @@
 							Line 9: 
 							Line 10:
 	</string>
+											
+    <string name="Rock_6">	Line 0: 
+							Line 1: 
+							Line 2: 
+							Line 3: 
+							Line 4: 
+							Line 5:                    ~5,5~5,6~  
+							Line 6:                        ~6,7~6,8~6,9~
+							Line 7:                        ~7,7~
+							Line 8: 
+							Line 9: 
+							Line 10:
+	</string>
+											
+    <string name="Rock_7">	Line 0: 
+							Line 1: 
+							Line 2: 
+							Line 3: 
+							Line 4: 
+							Line 5: 
+							Line 6: 
+							Line 7:     ~7,1~
+							Line 8: ~8,0~8,1~
+							Line 9: 
+							Line 10:
+	</string>
 
     <string-array name="BiomeDefs">
         <item>@string/Lake_1</item>
@@ -141,6 +167,8 @@
         <item>@string/Rock_3</item>
         <item>@string/Rock_4</item>
         <item>@string/Rock_5</item>
+        <item>@string/Rock_6</item>
+        <item>@string/Rock_7</item>
     </string-array>
     
 	<string-array name="BiomeTypes">
@@ -149,6 +177,8 @@
         <item>Lake</item>
         <item>Lake</item>
         <item>Lake</item>
+        <item>Rock</item>
+        <item>Rock</item>
         <item>Rock</item>
         <item>Rock</item>
         <item>Rock</item>

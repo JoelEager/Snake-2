@@ -68,6 +68,8 @@ public final class R {
         public static final int Rock_3=0x7f05000b;
         public static final int Rock_4=0x7f05000c;
         public static final int Rock_5=0x7f05000d;
+        public static final int Rock_6=0x7f05000e;
+        public static final int Rock_7=0x7f05000f;
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int arcadeMode=0x7f050003;
