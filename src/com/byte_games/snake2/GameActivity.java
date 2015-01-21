@@ -46,8 +46,8 @@ abstract public class GameActivity extends Activity {
 			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
 			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
 			Good = true;
-			for (Location CurrentL : NoSpots) {
-				if (CurrentL.X == New.X && CurrentL.Y == New.Y) {
+			for (Location Point : NoSpots) {
+				if (Point.equals(New)) {
 					Good = false;
 				}
 			}

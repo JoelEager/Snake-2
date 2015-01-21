@@ -215,7 +215,7 @@ public class ArcadeModeActivity extends GameActivity {
 		Paint color_SnakeBody2;
 		Paint color_Mouse;
 		Bitmap bmpBackground = null;
-		Bitmap bmpWall = null;
+		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
 		
 		int CurrentAttack = 0;
@@ -251,8 +251,8 @@ public class ArcadeModeActivity extends GameActivity {
 				canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
 				
 				//Make Rocky Background
-				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), (int) (CanvasIn.getHeight() - ((GraphicsHelper.SizeOfGame.Y + 1) * Unit)), Bitmap.Config.ARGB_8888);
-				Canvas canvasWallBackground = new Canvas(bmpWall);
+				bmpBottomWall = Bitmap.createBitmap(CanvasIn.getWidth(), (int) (CanvasIn.getHeight() - ((GraphicsHelper.SizeOfGame.Y + 1) * Unit)), Bitmap.Config.ARGB_8888);
+				Canvas canvasWallBackground = new Canvas(bmpBottomWall);
 				canvasWallBackground.drawColor(Color.parseColor("#505050"));
 				
 				Paint[] Rocks = {new Paint(), new Paint(), new Paint()};
@@ -384,7 +384,7 @@ public class ArcadeModeActivity extends GameActivity {
 				}
 			}
 			
-			CanvasIn.drawBitmap(bmpWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
+			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
 			return CanvasIn;
 		}
 	}
