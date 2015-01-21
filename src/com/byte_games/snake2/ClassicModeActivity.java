@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,7 +31,7 @@ public class ClassicModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private boolean ChangingLevel = false;
 	private Mode OldMode = Mode.Paused;
-	private double Speed = 0.25;
+	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
 	private List<Location> Wall = new ArrayList<Location>();
 	private Location Food;
@@ -50,6 +49,8 @@ public class ClassicModeActivity extends GameActivity {
 		Snake.add(new Location(10, 10));
 		Snake.add(new Location(9, 10));
 		Snake.add(new Location(8, 10));
+		Snake.add(new Location(7, 10));
+		Snake.add(new Location(6, 10));
 		Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 
 		//Setup renderer and start draw thread
@@ -155,7 +156,6 @@ public class ClassicModeActivity extends GameActivity {
 	
 	private final static int TH_ShowDeathDialog = 1;
 	private final static int TH_UpdateActionBar = 2;
-	private final static int TH_ChangingLevel = 3;
 	private ClassicModeActivity ThisGame = this;
 	
 	@SuppressLint("HandlerLeak")
@@ -197,8 +197,6 @@ public class ClassicModeActivity extends GameActivity {
 					Text += Inches + " inches long";
 				}
 				ScoreText.setText(Text);
-			} else if (msg.what == TH_ChangingLevel) {
-				Toast.makeText(getApplicationContext(), "Digging for next level...", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -377,7 +375,6 @@ public class ClassicModeActivity extends GameActivity {
 							//Every 3 feet change level
 							if (!FinalLevel && Snake.size() % 18 == 0) {
 								ChangingLevel = true;
-								ThreadHelper.obtainMessage(TH_ChangingLevel).sendToTarget();
 							} else {
 								Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 							}
@@ -405,27 +402,67 @@ public class ClassicModeActivity extends GameActivity {
 						int Level = Snake.size() / 18;
 						Wall.clear();
 						if (Level == 1) {
-							Wall.add(new Location(10, 10));
-							Wall.add(new Location(10, 11));
-							Wall.add(new Location(10, 12));
-							Wall.add(new Location(11, 10));
-							Wall.add(new Location(11, 11));
-							Wall.add(new Location(11, 12));
+							// O    O
+							//
+							// O    O
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 4));
+							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 4));
+							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(3, 4));
+							GraphicsHelper.AddRect(Wall, new Location(48, 27), new Size(3, 4));
 						} else if (Level == 2) {
-							
+							//   |
+							//   |
+							//   |
+							GraphicsHelper.AddRect(Wall, new Location(29, 10), new Size(3, 21));
 						} else if (Level == 3) {
-							
+							//
+							// ---------
+							//
+							GraphicsHelper.AddRect(Wall, new Location(10, 19), new Size(41, 3));
 						} else if (Level == 4) {
-							
+							// [=]   [=]
+							// 
+							// [=]   [=]
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(44, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(44, 27), new Size(7, 4));
 						} else if (Level == 5) {
-							
+							// |     |
+							// |     |
+							// |     |
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 21));
 						} else if (Level == 6) {
-							
+							// ---------
+							// 
+							// ---------
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(41, 3));
+							GraphicsHelper.AddRect(Wall, new Location(10, 28), new Size(41, 3));
 						} else if (Level == 7) {
-							
+							// |     |
+							// |=====|
+							// |     |
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Wall, new Location(13, 19), new Size(35, 3));
 						} else if (Level == 8) {
-							
+							// ---------
+							//  O     O
+							// ---------
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(41, 3));
+							GraphicsHelper.AddRect(Wall, new Location(10, 28), new Size(41, 3));
+							GraphicsHelper.AddRect(Wall, new Location(15, 19), new Size(3, 3));
+							GraphicsHelper.AddRect(Wall, new Location(43, 19), new Size(3, 3));
 						} else if (Level == 9) {
+							// [=] | [=]
+							//     |
+							// [=] | [=]
+							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(44, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(44, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Wall, new Location(29, 10), new Size(3, 21));
 							FinalLevel = true;
 						}
 						
@@ -443,7 +480,14 @@ public class ClassicModeActivity extends GameActivity {
 						ChangingLevel = false;
 						DrawExitHole = true;
 						CurrentMode = Mode.Right;
-						Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+						Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));//Make Game Background
+						
+						//Make new background
+						bmpBackground = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
+						Canvas canvasBackground = new Canvas(bmpBackground);
+						canvasBackground.drawColor(Color.parseColor("#005000"));
+						TerrainGen myTerrainGen = new TerrainGen(Unit, GraphicsHelper.SizeOfGame, GraphicsHelper.BackgroundBiomeSize, getBaseContext());
+						canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
 					}
 					
 					//Dig hole

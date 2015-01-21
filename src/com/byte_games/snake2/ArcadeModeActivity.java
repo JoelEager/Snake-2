@@ -31,7 +31,7 @@ import android.graphics.Paint;
 public class ArcadeModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode OldMode = Mode.Paused;
-	private double Speed = 0.25;
+	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
