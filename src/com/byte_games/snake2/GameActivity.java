@@ -115,7 +115,7 @@ abstract public class GameActivity extends Activity {
 					if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 						//It's a right to left swipe
 						updateMode(R.id.imgLeft);
-					}  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 						//It's a left to right swipe
 						updateMode(R.id.imgRight);
 					}
@@ -124,7 +124,7 @@ abstract public class GameActivity extends Activity {
 					if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 						//It's a bottom to top swipe
 						updateMode(R.id.imgUp);
-					}  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+					} else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 						//It's a top to bottom swipe
 						updateMode(R.id.imgDown);
 					}

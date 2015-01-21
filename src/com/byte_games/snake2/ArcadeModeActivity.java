@@ -31,7 +31,7 @@ import android.graphics.Paint;
 public class ArcadeModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode OldMode = Mode.Paused;
-	private double Speed = 0.17;
+	private double Speed = 0.25;
 	private List<Location> Snake = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
@@ -316,9 +316,28 @@ public class ArcadeModeActivity extends GameActivity {
 						}
 						Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
-						if (Snake.size() > 7) {
-							//Enable attacks
-							
+						
+						//Activate a mice attack
+						if (Snake.size() >= 6) {
+							int AttackRan = 1 + (int) (Math.random() * 12);
+							if (AttackRan > 6) {
+								CurrentAttack = 0;
+							} else {
+								CurrentAttack = AttackRan;
+								if (AttackRan == OverPopulation) {
+									android.util.Log.v("AttackLogging", "OverPopulation");
+								} else if (AttackRan == Bombs) {
+									android.util.Log.v("AttackLogging", "Bombs");
+								} else if (AttackRan == Flamethrower) {
+									android.util.Log.v("AttackLogging", "Flamethrower");
+								} else if (AttackRan == Ninjas) {
+									android.util.Log.v("AttackLogging", "Ninjas");
+								} else if (AttackRan == Lasers) {
+									android.util.Log.v("AttackLogging", "Lasers");
+								} else if (AttackRan == Lava) {
+									android.util.Log.v("AttackLogging", "Lava");
+								}
+							}
 						}
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 						//Wall hit!
@@ -327,8 +346,22 @@ public class ArcadeModeActivity extends GameActivity {
 					}
 				}
 			}
+			//Apply mice attack
+			if (CurrentAttack == OverPopulation) {
+				
+			} else if (CurrentAttack == Bombs) {
+				
+			} else if (CurrentAttack == Flamethrower) {
+				
+			} else if (CurrentAttack == Ninjas) {
+				
+			} else if (CurrentAttack == Lasers) {
+				
+			} else if (CurrentAttack == Lava) {
+				
+			}
 			
-			//Apply Ability
+			//Apply ability
 			if (useAbility != 0) {
 				color_SnakeHead.setColor(Color.rgb(0, 0, 0));
 				useAbility -= 5;
@@ -336,10 +369,10 @@ public class ArcadeModeActivity extends GameActivity {
 				color_SnakeHead.setColor(Color.rgb(190, 14, 14));
 			}
 
-			//Draw Mouse
+			//Draw mouse
 			GraphicsHelper.addPixel(CanvasIn, Food, color_Mouse, Unit);
 			
-			//Draw Snake
+			//Draw snake
 			for (int SnakeDrawCount = Snake.size() - 1; SnakeDrawCount >= 0; SnakeDrawCount--) {
 				Location SnakePart = Snake.get(SnakeDrawCount);
 				if (SnakeDrawCount == 0) {
