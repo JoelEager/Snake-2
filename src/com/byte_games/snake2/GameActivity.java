@@ -38,22 +38,6 @@ abstract public class GameActivity extends Activity {
 	public void finshSetup() {
 		//Empty sub to be over-ridden by sub-classes
 	}
-	
-	protected Location RanLoc(List<Location> NoSpots, Location Max, Location Min) {
-		boolean Good = false;
-		Location New = new Location(0, 0);
-		while (!Good) {
-			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
-			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
-			Good = true;
-			for (Location Point : NoSpots) {
-				if (Point.equals(New)) {
-					Good = false;
-				}
-			}
-		}
-		return New;
-	}
 
 	public enum Mode{Left, Right, Up, Down, Paused}
 	

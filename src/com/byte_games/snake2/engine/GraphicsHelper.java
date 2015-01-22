@@ -14,7 +14,7 @@ public class GraphicsHelper {
 		public static final Size BackgroundBiomeSize = new Size(15, 10);
 	
 	//Useful objects
-		public static final class Size {
+		public static class Size {
 			public int X;
 			public int Y;
 			
@@ -40,7 +40,7 @@ public class GraphicsHelper {
 			}
 		}
 		
-		public static final class Location {
+		public static class Location {
 			public int X;
 			public int Y;
 			
@@ -63,6 +63,39 @@ public class GraphicsHelper {
 			public void CopyTo(Location Target) {
 				Target.X = X;
 				Target.Y = Y;
+			}
+		}
+		
+		public static class AnnotatedLocation extends Location {
+			public String Type;
+			public int Value;
+			
+			public AnnotatedLocation(int XLocation, int YLocation) {
+				super(XLocation, YLocation);
+			}
+			
+			public AnnotatedLocation(int XLocation, int YLocation, String initType, int initValue) {
+				super(XLocation, YLocation);
+				Type = initType;
+				Value = initValue;
+			}
+			
+			@Override
+			public boolean equals(Object Other) {
+				AnnotatedLocation OtherL = (AnnotatedLocation) Other;
+				return OtherL.X == X && OtherL.Y == Y && Type.equals(OtherL.Type) && OtherL.Value == Value;
+			}
+			
+			@Override
+			public String toString() {
+				return "X = " + X + ", Y = " + Y + " - Annotation: " + Type + " @ " + Value;
+			}
+			
+			public void CopyTo(AnnotatedLocation Target) {
+				Target.X = X;
+				Target.Y = Y;
+				Target.Type = Type;
+				Target.Value = Value;
 			}
 		}
 		

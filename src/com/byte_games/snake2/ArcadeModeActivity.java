@@ -34,6 +34,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
+	private List<AnnotatedLocation> Hazards = new ArrayList<AnnotatedLocation>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -53,7 +54,9 @@ public class ArcadeModeActivity extends GameActivity {
 		Snake.add(new Location(10, 10));
 		Snake.add(new Location(9, 10));
 		Snake.add(new Location(8, 10));
-		Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+		Snake.add(new Location(7, 10));
+		Snake.add(new Location(6, 10));
+		Food = RanLoc(Snake, Hazards, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
@@ -140,6 +143,27 @@ public class ArcadeModeActivity extends GameActivity {
 			DoneSetup = true;
 		}
 	}
+	
+	protected Location RanLoc(List<Location> NoSpots, List<AnnotatedLocation> MoreNoSpots, Location Max, Location Min) {
+		boolean Good = false;
+		Location New = new Location(0, 0);
+		while (!Good) {
+			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
+			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
+			Good = true;
+			for (Location Point : NoSpots) {
+				if (Point.equals(New)) {
+					Good = false;
+				}
+			}
+			for (Location Point : MoreNoSpots) {
+				if (Point.equals(New)) {
+					Good = false;
+				}
+			}
+		}
+		return New;
+	}
 
 	private final static int TH_ShowDeathDialog = 1;
 	private final static int TH_UpdateActionBar = 2;
@@ -182,6 +206,7 @@ public class ArcadeModeActivity extends GameActivity {
 		}
 	};
 	
+	//TODO: WIP Code
 	private int useAbility = 0;
 	
 	public void use(View sourceView) {
@@ -222,7 +247,8 @@ public class ArcadeModeActivity extends GameActivity {
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
-		
+
+		//TODO: WIP Code
 		int CurrentAttack = 0;
 		//Available Attacks:
 		final int OverPopulation = 1;
@@ -319,7 +345,7 @@ public class ArcadeModeActivity extends GameActivity {
 								Speed += .05;
 							}
 						}
-						Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+						Food = RanLoc(Snake, Hazards, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						
 						//Activate a mice attack
