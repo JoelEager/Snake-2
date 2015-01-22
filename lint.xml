@@ -9,4 +9,8 @@
         <ignore path="res/layout/activity_game_classic.xml" />
         <ignore path="res/layout/activity_splash.xml" />
     </issue>
+    <issue id="RtlSymmetry">
+        <ignore path="res/layout/activity_game_arcade.xml" />
+        <ignore path="res/layout/activity_game_classic.xml" />
+    </issue>
 </lint>

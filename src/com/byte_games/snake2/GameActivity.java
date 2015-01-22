@@ -101,6 +101,25 @@ abstract public class GameActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 	}
 	
+	protected String lengthToString(int Length) {
+		boolean Units = true; //true for English, false for Metric
+		String Text = "";
+		
+		if (Units) {
+			int Inches = Length * 2; //1 length = 2 inches
+			int Feet = Inches / 12;
+			Inches -= Feet * 12;
+
+			Text = Feet + " ft, " + Inches + " in";
+		} else {
+			int Meters = Length / 18; //18 length = 1 meter
+			int CM = (int) ((Length - (Meters * 18)) * ((double) 100 / 18));
+
+			Text = Meters + " m, " + CM + " cm";
+		}
+		return Text;
+	}
+	
 	private static final int SWIPE_MIN_DISTANCE = 50;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 100;
 	private GestureDetector gestureDetector;

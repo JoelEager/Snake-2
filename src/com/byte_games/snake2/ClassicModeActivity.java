@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -37,6 +38,9 @@ public class ClassicModeActivity extends GameActivity {
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
+	private TextView HighscoreText;
+	private int Highscore;
+	SharedPreferences.Editor HighscoreEditor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class ClassicModeActivity extends GameActivity {
 		setContentView(R.layout.activity_game_classic);
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
+		HighscoreText = (TextView) findViewById(R.id.textHighscore);
 		
 		//Setup game variables
 		Snake.add(new Location(10, 10));
@@ -58,6 +63,12 @@ public class ClassicModeActivity extends GameActivity {
 		myEngine.myThread.setRunning(true);
         
         myEngine.Surface.setOnTouchListener(gestureListener);
+        
+        //Get highscore
+        SharedPreferences mySettings = getSharedPreferences("Highscores", 0);
+        Highscore = mySettings.getInt("Classic", 0);
+        HighscoreEditor = getSharedPreferences("Highscores", 0).edit();
+		HighscoreText.setText(lengthToString(Highscore));
 	}
 	
 	@Override
@@ -164,39 +175,34 @@ public class ClassicModeActivity extends GameActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == TH_ShowDeathDialog) {
 				CurrentMode = Mode.Paused;
+				
 				AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
 				builder.setMessage((String) msg.obj);
 				builder.setCancelable(false);
-				builder.setPositiveButton("Return to menu", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						NavUtils.navigateUpFromSameTask(ThisGame);
-					}
-				});
-				builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+				builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = getIntent();
 						finish();
 						startActivity(intent);
 					}
 				});
+				builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						NavUtils.navigateUpFromSameTask(ThisGame);
+					}
+				});
 				builder.create();
 				builder.show();
 			} else if (msg.what == TH_UpdateActionBar) {
-				int Inches = Snake.size() * 2;
-				int Feet = Inches / 12;
-				Inches -= Feet * 12;
-				String Text = "You're ";
-				if (Feet == 1) {
-					Text += Feet + " foot and ";
-				} else {
-					Text += Feet + " feet and ";
+				if (Snake.size() > Highscore) {
+					Highscore = Snake.size();
+					HighscoreText.setText(lengthToString(Highscore));
+
+					HighscoreEditor.putInt("Classic", Highscore);
+					HighscoreEditor.commit();
 				}
-				if (Inches == 1) {
-					Text += Inches + " inch long";
-				} else {
-					Text += Inches + " inches long";
-				}
-				ScoreText.setText(Text);
+				
+				ScoreText.setText(lengthToString(Snake.size()));
 			}
 		}
 	};
