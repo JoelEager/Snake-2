@@ -23,10 +23,8 @@ public class GraphicsHelper {
 				Y = YSize;
 			}
 			
-			@Override
-			public boolean equals(Object Other) {
-				Size OtherS = (Size) Other;
-				return OtherS.X == X && OtherS.Y == Y;
+			public boolean equals(Size Other) {
+				return Other.X == X && Other.Y == Y;
 			}
 			
 			@Override
@@ -49,10 +47,8 @@ public class GraphicsHelper {
 				Y = YLocation;
 			}
 			
-			@Override
-			public boolean equals(Object Other) {
-				Location OtherL = (Location) Other;
-				return OtherL.X == X && OtherL.Y == Y;
+			public boolean equals(Location Other) {
+				return Other.X == X && Other.Y == Y;
 			}
 			
 			@Override
@@ -80,10 +76,8 @@ public class GraphicsHelper {
 				Value = initValue;
 			}
 			
-			@Override
-			public boolean equals(Object Other) {
-				AnnotatedLocation OtherL = (AnnotatedLocation) Other;
-				return OtherL.X == X && OtherL.Y == Y && Type.equals(OtherL.Type) && OtherL.Value == Value;
+			public boolean equals(AnnotatedLocation Other) {
+				return Other.X == X && Other.Y == Y && Type.equals(Other.Type) && Other.Value == Value;
 			}
 			
 			@Override
