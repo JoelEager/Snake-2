@@ -56,7 +56,7 @@ public class ClassicModeActivity extends GameActivity {
 		Snake.add(new Location(8, 10));
 		Snake.add(new Location(7, 10));
 		Snake.add(new Location(6, 10));
-		Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+		Food = RanLoc();
 
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
@@ -144,20 +144,23 @@ public class ClassicModeActivity extends GameActivity {
 		}
 	}
 	
-	protected Location RanLoc(List<Location> NoSpots, List<Location> MoreNoSpots, Location Max, Location Min) {
+	protected Location RanLoc() {
+		Location Min = new Location(0, 0);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
 		boolean Good = false;
 		Location New = new Location(0, 0);
+		
 		while (!Good) {
 			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
 			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
 			Good = true;
-			for (Location Point : NoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Snake) {
+				if (New.equals(Point)) {
 					Good = false;
 				}
 			}
-			for (Location Point : MoreNoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Wall) {
+				if (New.equals(Point)) {
 					Good = false;
 				}
 			}
@@ -382,7 +385,7 @@ public class ClassicModeActivity extends GameActivity {
 							if (!FinalLevel && Snake.size() % 18 == 0) {
 								ChangingLevel = true;
 							} else {
-								Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+								Food = RanLoc();
 							}
 							
 							ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
@@ -486,7 +489,7 @@ public class ClassicModeActivity extends GameActivity {
 						ChangingLevel = false;
 						DrawExitHole = true;
 						CurrentMode = Mode.Right;
-						Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));//Make Game Background
+						Food = RanLoc();
 						
 						//Make new background
 						bmpBackground = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
