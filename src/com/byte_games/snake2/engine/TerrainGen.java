@@ -45,7 +45,7 @@ public class TerrainGen {
 	public Canvas makeGameBackground(Canvas canvasBackground) {
 		final String[] BiomeData = myContext.getResources().getStringArray(R.array.BiomeDefs);
 		final String[] BiomeTypes = myContext.getResources().getStringArray(R.array.BiomeTypes);
-		final int GrassWeight = (int) (BiomeTypes.length * 0.4); //Relative likelihood of biome being grass
+		final int GrassWeight = (int) (BiomeTypes.length * 0.5); //Relative likelihood of biome being grass
 		
 		//Loop in both directions one biome at a time
 		for (int countX = 0; countX <= SizeOfGame.X; countX += BackgroundBiomeSize.X) {
