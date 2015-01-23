@@ -1,7 +1,5 @@
 package com.byte_games.snake2;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.byte_games.snake2.engine.SnakeEngine;
-import com.byte_games.snake2.engine.GraphicsHelper.*;
 
 @SuppressLint("ClickableViewAccessibility")
 abstract public class GameActivity extends Activity {

@@ -1,23 +1,8 @@
 package com.byte_games.snake2;
 
-import com.byte_games.snake2.engine.SnakeEngine;
-import com.byte_games.snake2.engine.SESurfaceView;
-import com.byte_games.snake2.engine.Ticker;
-import com.byte_games.snake2.engine.GraphicsHelper;
-import com.byte_games.snake2.engine.TerrainGen;
-import com.byte_games.snake2.engine.GraphicsHelper.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,6 +12,22 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.byte_games.snake2.engine.GraphicsHelper;
+import com.byte_games.snake2.engine.GraphicsHelper.AnnotatedLocation;
+import com.byte_games.snake2.engine.GraphicsHelper.Location;
+import com.byte_games.snake2.engine.SESurfaceView;
+import com.byte_games.snake2.engine.SnakeEngine;
+import com.byte_games.snake2.engine.TerrainGen;
+import com.byte_games.snake2.engine.Ticker;
 
 public class ArcadeModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
@@ -55,7 +56,7 @@ public class ArcadeModeActivity extends GameActivity {
 		Snake.add(new Location(8, 10));
 		Snake.add(new Location(7, 10));
 		Snake.add(new Location(6, 10));
-		Food = RanLoc(Snake, Hazards, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+		Food = RanLoc();
 
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
@@ -143,21 +144,70 @@ public class ArcadeModeActivity extends GameActivity {
 		}
 	}
 	
-	protected Location RanLoc(List<Location> NoSpots, List<AnnotatedLocation> MoreNoSpots, Location Max, Location Min) {
+	protected Location RanLoc() {
+		Location Min = new Location(0, 0);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
 		boolean Good = false;
 		Location New = new Location(0, 0);
 		while (!Good) {
 			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
 			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
 			Good = true;
-			for (Location Point : NoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Snake) {
+				if (New.equals(Point)) {
 					Good = false;
 				}
 			}
-			for (Location Point : MoreNoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Hazards) {
+				if (New.equals(Point)) {
 					Good = false;
+				}
+			}
+		}
+		return New;
+	}
+	
+	protected AnnotatedLocation RanHazardLoc() {
+		Location Min = new Location(0, 0);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
+		boolean Good = false;
+		AnnotatedLocation New = new AnnotatedLocation(0, 0);
+		
+		while (!Good) {
+			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
+			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
+			Good = true;
+			
+			for (Location Point : Snake) {
+				if (New.equals(Point)) {
+					Good = false;
+				}
+			}
+			for (Location Point : Hazards) {
+				if (New.equals(Point)) {
+					Good = false;
+				}
+			}
+			if (New.equals(Food)) {
+				Good = false;
+			}
+			//Check five spaces in front of the snake
+			Location SnakeTest = new Location(0, 0);
+			Snake.get(0).CopyTo(SnakeTest);
+			for (int TestCount = 1; TestCount <= 5; TestCount++) {
+				if (CurrentMode == Mode.Left) {
+					SnakeTest.X -= 1;
+				} else if (CurrentMode == Mode.Right) {
+					SnakeTest.X += 1;
+				} else if (CurrentMode == Mode.Up) {
+					SnakeTest.Y -= 1;
+				} else if (CurrentMode == Mode.Down) {
+					SnakeTest.Y += 1;
+				}
+				
+				if (New.equals(SnakeTest)) {
+					Good = false;
+					break;
 				}
 			}
 		}
@@ -236,19 +286,10 @@ public class ArcadeModeActivity extends GameActivity {
 		Paint color_SnakeBody1;
 		Paint color_SnakeBody2;
 		Paint color_Mouse;
+		Paint color_Bomb1;
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
-
-		//TODO: WIP Code
-		int CurrentAttack = 0;
-		//Available Attacks:
-		final int OverPopulation = 1;
-		final int Bombs = 2;
-		final int Flamethrower = 3;
-		final int Ninjas = 4;
-		final int Lasers = 5;
-		final int Lava = 6;
 
 		public myDrawer() {
 			color_SnakeHead = new Paint();
@@ -259,6 +300,8 @@ public class ArcadeModeActivity extends GameActivity {
 			color_SnakeBody2.setColor(Color.rgb(214, 80, 0));
 			color_Mouse = new Paint();
 			color_Mouse.setColor(Color.WHITE);
+			color_Bomb1 = new Paint();
+			color_Bomb1.setColor(Color.BLACK);
 			ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 		}
 
@@ -337,51 +380,57 @@ public class ArcadeModeActivity extends GameActivity {
 								Speed += .05;
 							}
 						}
-						Food = RanLoc(Snake, Hazards, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+						Food = RanLoc();
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						
-						//Activate a mice attack
+						//Activate a hazard?
 						if (Snake.size() >= 6) {
-							int AttackRan = 1 + (int) (Math.random() * 12);
-							if (AttackRan > 6) {
-								CurrentAttack = 0;
-							} else {
-								CurrentAttack = AttackRan;
-								if (AttackRan == OverPopulation) {
-									android.util.Log.v("AttackLogging", "OverPopulation");
-								} else if (AttackRan == Bombs) {
-									android.util.Log.v("AttackLogging", "Bombs");
-								} else if (AttackRan == Flamethrower) {
-									android.util.Log.v("AttackLogging", "Flamethrower");
-								} else if (AttackRan == Ninjas) {
-									android.util.Log.v("AttackLogging", "Ninjas");
-								} else if (AttackRan == Lasers) {
-									android.util.Log.v("AttackLogging", "Lasers");
-								} else if (AttackRan == Lava) {
-									android.util.Log.v("AttackLogging", "Lava");
-								}
+							int NumOfHazards = 3;
+							
+							//Starts at a .2 chance and goes up to .7 at a rate of .1 every 1' 8" (10 snake parts)
+							double Chance = 0.2 + ((Snake.size() - 6) * 0.01);
+							if (Chance > 0.7) { Chance = 0.7; }
+							
+							//Between 1 and (1/Chance) * NumOfHazards
+							int Ran = 1 + (int)(Math.random() * ((1 / Chance) * NumOfHazards));
+							if (Ran == 1) {
+								//Lava hazard
+								AnnotatedLocation LavaSource = RanHazardLoc();
+								LavaSource.Type = "Lava";
+								LavaSource.NumValue = 3;
+								LavaSource.TextValue = "You took a dip in a river of lava";
+								Hazards.add(LavaSource);
+							} else if (Ran == 2) {
+								//Fire bomb hazard
+								AnnotatedLocation Bomb = RanHazardLoc();
+								Bomb.Type = "FireBomb";
+								Bomb.NumValue = 5;
+								Bomb.TextValue = "You ran into some burning napalm";
+								Hazards.add(Bomb);
+							} else if (Ran == 3) {
+								//Laser hazard
+								AnnotatedLocation LaserEmiter = RanHazardLoc();
+								LaserEmiter.Type = "Laser";
+								LaserEmiter.NumValue = 5;
+								LaserEmiter.TextValue = "You ran into a laser";
+								Hazards.add(LaserEmiter);
 							}
 						}
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 						//Wall hit!
 						CurrentMode = Mode.Paused;
 						ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
+					} else {
+						for (AnnotatedLocation Hazard : Hazards) {
+							if (Hazard.equals(Snake.get(0))) {
+								//Hazard hit!
+								CurrentMode = Mode.Paused;
+								ThreadHelper.obtainMessage(TH_ShowDeathDialog, Hazard.TextValue).sendToTarget();
+								//TODO: What if tail is hit?
+							}
+						}
 					}
 				}
-			}
-			//Apply mice attack
-			if (CurrentAttack == OverPopulation) {
-				
-			} else if (CurrentAttack == Bombs) {
-				
-			} else if (CurrentAttack == Flamethrower) {
-				
-			} else if (CurrentAttack == Ninjas) {
-				
-			} else if (CurrentAttack == Lasers) {
-				
-			} else if (CurrentAttack == Lava) {
-				
 			}
 
 			//Draw mouse
@@ -397,6 +446,18 @@ public class ArcadeModeActivity extends GameActivity {
 				} else { //it's an even number
 					GraphicsHelper.addPixel(CanvasIn, SnakePart, color_SnakeBody2, Unit);
 				}
+			}
+			
+			//Draw and update hazards
+			for (AnnotatedLocation Hazard : Hazards) {
+				if (Hazard.Type.equals("Lava")) {
+					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
+				} else if (Hazard.Type.equals("FireBomb")) {
+					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
+				} else if (Hazard.Type.equals("Laser")) {
+					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
+				}
+				//TODO: Write animations
 			}
 			
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());

@@ -64,32 +64,35 @@ public class GraphicsHelper {
 		
 		public static class AnnotatedLocation extends Location {
 			public String Type;
-			public int Value;
+			public String TextValue;
+			public int NumValue;
 			
 			public AnnotatedLocation(int XLocation, int YLocation) {
 				super(XLocation, YLocation);
 			}
 			
-			public AnnotatedLocation(int XLocation, int YLocation, String initType, int initValue) {
+			public AnnotatedLocation(int XLocation, int YLocation, String initType, String initTextValue, int initNumValue) {
 				super(XLocation, YLocation);
 				Type = initType;
-				Value = initValue;
+				TextValue = initTextValue;
+				NumValue = initNumValue;
 			}
 			
 			public boolean equals(AnnotatedLocation Other) {
-				return Other.X == X && Other.Y == Y && Type.equals(Other.Type) && Other.Value == Value;
+				return Other.X == X && Other.Y == Y && Type.equals(Other.Type) && TextValue.equals(Other.TextValue) && Other.NumValue == NumValue;
 			}
 			
 			@Override
 			public String toString() {
-				return "X = " + X + ", Y = " + Y + " - Annotation: " + Type + " @ " + Value;
+				return "X = " + X + ", Y = " + Y + " - Annotation: " + Type + ", " + TextValue + " @ " + NumValue;
 			}
 			
 			public void CopyTo(AnnotatedLocation Target) {
 				Target.X = X;
 				Target.Y = Y;
 				Target.Type = Type;
-				Target.Value = Value;
+				Target.TextValue = TextValue;
+				Target.NumValue = NumValue;
 			}
 		}
 		
