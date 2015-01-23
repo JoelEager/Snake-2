@@ -16,7 +16,6 @@ import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
@@ -206,13 +205,6 @@ public class ArcadeModeActivity extends GameActivity {
 		}
 	};
 	
-	//TODO: WIP Code
-	private int useAbility = 0;
-	
-	public void use(View sourceView) {
-		useAbility = 100;
-	}
-	
 	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
@@ -390,14 +382,6 @@ public class ArcadeModeActivity extends GameActivity {
 				
 			} else if (CurrentAttack == Lava) {
 				
-			}
-			
-			//Apply ability
-			if (useAbility != 0) {
-				color_SnakeHead.setColor(Color.rgb(0, 0, 0));
-				useAbility -= 5;
-			} else {
-				color_SnakeHead.setColor(Color.rgb(190, 14, 14));
 			}
 
 			//Draw mouse
