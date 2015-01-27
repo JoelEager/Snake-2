@@ -58,6 +58,17 @@ public final class R {
         public static final int activity_splash=0x7f030002;
     }
     public static final class string {
+        /**  Format for terrainData:
+    		- Each pixel that is to be part of the element is listed in the format ~Y,X~
+    		- X values are 0 to 14
+    		- Y values are 0 to 9
+    		
+    	 To define a biome:
+    		- Enter its pixels as a string of terrainData
+    		- Add a referance to that string to the array BiomeDefs
+    		- Add the biome's type to the array BiomeTypes at the same index
+     
+         */
         public static final int Lake_1=0x7f050004;
         public static final int Lake_2=0x7f050005;
         public static final int Lake_3=0x7f050006;
