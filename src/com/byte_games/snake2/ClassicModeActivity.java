@@ -34,7 +34,7 @@ public class ClassicModeActivity extends GameActivity {
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
-	private List<Location> Wall = new ArrayList<Location>();
+	private List<Location> Walls = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -56,7 +56,7 @@ public class ClassicModeActivity extends GameActivity {
 		Snake.add(new Location(8, 10));
 		Snake.add(new Location(7, 10));
 		Snake.add(new Location(6, 10));
-		Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+		Food = RanLoc();
 
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
@@ -144,20 +144,23 @@ public class ClassicModeActivity extends GameActivity {
 		}
 	}
 	
-	protected Location RanLoc(List<Location> NoSpots, List<Location> MoreNoSpots, Location Max, Location Min) {
+	protected Location RanLoc() {
+		Location Min = new Location(0, 0);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
 		boolean Good = false;
 		Location New = new Location(0, 0);
+		
 		while (!Good) {
 			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
 			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
 			Good = true;
-			for (Location Point : NoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Snake) {
+				if (New.equals(Point)) {
 					Good = false;
 				}
 			}
-			for (Location Point : MoreNoSpots) {
-				if (Point.equals(New)) {
+			for (Location Point : Walls) {
+				if (New.equals(Point)) {
 					Good = false;
 				}
 			}
@@ -371,10 +374,10 @@ public class ClassicModeActivity extends GameActivity {
 							
 							//Every 6 inches increase speed
 							if (Snake.size() % 3 == 0) {
-								if (Speed >= .5 && Speed < .75) {
+								if (Speed >= .5 && Speed < .65) {
 									Speed += .01;
 								} else if (Speed < .5) {
-									Speed += .05;
+									Speed += .02;
 								}
 							}
 							
@@ -382,7 +385,7 @@ public class ClassicModeActivity extends GameActivity {
 							if (!FinalLevel && Snake.size() % 18 == 0) {
 								ChangingLevel = true;
 							} else {
-								Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+								Food = RanLoc();
 							}
 							
 							ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
@@ -391,7 +394,7 @@ public class ClassicModeActivity extends GameActivity {
 							CurrentMode = Mode.Paused;
 							ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 						} else {
-							for (Location Block : Wall) {
+							for (Location Block : Walls) {
 								if (Snake.get(0).equals(Block)) {
 									//Wall hit!
 									CurrentMode = Mode.Paused;
@@ -406,76 +409,76 @@ public class ClassicModeActivity extends GameActivity {
 					if (Snake.get(0).equals(Snake.get(Snake.size() - 1))) {
 						//Add walls
 						int Level = Snake.size() / 18;
-						Wall.clear();
+						Walls.clear();
 						if (Level == 1) {
 							// O    O
 							//
 							// O    O
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 4));
-							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 4));
-							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(3, 4));
-							GraphicsHelper.AddRect(Wall, new Location(48, 27), new Size(3, 4));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 4));
+							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 4));
+							GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(3, 4));
+							GraphicsHelper.AddRect(Walls, new Location(48, 27), new Size(3, 4));
 						} else if (Level == 2) {
 							//   |
 							//   |
 							//   |
-							GraphicsHelper.AddRect(Wall, new Location(29, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
 						} else if (Level == 3) {
 							//
 							// ---------
 							//
-							GraphicsHelper.AddRect(Wall, new Location(10, 19), new Size(41, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 19), new Size(41, 3));
 						} else if (Level == 4) {
 							// [=]   [=]
 							// 
 							// [=]   [=]
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(44, 10), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(44, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
 						} else if (Level == 5) {
 							// |     |
 							// |     |
 							// |     |
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 21));
-							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
 						} else if (Level == 6) {
 							// ---------
 							// 
 							// ---------
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(41, 3));
-							GraphicsHelper.AddRect(Wall, new Location(10, 28), new Size(41, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
 						} else if (Level == 7) {
 							// |     |
 							// |=====|
 							// |     |
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(3, 21));
-							GraphicsHelper.AddRect(Wall, new Location(48, 10), new Size(3, 21));
-							GraphicsHelper.AddRect(Wall, new Location(13, 19), new Size(35, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(13, 19), new Size(35, 3));
 						} else if (Level == 8) {
 							// ---------
 							//  O     O
 							// ---------
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(41, 3));
-							GraphicsHelper.AddRect(Wall, new Location(10, 28), new Size(41, 3));
-							GraphicsHelper.AddRect(Wall, new Location(15, 19), new Size(3, 3));
-							GraphicsHelper.AddRect(Wall, new Location(43, 19), new Size(3, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
+							GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
+							GraphicsHelper.AddRect(Walls, new Location(15, 19), new Size(3, 3));
+							GraphicsHelper.AddRect(Walls, new Location(43, 19), new Size(3, 3));
 						} else if (Level == 9) {
 							// [=] | [=]
 							//     |
 							// [=] | [=]
-							GraphicsHelper.AddRect(Wall, new Location(10, 10), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(44, 10), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(10, 27), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(44, 27), new Size(7, 4));
-							GraphicsHelper.AddRect(Wall, new Location(29, 10), new Size(3, 21));
+							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
+							GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
 							FinalLevel = true;
 						}
 						
-						//Draw Wall to Bmp
+						//Draw wall to Bmp
 						bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
 						Canvas canvasWall = new Canvas(bmpWall);
-						for (Location Block : Wall) {
+						for (Location Block : Walls) {
 							GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
 						}
 						
@@ -486,7 +489,7 @@ public class ClassicModeActivity extends GameActivity {
 						ChangingLevel = false;
 						DrawExitHole = true;
 						CurrentMode = Mode.Right;
-						Food = RanLoc(Snake, Wall, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));//Make Game Background
+						Food = RanLoc();
 						
 						//Make new background
 						bmpBackground = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
@@ -538,8 +541,6 @@ public class ClassicModeActivity extends GameActivity {
 			CanvasIn.drawBitmap(bmpWall, 0, 0, new Paint());
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
 			return CanvasIn;
-		}
-		
-		
+		}	
 	}
 }

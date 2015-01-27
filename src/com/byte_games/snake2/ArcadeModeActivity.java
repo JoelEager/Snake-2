@@ -1,24 +1,8 @@
 package com.byte_games.snake2;
 
-import com.byte_games.snake2.engine.SnakeEngine;
-import com.byte_games.snake2.engine.SESurfaceView;
-import com.byte_games.snake2.engine.Ticker;
-import com.byte_games.snake2.engine.GraphicsHelper;
-import com.byte_games.snake2.engine.TerrainGen;
-import com.byte_games.snake2.engine.GraphicsHelper.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,12 +12,29 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.byte_games.snake2.engine.GraphicsHelper;
+import com.byte_games.snake2.engine.GraphicsHelper.AnnotatedLocation;
+import com.byte_games.snake2.engine.GraphicsHelper.Location;
+import com.byte_games.snake2.engine.SESurfaceView;
+import com.byte_games.snake2.engine.SnakeEngine;
+import com.byte_games.snake2.engine.TerrainGen;
+import com.byte_games.snake2.engine.Ticker;
 
 public class ArcadeModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
+	private List<AnnotatedLocation> Walls = new ArrayList<AnnotatedLocation>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -53,7 +54,9 @@ public class ArcadeModeActivity extends GameActivity {
 		Snake.add(new Location(10, 10));
 		Snake.add(new Location(9, 10));
 		Snake.add(new Location(8, 10));
-		Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+		Snake.add(new Location(7, 10));
+		Snake.add(new Location(6, 10));
+		Food = RanLoc();
 
 		//Setup renderer and start draw thread
 		myEngine = new SnakeEngine((SESurfaceView) findViewById(R.id.surfaceView), new myDrawer(), EngineTickRate, myContext, this);
@@ -140,6 +143,86 @@ public class ArcadeModeActivity extends GameActivity {
 			DoneSetup = true;
 		}
 	}
+	
+	protected Location RanLoc() {
+		Location Min = new Location(0, 0);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
+		boolean Good = false;
+		Location New = new Location(0, 0);
+		while (!Good) {
+			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
+			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
+			Good = true;
+			for (Location Point : Snake) {
+				if (New.equals(Point)) {
+					Good = false;
+				}
+			}
+			for (Location Point : Walls) {
+				if (New.equals(Point)) {
+					Good = false;
+				}
+			}
+		}
+		return New;
+	}
+	
+	protected AnnotatedLocation RanWallLoc() {
+		Location Min = new Location(2, 2);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X - 2, GraphicsHelper.SizeOfGame.Y - 2);
+		boolean Good = false;
+		AnnotatedLocation New = new AnnotatedLocation(0, 0);
+		
+		while (!Good) {
+			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
+			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
+			Good = true;
+			
+			for (Location Point : Snake) {
+				if (Point.X >= New.X - 1 && Point.X <= New.X + 1) {
+					if (Point.Y >= New.Y - 1 && Point.Y <= New.Y + 1) {
+						Good = false;
+					}
+				}
+			}
+			//(1 pixel margin between new wall and all other walls to avoid enclosing the mouse.)
+			for (Location Point : Walls) {
+				if (Point.X >= New.X - 2 && Point.X <= New.X + 2) {
+					if (Point.Y >= New.Y - 2 && Point.Y <= New.Y + 2) {
+						Good = false;
+					}
+				}
+			}
+			if (Food.X >= New.X - 1 && Food.X <= New.X + 1) {
+				if (Food.Y >= New.Y - 1 && Food.Y <= New.Y + 1) {
+					Good = false;
+				}
+			}
+			
+			//Check 10 spaces in front of the snake
+			Location SnakeTest = new Location(0, 0);
+			Snake.get(0).CopyTo(SnakeTest);
+			for (int TestCount = 1; TestCount <= 10; TestCount++) {
+				if (CurrentMode == Mode.Left) {
+					SnakeTest.X -= 1;
+				} else if (CurrentMode == Mode.Right) {
+					SnakeTest.X += 1;
+				} else if (CurrentMode == Mode.Up) {
+					SnakeTest.Y -= 1;
+				} else if (CurrentMode == Mode.Down) {
+					SnakeTest.Y += 1;
+				}
+				
+				if (SnakeTest.X >= New.X - 1 && SnakeTest.X <= New.X + 1) {
+					if (SnakeTest.Y >= New.Y - 1 && SnakeTest.Y <= New.Y + 1) {
+						Good = false;
+						break;
+					}
+				}
+			}
+		}
+		return New;
+	}
 
 	private final static int TH_ShowDeathDialog = 1;
 	private final static int TH_UpdateActionBar = 2;
@@ -182,12 +265,6 @@ public class ArcadeModeActivity extends GameActivity {
 		}
 	};
 	
-	private int useAbility = 0;
-	
-	public void use(View sourceView) {
-		useAbility = 100;
-	}
-	
 	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
@@ -219,18 +296,10 @@ public class ArcadeModeActivity extends GameActivity {
 		Paint color_SnakeBody1;
 		Paint color_SnakeBody2;
 		Paint color_Mouse;
+		Paint[] colors_Wall;
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
-		
-		int CurrentAttack = 0;
-		//Available Attacks:
-		final int OverPopulation = 1;
-		final int Bombs = 2;
-		final int Flamethrower = 3;
-		final int Ninjas = 4;
-		final int Lasers = 5;
-		final int Lava = 6;
 
 		public myDrawer() {
 			color_SnakeHead = new Paint();
@@ -241,6 +310,15 @@ public class ArcadeModeActivity extends GameActivity {
 			color_SnakeBody2.setColor(Color.rgb(214, 80, 0));
 			color_Mouse = new Paint();
 			color_Mouse.setColor(Color.WHITE);
+			
+			colors_Wall = new Paint[3];
+			colors_Wall[0] = new Paint();
+			colors_Wall[0].setColor(Color.parseColor("#393939"));
+			colors_Wall[1] = new Paint();
+			colors_Wall[1].setColor(Color.parseColor("#353535"));
+			colors_Wall[2] = new Paint();
+			colors_Wall[2].setColor(Color.parseColor("#303030"));
+			
 			ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 		}
 
@@ -312,35 +390,54 @@ public class ArcadeModeActivity extends GameActivity {
 						Location NewTail = new Location(0, 0);
 						Snake.get(Snake.size() - 1).CopyTo(NewTail);
 						Snake.add(NewTail);
+						
+						//Every 6 inches increase speed
 						if (Snake.size() % 3 == 0) {
-							if (Speed >= .3 && Speed < .5) {
+							if (Speed >= .5 && Speed < .65) {
 								Speed += .01;
-							} else if (Speed < .3) {
-								Speed += .05;
+							} else if (Speed < .5) {
+								Speed += .02;
 							}
 						}
-						Food = RanLoc(Snake, new Location(0, 0), new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y));
+						
+						Food = RanLoc();
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						
-						//Activate a mice attack
 						if (Snake.size() >= 6) {
-							int AttackRan = 1 + (int) (Math.random() * 12);
-							if (AttackRan > 6) {
-								CurrentAttack = 0;
-							} else {
-								CurrentAttack = AttackRan;
-								if (AttackRan == OverPopulation) {
-									android.util.Log.v("AttackLogging", "OverPopulation");
-								} else if (AttackRan == Bombs) {
-									android.util.Log.v("AttackLogging", "Bombs");
-								} else if (AttackRan == Flamethrower) {
-									android.util.Log.v("AttackLogging", "Flamethrower");
-								} else if (AttackRan == Ninjas) {
-									android.util.Log.v("AttackLogging", "Ninjas");
-								} else if (AttackRan == Lasers) {
-									android.util.Log.v("AttackLogging", "Lasers");
-								} else if (AttackRan == Lava) {
-									android.util.Log.v("AttackLogging", "Lava");
+							int MaxWallBlocks = 15 * 9;
+							int Ran = (int)(Math.random() * ((2) + 1));
+							if (Ran == 0) {
+								//Add 1-3 walls based on current wall count
+								int wallsToAdd = 1;
+								if (Walls.size() == 0) { wallsToAdd = 3; }
+								if (Walls.size() == MaxWallBlocks) { wallsToAdd = 3; }
+								
+								for (int count = 0; count != wallsToAdd; count++) {
+									//Remove a wall if there's too many
+									if (Walls.size() >= MaxWallBlocks) {
+										for (int RemoveCount = 1; RemoveCount != 10; RemoveCount++) {
+											Walls.remove(0);
+										}
+									}
+									
+									//Spawn a wall
+									AnnotatedLocation Wall = RanWallLoc();
+									Wall.Type = "Wall";
+									Wall.TextValue = "You ran into a wall";
+									
+									//Add 3x3 block of walls
+									for (int countX = -1; countX <= 1; countX++) {
+										for (int countY = -1; countY <= 1; countY++) {
+											AnnotatedLocation WallPart = new AnnotatedLocation(0, 0);
+											Wall.CopyTo(WallPart);
+											WallPart.NumValue = (int)(Math.random() * ((2) + 1));
+											
+											WallPart.X += countX;
+											WallPart.Y += countY;
+									
+											Walls.add(WallPart);
+										}
+									}
 								}
 							}
 						}
@@ -348,30 +445,16 @@ public class ArcadeModeActivity extends GameActivity {
 						//Wall hit!
 						CurrentMode = Mode.Paused;
 						ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
+					} else {
+						for (AnnotatedLocation Block : Walls) {
+							if (Block.equals(Snake.get(0))) {
+								//Wall hit!
+								CurrentMode = Mode.Paused;
+								ThreadHelper.obtainMessage(TH_ShowDeathDialog, Block.TextValue).sendToTarget();
+							}
+						}
 					}
 				}
-			}
-			//Apply mice attack
-			if (CurrentAttack == OverPopulation) {
-				
-			} else if (CurrentAttack == Bombs) {
-				
-			} else if (CurrentAttack == Flamethrower) {
-				
-			} else if (CurrentAttack == Ninjas) {
-				
-			} else if (CurrentAttack == Lasers) {
-				
-			} else if (CurrentAttack == Lava) {
-				
-			}
-			
-			//Apply ability
-			if (useAbility != 0) {
-				color_SnakeHead.setColor(Color.rgb(0, 0, 0));
-				useAbility -= 5;
-			} else {
-				color_SnakeHead.setColor(Color.rgb(190, 14, 14));
 			}
 
 			//Draw mouse
@@ -386,6 +469,13 @@ public class ArcadeModeActivity extends GameActivity {
 					GraphicsHelper.addPixel(CanvasIn, SnakePart, color_SnakeBody1, Unit);
 				} else { //it's an even number
 					GraphicsHelper.addPixel(CanvasIn, SnakePart, color_SnakeBody2, Unit);
+				}
+			}
+			
+			//Draw and update walls
+			for (AnnotatedLocation Block : Walls) {
+				if (Block.Type.equals("Wall")) {
+					GraphicsHelper.addPixel(CanvasIn, Block, colors_Wall[Block.NumValue], Unit);
 				}
 			}
 			

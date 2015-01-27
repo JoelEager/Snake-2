@@ -34,24 +34,23 @@ public final class R {
         public static final int ic_use=0x7f020006;
     }
     public static final class id {
-        public static final int SplashLayout=0x7f08000e;
+        public static final int SplashLayout=0x7f08000d;
         public static final int bigBox=0x7f080000;
-        public static final int buttonPlayArcade=0x7f080010;
-        public static final int buttonPlayClassic=0x7f080011;
+        public static final int buttonPlayArcade=0x7f08000f;
+        public static final int buttonPlayClassic=0x7f080010;
         public static final int imgDown=0x7f08000b;
         public static final int imgLeft=0x7f080007;
         public static final int imgPause=0x7f08000a;
         public static final int imgRight=0x7f08000c;
         public static final int imgUp=0x7f080009;
-        public static final int imgUse=0x7f080008;
         public static final int panelL=0x7f080004;
         public static final int panelR=0x7f080003;
         public static final int panelT=0x7f080002;
         public static final int surfaceView=0x7f080001;
         public static final int textHighscore=0x7f080006;
         public static final int textScore=0x7f080005;
-        public static final int textTitle=0x7f08000f;
-        public static final int viewPlaceholderL=0x7f08000d;
+        public static final int textTitle=0x7f08000e;
+        public static final int viewPlaceholderL=0x7f080008;
     }
     public static final class layout {
         public static final int activity_game_arcade=0x7f030000;

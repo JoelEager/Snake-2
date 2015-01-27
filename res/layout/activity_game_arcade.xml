@@ -59,7 +59,7 @@
             android:id="@+id/imgLeft"
             android:layout_width="fill_parent"
             android:layout_height="75dp"
-            android:layout_above="@+id/imgUse"
+            android:layout_above="@+id/viewPlaceholderL"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:onClick="changeMode"
@@ -77,15 +77,13 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_up" />
 
-        <ImageView
-            android:id="@+id/imgUse"
+        <View
+            android:id="@+id/viewPlaceholderL"
             android:layout_width="wrap_content"
             android:layout_height="75dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:onClick="use"
-            android:src="@drawable/ic_use" />
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

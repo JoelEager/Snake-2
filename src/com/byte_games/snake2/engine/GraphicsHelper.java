@@ -14,7 +14,7 @@ public class GraphicsHelper {
 		public static final Size BackgroundBiomeSize = new Size(15, 10);
 	
 	//Useful objects
-		public static final class Size {
+		public static class Size {
 			public int X;
 			public int Y;
 			
@@ -23,10 +23,8 @@ public class GraphicsHelper {
 				Y = YSize;
 			}
 			
-			@Override
-			public boolean equals(Object Other) {
-				Size OtherS = (Size) Other;
-				return OtherS.X == X && OtherS.Y == Y;
+			public boolean equals(Size Other) {
+				return Other.X == X && Other.Y == Y;
 			}
 			
 			@Override
@@ -40,7 +38,7 @@ public class GraphicsHelper {
 			}
 		}
 		
-		public static final class Location {
+		public static class Location {
 			public int X;
 			public int Y;
 			
@@ -49,10 +47,8 @@ public class GraphicsHelper {
 				Y = YLocation;
 			}
 			
-			@Override
-			public boolean equals(Object Other) {
-				Location OtherL = (Location) Other;
-				return OtherL.X == X && OtherL.Y == Y;
+			public boolean equals(Location Other) {
+				return Other.X == X && Other.Y == Y;
 			}
 			
 			@Override
@@ -63,6 +59,40 @@ public class GraphicsHelper {
 			public void CopyTo(Location Target) {
 				Target.X = X;
 				Target.Y = Y;
+			}
+		}
+		
+		public static class AnnotatedLocation extends Location {
+			public String Type;
+			public String TextValue;
+			public int NumValue;
+			
+			public AnnotatedLocation(int XLocation, int YLocation) {
+				super(XLocation, YLocation);
+			}
+			
+			public AnnotatedLocation(int XLocation, int YLocation, String initType, String initTextValue, int initNumValue) {
+				super(XLocation, YLocation);
+				Type = initType;
+				TextValue = initTextValue;
+				NumValue = initNumValue;
+			}
+			
+			public boolean equals(AnnotatedLocation Other) {
+				return Other.X == X && Other.Y == Y && Type.equals(Other.Type) && TextValue.equals(Other.TextValue) && Other.NumValue == NumValue;
+			}
+			
+			@Override
+			public String toString() {
+				return "X = " + X + ", Y = " + Y + " - Annotation: " + Type + ", " + TextValue + " @ " + NumValue;
+			}
+			
+			public void CopyTo(AnnotatedLocation Target) {
+				Target.X = X;
+				Target.Y = Y;
+				Target.Type = Type;
+				Target.TextValue = TextValue;
+				Target.NumValue = NumValue;
 			}
 		}
 		
