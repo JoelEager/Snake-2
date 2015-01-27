@@ -374,10 +374,10 @@ public class ClassicModeActivity extends GameActivity {
 							
 							//Every 6 inches increase speed
 							if (Snake.size() % 3 == 0) {
-								if (Speed >= .5 && Speed < .75) {
+								if (Speed >= .5 && Speed < .65) {
 									Speed += .01;
 								} else if (Speed < .5) {
-									Speed += .05;
+									Speed += .02;
 								}
 							}
 							
@@ -541,8 +541,6 @@ public class ClassicModeActivity extends GameActivity {
 			CanvasIn.drawBitmap(bmpWall, 0, 0, new Paint());
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
 			return CanvasIn;
-		}
-		
-		
+		}	
 	}
 }

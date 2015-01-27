@@ -373,13 +373,16 @@ public class ArcadeModeActivity extends GameActivity {
 						Location NewTail = new Location(0, 0);
 						Snake.get(Snake.size() - 1).CopyTo(NewTail);
 						Snake.add(NewTail);
+						
+						//Every 6 inches increase speed
 						if (Snake.size() % 3 == 0) {
-							if (Speed >= .3 && Speed < .5) {
+							if (Speed >= .5 && Speed < .65) {
 								Speed += .01;
-							} else if (Speed < .3) {
-								Speed += .05;
+							} else if (Speed < .5) {
+								Speed += .02;
 							}
 						}
+						
 						Food = RanLoc();
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						
