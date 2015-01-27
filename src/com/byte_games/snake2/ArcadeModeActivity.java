@@ -34,7 +34,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
-	private List<AnnotatedLocation> Hazards = new ArrayList<AnnotatedLocation>();
+	private List<AnnotatedLocation> Walls = new ArrayList<AnnotatedLocation>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -158,7 +158,7 @@ public class ArcadeModeActivity extends GameActivity {
 					Good = false;
 				}
 			}
-			for (Location Point : Hazards) {
+			for (Location Point : Walls) {
 				if (New.equals(Point)) {
 					Good = false;
 				}
@@ -167,9 +167,9 @@ public class ArcadeModeActivity extends GameActivity {
 		return New;
 	}
 	
-	protected AnnotatedLocation RanHazardLoc() {
-		Location Min = new Location(0, 0);
-		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
+	protected AnnotatedLocation RanWallLoc() {
+		Location Min = new Location(2, 2);
+		Location Max = new Location(GraphicsHelper.SizeOfGame.X - 2, GraphicsHelper.SizeOfGame.Y - 2);
 		boolean Good = false;
 		AnnotatedLocation New = new AnnotatedLocation(0, 0);
 		
@@ -179,22 +179,30 @@ public class ArcadeModeActivity extends GameActivity {
 			Good = true;
 			
 			for (Location Point : Snake) {
-				if (New.equals(Point)) {
+				if (Point.X >= New.X - 1 && Point.X <= New.X + 1) {
+					if (Point.Y >= New.Y - 1 && Point.Y <= New.Y + 1) {
+						Good = false;
+					}
+				}
+			}
+			//(1 pixel margin between new wall and all other walls to avoid enclosing the mouse.)
+			for (Location Point : Walls) {
+				if (Point.X >= New.X - 2 && Point.X <= New.X + 2) {
+					if (Point.Y >= New.Y - 2 && Point.Y <= New.Y + 2) {
+						Good = false;
+					}
+				}
+			}
+			if (Food.X >= New.X - 1 && Food.X <= New.X + 1) {
+				if (Food.Y >= New.Y - 1 && Food.Y <= New.Y + 1) {
 					Good = false;
 				}
 			}
-			for (Location Point : Hazards) {
-				if (New.equals(Point)) {
-					Good = false;
-				}
-			}
-			if (New.equals(Food)) {
-				Good = false;
-			}
-			//Check five spaces in front of the snake
+			
+			//Check 10 spaces in front of the snake
 			Location SnakeTest = new Location(0, 0);
 			Snake.get(0).CopyTo(SnakeTest);
-			for (int TestCount = 1; TestCount <= 5; TestCount++) {
+			for (int TestCount = 1; TestCount <= 10; TestCount++) {
 				if (CurrentMode == Mode.Left) {
 					SnakeTest.X -= 1;
 				} else if (CurrentMode == Mode.Right) {
@@ -205,9 +213,11 @@ public class ArcadeModeActivity extends GameActivity {
 					SnakeTest.Y += 1;
 				}
 				
-				if (New.equals(SnakeTest)) {
-					Good = false;
-					break;
+				if (SnakeTest.X >= New.X - 1 && SnakeTest.X <= New.X + 1) {
+					if (SnakeTest.Y >= New.Y - 1 && SnakeTest.Y <= New.Y + 1) {
+						Good = false;
+						break;
+					}
 				}
 			}
 		}
@@ -286,7 +296,7 @@ public class ArcadeModeActivity extends GameActivity {
 		Paint color_SnakeBody1;
 		Paint color_SnakeBody2;
 		Paint color_Mouse;
-		Paint color_Bomb1;
+		Paint[] colors_Wall;
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
@@ -300,8 +310,15 @@ public class ArcadeModeActivity extends GameActivity {
 			color_SnakeBody2.setColor(Color.rgb(214, 80, 0));
 			color_Mouse = new Paint();
 			color_Mouse.setColor(Color.WHITE);
-			color_Bomb1 = new Paint();
-			color_Bomb1.setColor(Color.BLACK);
+			
+			colors_Wall = new Paint[3];
+			colors_Wall[0] = new Paint();
+			colors_Wall[0].setColor(Color.parseColor("#393939"));
+			colors_Wall[1] = new Paint();
+			colors_Wall[1].setColor(Color.parseColor("#353535"));
+			colors_Wall[2] = new Paint();
+			colors_Wall[2].setColor(Color.parseColor("#303030"));
+			
 			ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 		}
 
@@ -386,37 +403,42 @@ public class ArcadeModeActivity extends GameActivity {
 						Food = RanLoc();
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						
-						//Activate a hazard?
 						if (Snake.size() >= 6) {
-							int NumOfHazards = 3;
-							
-							//Starts at a .2 chance and goes up to .7 at a rate of .1 every 1' 8" (10 snake parts)
-							double Chance = 0.2 + ((Snake.size() - 6) * 0.01);
-							if (Chance > 0.7) { Chance = 0.7; }
-							
-							//Between 1 and (1/Chance) * NumOfHazards
-							int Ran = 1 + (int)(Math.random() * ((1 / Chance) * NumOfHazards));
-							if (Ran == 1) {
-								//Lava hazard
-								AnnotatedLocation LavaSource = RanHazardLoc();
-								LavaSource.Type = "Lava";
-								LavaSource.NumValue = 3;
-								LavaSource.TextValue = "You took a dip in a river of lava";
-								Hazards.add(LavaSource);
-							} else if (Ran == 2) {
-								//Fire bomb hazard
-								AnnotatedLocation Bomb = RanHazardLoc();
-								Bomb.Type = "FireBomb";
-								Bomb.NumValue = 5;
-								Bomb.TextValue = "You ran into some burning napalm";
-								Hazards.add(Bomb);
-							} else if (Ran == 3) {
-								//Laser hazard
-								AnnotatedLocation LaserEmiter = RanHazardLoc();
-								LaserEmiter.Type = "Laser";
-								LaserEmiter.NumValue = 5;
-								LaserEmiter.TextValue = "You ran into a laser";
-								Hazards.add(LaserEmiter);
+							int MaxWallBlocks = 15 * 9;
+							int Ran = (int)(Math.random() * ((2) + 1));
+							if (Ran == 0) {
+								//Add 1-3 walls based on current wall count
+								int wallsToAdd = 1;
+								if (Walls.size() == 0) { wallsToAdd = 3; }
+								if (Walls.size() == MaxWallBlocks) { wallsToAdd = 3; }
+								
+								for (int count = 0; count != wallsToAdd; count++) {
+									//Remove a wall if there's too many
+									if (Walls.size() >= MaxWallBlocks) {
+										for (int RemoveCount = 1; RemoveCount != 10; RemoveCount++) {
+											Walls.remove(0);
+										}
+									}
+									
+									//Spawn a wall
+									AnnotatedLocation Wall = RanWallLoc();
+									Wall.Type = "Wall";
+									Wall.TextValue = "You ran into a wall";
+									
+									//Add 3x3 block of walls
+									for (int countX = -1; countX <= 1; countX++) {
+										for (int countY = -1; countY <= 1; countY++) {
+											AnnotatedLocation WallPart = new AnnotatedLocation(0, 0);
+											Wall.CopyTo(WallPart);
+											WallPart.NumValue = (int)(Math.random() * ((2) + 1));
+											
+											WallPart.X += countX;
+											WallPart.Y += countY;
+									
+											Walls.add(WallPart);
+										}
+									}
+								}
 							}
 						}
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
@@ -424,12 +446,11 @@ public class ArcadeModeActivity extends GameActivity {
 						CurrentMode = Mode.Paused;
 						ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 					} else {
-						for (AnnotatedLocation Hazard : Hazards) {
-							if (Hazard.equals(Snake.get(0))) {
-								//Hazard hit!
+						for (AnnotatedLocation Block : Walls) {
+							if (Block.equals(Snake.get(0))) {
+								//Wall hit!
 								CurrentMode = Mode.Paused;
-								ThreadHelper.obtainMessage(TH_ShowDeathDialog, Hazard.TextValue).sendToTarget();
-								//TODO: What if tail is hit?
+								ThreadHelper.obtainMessage(TH_ShowDeathDialog, Block.TextValue).sendToTarget();
 							}
 						}
 					}
@@ -451,16 +472,11 @@ public class ArcadeModeActivity extends GameActivity {
 				}
 			}
 			
-			//Draw and update hazards
-			for (AnnotatedLocation Hazard : Hazards) {
-				if (Hazard.Type.equals("Lava")) {
-					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
-				} else if (Hazard.Type.equals("FireBomb")) {
-					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
-				} else if (Hazard.Type.equals("Laser")) {
-					GraphicsHelper.addPixel(CanvasIn, Hazard, color_Bomb1, Unit);
+			//Draw and update walls
+			for (AnnotatedLocation Block : Walls) {
+				if (Block.Type.equals("Wall")) {
+					GraphicsHelper.addPixel(CanvasIn, Block, colors_Wall[Block.NumValue], Unit);
 				}
-				//TODO: Write animations
 			}
 			
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
