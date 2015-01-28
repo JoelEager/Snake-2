@@ -35,6 +35,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
 	private List<AnnotatedLocation> Walls = new ArrayList<AnnotatedLocation>();
+	private int WallSpawnTicker = 1;
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -402,41 +403,43 @@ public class ArcadeModeActivity extends GameActivity {
 						
 						Food = RanLoc();
 						ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
+
+						//Wall management code
+						int MaxWallBlocks = 15 * 9;
+						WallSpawnTicker--;
 						
-						if (Snake.size() >= 6) {
-							int MaxWallBlocks = 15 * 9;
-							int Ran = (int)(Math.random() * ((2) + 1));
-							if (Ran == 0) {
-								//Add 1-3 walls based on current wall count
-								int wallsToAdd = 1;
-								if (Walls.size() == 0) { wallsToAdd = 3; }
-								if (Walls.size() == MaxWallBlocks) { wallsToAdd = 3; }
-								
-								for (int count = 0; count != wallsToAdd; count++) {
-									//Remove a wall if there's too many
-									if (Walls.size() >= MaxWallBlocks) {
-										for (int RemoveCount = 1; RemoveCount != 10; RemoveCount++) {
-											Walls.remove(0);
-										}
+						if (WallSpawnTicker == 0) {
+							WallSpawnTicker = 2 + (int)(Math.random() * ((5 - 2) + 1));
+							
+							//Add 1-3 walls based on current wall count
+							int wallsToAdd = 1;
+							if (Walls.size() == 0) { wallsToAdd = 3; }
+							if (Walls.size() == MaxWallBlocks) { wallsToAdd = 3; }
+							
+							for (int count = 0; count != wallsToAdd; count++) {
+								//Remove a wall if there's too many
+								if (Walls.size() >= MaxWallBlocks) {
+									for (int RemoveCount = 1; RemoveCount != 10; RemoveCount++) {
+										Walls.remove(0);
 									}
-									
-									//Spawn a wall
-									AnnotatedLocation Wall = RanWallLoc();
-									Wall.Type = "Wall";
-									Wall.TextValue = "You ran into a wall";
-									
-									//Add 3x3 block of walls
-									for (int countX = -1; countX <= 1; countX++) {
-										for (int countY = -1; countY <= 1; countY++) {
-											AnnotatedLocation WallPart = new AnnotatedLocation(0, 0);
-											Wall.CopyTo(WallPart);
-											WallPart.NumValue = (int)(Math.random() * ((2) + 1));
-											
-											WallPart.X += countX;
-											WallPart.Y += countY;
-									
-											Walls.add(WallPart);
-										}
+								}
+								
+								//Spawn a wall
+								AnnotatedLocation Wall = RanWallLoc();
+								Wall.Type = "Wall";
+								Wall.TextValue = "You ran into a wall";
+								
+								//Add 3x3 block of walls
+								for (int countX = -1; countX <= 1; countX++) {
+									for (int countY = -1; countY <= 1; countY++) {
+										AnnotatedLocation WallPart = new AnnotatedLocation(0, 0);
+										Wall.CopyTo(WallPart);
+										WallPart.NumValue = (int)(Math.random() * ((2) + 1));
+										
+										WallPart.X += countX;
+										WallPart.Y += countY;
+								
+										Walls.add(WallPart);
 									}
 								}
 							}
