@@ -47,6 +47,12 @@ public class TerrainGen {
 		final String[] BiomeTypes = myContext.getResources().getStringArray(R.array.BiomeTypes);
 		final int GrassWeight = (int) (BiomeTypes.length * 0.5); //Relative likelihood of biome being grass
 		
+		//Setup array for counting use of each biome
+		int[] BiomeCounter = new int[BiomeTypes.length];
+		for (int count = 0; count < BiomeCounter.length; count++) {
+			BiomeCounter[count] = 0;
+		}
+		
 		//Loop in both directions one biome at a time
 		for (int countX = 0; countX <= SizeOfGame.X; countX += BackgroundBiomeSize.X) {
 			for (int countY = 0; countY <= SizeOfGame.Y; countY += BackgroundBiomeSize.Y) {
@@ -55,8 +61,22 @@ public class TerrainGen {
 				Location myLowerRight = new Location(countX + (BackgroundBiomeSize.X - 1), countY + (BackgroundBiomeSize.Y - 1));
 				
 				//Chose biome
+				boolean Good = false;
 				int OptionsIndex = GrassWeight + BiomeTypes.length - 1;
-				int BiomeTypeIndex = (int) (Math.random() * OptionsIndex);
+				int BiomeTypeIndex = 0;
+				while (!Good) {
+					BiomeTypeIndex = (int) (Math.random() * OptionsIndex);
+					//Use each non-grass biome at most twice
+					if (BiomeTypeIndex <= BiomeTypes.length - 1) {
+						if (BiomeCounter[BiomeTypeIndex] != 2) {
+							Good = true;
+							BiomeCounter[BiomeTypeIndex]++;
+						}
+					} else {
+						//It's grass which is always ok
+						Good = true;
+					}
+				}
 				
 				//Render it
 				if (BiomeTypeIndex <= BiomeTypes.length - 1) {
