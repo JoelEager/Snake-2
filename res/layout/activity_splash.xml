@@ -3,7 +3,7 @@
     android:id="@+id/SplashLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#99193438"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -41,5 +41,44 @@
         android:layout_below="@+id/buttonPlayArcade"
         android:onClick="play"
         android:text="@string/classicMode" />
+
+    <ScrollView
+        android:id="@+id/textBetaInfoScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/buttonPlayClassic"
+        android:layout_below="@+id/buttonPlayClassic"
+        android:layout_marginTop="25dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical" >
+    
+	    <TextView
+	        android:id="@+id/textBetaInfo"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:autoLink="web|email"
+	        android:background="#99193438"
+	        android:linksClickable="true"
+	        android:padding="5dp"
+	        android:scrollbarAlwaysDrawVerticalTrack="true"
+	        android:scrollbarStyle="insideInset"
+	        android:scrollbars="vertical"
+	        android:text="@string/BetaText"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	    
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonReport"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Report bug or\nsubmit idea"
+        android:onClick="email"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.byte_games.snake2;
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -50,5 +51,11 @@ public class SplashActivity extends Activity {
 		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
 			startActivity(new Intent(this, ClassicModeActivity.class));
 		}
+	}
+	
+	public void email(View sourceView) {
+		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","snake2beta@byte-games.com", null));
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Bug report or idea for Snake 2");
+		startActivity(Intent.createChooser(emailIntent, "Send email..."));
 	}
 }
