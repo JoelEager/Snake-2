@@ -10,7 +10,7 @@ import android.view.SurfaceView;
 //Class used to provide a customized surface view
 
 public class SESurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-	GameActivity myOwner;
+	private GameActivity myOwner;
 
 	public SESurfaceView(Context context, AttributeSet attrSet) {
 		super(context, attrSet);

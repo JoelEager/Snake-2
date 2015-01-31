@@ -82,7 +82,7 @@ abstract public class GameActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 	}
 	
-	protected String lengthToString(int Length) {
+	protected static String lengthToString(int Length) {
 		boolean Units = true; //true for English, false for Metric
 		String Text = "";
 		

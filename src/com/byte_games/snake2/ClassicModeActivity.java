@@ -7,6 +7,7 @@ import com.byte_games.snake2.engine.GraphicsHelper;
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.*;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +41,8 @@ public class ClassicModeActivity extends GameActivity {
 	private TextView HighscoreText;
 	private int Highscore;
 	SharedPreferences.Editor HighscoreEditor;
+	
+	protected ClassicModeActivity myGameReferance = this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -170,42 +172,46 @@ public class ClassicModeActivity extends GameActivity {
 	
 	private final static int TH_ShowDeathDialog = 1;
 	private final static int TH_UpdateActionBar = 2;
-	private ClassicModeActivity ThisGame = this;
 	
-	@SuppressLint("HandlerLeak")
-	private final Handler ThreadHelper = new Handler() {
+	private static final class ThreadHelper extends Handler {
+		private ClassicModeActivity myGame;
+		
+		ThreadHelper(ClassicModeActivity myGameReferance) {
+			myGame = new WeakReference<ClassicModeActivity>(myGameReferance).get();
+		}
+		
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TH_ShowDeathDialog) {
-				CurrentMode = Mode.Paused;
+				myGame.CurrentMode = Mode.Paused;
 				
-				AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
+				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
 				builder.setMessage((String) msg.obj);
 				builder.setCancelable(false);
 				builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = getIntent();
-						finish();
-						startActivity(intent);
+						Intent intent = myGame.getIntent();
+						myGame.finish();
+						myGame.startActivity(intent);
 					}
 				});
 				builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						NavUtils.navigateUpFromSameTask(ThisGame);
+						NavUtils.navigateUpFromSameTask(myGame);
 					}
 				});
 				builder.create();
 				builder.show();
 			} else if (msg.what == TH_UpdateActionBar) {
-				if (Snake.size() > Highscore) {
-					Highscore = Snake.size();
-					HighscoreText.setText(lengthToString(Highscore));
+				if (myGame.Snake.size() > myGame.Highscore) {
+					myGame.Highscore = myGame.Snake.size();
+					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
 
-					HighscoreEditor.putInt("Classic", Highscore);
-					HighscoreEditor.commit();
+					myGame.HighscoreEditor.putInt("Classic", myGame.Highscore);
+					myGame.HighscoreEditor.commit();
 				}
 				
-				ScoreText.setText(lengthToString(Snake.size()));
+				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
 			}
 		}
 	};
@@ -216,7 +222,7 @@ public class ClassicModeActivity extends GameActivity {
 			OldMode = CurrentMode;
 			CurrentMode = Mode.Paused;
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(ThisGame);
+			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReferance);
 			builder.setMessage("Game Paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
@@ -228,7 +234,7 @@ public class ClassicModeActivity extends GameActivity {
 			});
 			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(ThisGame);
+					NavUtils.navigateUpFromSameTask(myGameReferance);
 					Boxy = null;
 				}
 			});
@@ -251,8 +257,11 @@ public class ClassicModeActivity extends GameActivity {
 		double SpeedCount = 0;
 		boolean DrawExitHole = false;
 		boolean FinalLevel = false;
+		ThreadHelper myThreadHelper;
 
 		public myDrawer() {
+			myThreadHelper = new ThreadHelper(myGameReferance);
+			
 			color_SnakeHead = new Paint();
 			color_SnakeHead.setColor(Color.rgb(190, 14, 14));
 			color_SnakeBody1 = new Paint();
@@ -276,7 +285,7 @@ public class ClassicModeActivity extends GameActivity {
 			colors_Wall[2] = new Paint();
 			colors_Wall[2].setColor(Color.parseColor("#303030"));
 			
-			ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
+			myThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 		}
 
 		@Override
@@ -388,17 +397,17 @@ public class ClassicModeActivity extends GameActivity {
 								Food = RanLoc();
 							}
 							
-							ThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
+							myThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
 						} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 							//Wall hit!
 							CurrentMode = Mode.Paused;
-							ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
+							myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 						} else {
 							for (Location Block : Walls) {
 								if (Snake.get(0).equals(Block)) {
 									//Wall hit!
 									CurrentMode = Mode.Paused;
-									ThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
+									myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 								}
 							}
 						}
