@@ -48,7 +48,7 @@ public class ArcadeModeActivity extends GameActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_arcade);
+		setContentView(R.layout.activity_game);
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);

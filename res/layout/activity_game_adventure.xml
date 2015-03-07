@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#505050"
     tools:context=".ClassicModeActivity"
-    tools:ignore="HardcodedText,ContentDescription" >
+    tools:ignore="HardcodedText,ContentDescription,RtlSymmetry" >
 
     <com.byte_games.snake2.engine.SESurfaceView
         android:id="@+id/surfaceView"
@@ -36,13 +36,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/textHighscore"
+            android:id="@+id/textProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:paddingRight="3dp"
-            android:text="Highscore"
+            android:text="Adventure"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#969696" />
 

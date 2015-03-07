@@ -47,7 +47,7 @@ public class ClassicModeActivity extends GameActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_classic);
+		setContentView(R.layout.activity_game);
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);
