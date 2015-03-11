@@ -53,10 +53,10 @@ public final class R {
         public static final int surfaceView=0x7f080001;
         public static final int textBetaInfo=0x7f080014;
         public static final int textBetaInfoScroll=0x7f080013;
-        public static final int textDialogTitle=0x7f08000f;
         public static final int textHighscore=0x7f080006;
         public static final int textProgress=0x7f08000d;
         public static final int textScore=0x7f080005;
+        public static final int textTitle=0x7f08000f;
         public static final int textViewAdventureLength=0x7f080016;
         public static final int viewPlaceholderL=0x7f080008;
     }

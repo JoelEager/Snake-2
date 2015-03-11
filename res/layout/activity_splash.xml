@@ -10,7 +10,7 @@
     tools:context=".SplashActivity" >
 
     <TextView
-        android:id="@+id/textDialogTitle"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textDialogTitle"
+        android:layout_below="@+id/textTitle"
         android:onClick="play"
         android:text="@string/arcadeMode" />
 

@@ -57,6 +57,7 @@ public class AdventureModeActivity extends GameActivity {
 		
 		//TODO: Adventure time!
 		myAdventure = new Adventure(NumOfLevels);
+		myAdventure.Levels.get(0);
 		
 		ProgressText.setText("Level 1 of " + NumOfLevels);
 		//TODO: Move logic so game can be reset for next level
@@ -352,6 +353,7 @@ public class AdventureModeActivity extends GameActivity {
 						Location NewTail = new Location(0, 0);
 						Snake.get(Snake.size() - 1).CopyTo(NewTail);
 						Snake.add(NewTail);
+						Food = RanLoc();
 						
 						//Every 6 inches increase speed
 						if (Snake.size() % 3 == 0) {

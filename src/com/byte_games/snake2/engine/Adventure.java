@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Adventure {
 	public static enum LevelType {Size, Movement};
-	private List<Level> Levels = new ArrayList<Level>();
+	public List<Level> Levels = new ArrayList<Level>();
 	
 	//Create new adventure object
 	public Adventure(int length) {
