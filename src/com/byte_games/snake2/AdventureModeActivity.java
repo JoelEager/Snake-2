@@ -1,17 +1,17 @@
 package com.byte_games.snake2;
 
+import com.byte_games.snake2.engine.Adventure;
+import com.byte_games.snake2.engine.SnakeEngine;
+import com.byte_games.snake2.engine.SESurfaceView;
+import com.byte_games.snake2.engine.Ticker;
+import com.byte_games.snake2.engine.GraphicsHelper;
+import com.byte_games.snake2.engine.TerrainGen;
+import com.byte_games.snake2.engine.GraphicsHelper.*;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,38 +20,46 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
-import com.byte_games.snake2.engine.GraphicsHelper;
-import com.byte_games.snake2.engine.GraphicsHelper.AnnotatedLocation;
-import com.byte_games.snake2.engine.GraphicsHelper.Location;
-import com.byte_games.snake2.engine.SESurfaceView;
-import com.byte_games.snake2.engine.SnakeEngine;
-import com.byte_games.snake2.engine.TerrainGen;
-import com.byte_games.snake2.engine.Ticker;
-
-public class ArcadeModeActivity extends GameActivity {
+//TODO: Write Me!
+public class AdventureModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
-	private List<AnnotatedLocation> Walls = new ArrayList<AnnotatedLocation>();
-	private int WallSpawnTicker = 1;
+	private List<Location> Walls = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
-	private TextView HighscoreText;
-	private int Highscore;
-	SharedPreferences.Editor HighscoreEditor;
+	private TextView ProgressText;
+	private Adventure myAdventure;
 	
-	protected ArcadeModeActivity myGameReferance = this;
+	protected AdventureModeActivity myGameReferance = this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game);
+		setContentView(R.layout.activity_game_adventure);
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
-		HighscoreText = (TextView) findViewById(R.id.textHighscore);
+		ProgressText = (TextView) findViewById(R.id.textProgress);
+        
+        //Setup adventure object
+		Intent recivedIntent = getIntent();
+		int NumOfLevels = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 0);
+		
+		//TODO: Adventure time!
+		myAdventure = new Adventure(NumOfLevels);
+		
+		ProgressText.setText("Level 1 of " + NumOfLevels);
+		//TODO: Move logic so game can be reset for next level
 		
 		//Setup game variables
 		Snake.add(new Location(10, 10));
@@ -66,12 +74,6 @@ public class ArcadeModeActivity extends GameActivity {
 		myEngine.myThread.setRunning(true);
         
         myEngine.Surface.setOnTouchListener(gestureListener);
-        
-        //Get highscore
-        SharedPreferences mySettings = getSharedPreferences("Highscores", 0);
-        Highscore = mySettings.getInt("Arcade", 0);
-        HighscoreEditor = getSharedPreferences("Highscores", 0).edit();
-		HighscoreText.setText(lengthToString(Highscore));
 	}
 	
 	@Override
@@ -152,6 +154,7 @@ public class ArcadeModeActivity extends GameActivity {
 		Location Max = new Location(GraphicsHelper.SizeOfGame.X, GraphicsHelper.SizeOfGame.Y);
 		boolean Good = false;
 		Location New = new Location(0, 0);
+		
 		while (!Good) {
 			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
 			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
@@ -170,71 +173,14 @@ public class ArcadeModeActivity extends GameActivity {
 		return New;
 	}
 	
-	protected AnnotatedLocation RanWallLoc() {
-		Location Min = new Location(2, 2);
-		Location Max = new Location(GraphicsHelper.SizeOfGame.X - 2, GraphicsHelper.SizeOfGame.Y - 2);
-		boolean Good = false;
-		AnnotatedLocation New = new AnnotatedLocation(0, 0);
-		
-		while (!Good) {
-			New.X = Min.X + (int)(Math.random() * ((Max.X - Min.X) + 1));
-			New.Y = Min.Y + (int)(Math.random() * ((Max.Y - Min.Y) + 1));
-			Good = true;
-			
-			for (Location Point : Snake) {
-				if (Point.X >= New.X - 1 && Point.X <= New.X + 1) {
-					if (Point.Y >= New.Y - 1 && Point.Y <= New.Y + 1) {
-						Good = false;
-					}
-				}
-			}
-			//(1 pixel margin between new wall and all other walls to avoid enclosing the mouse.)
-			for (Location Point : Walls) {
-				if (Point.X >= New.X - 2 && Point.X <= New.X + 2) {
-					if (Point.Y >= New.Y - 2 && Point.Y <= New.Y + 2) {
-						Good = false;
-					}
-				}
-			}
-			if (Food.X >= New.X - 1 && Food.X <= New.X + 1) {
-				if (Food.Y >= New.Y - 1 && Food.Y <= New.Y + 1) {
-					Good = false;
-				}
-			}
-			
-			//Check 10 spaces in front of the snake
-			Location SnakeTest = new Location(0, 0);
-			Snake.get(0).CopyTo(SnakeTest);
-			for (int TestCount = 1; TestCount <= 10; TestCount++) {
-				if (CurrentMode == Mode.Left) {
-					SnakeTest.X -= 1;
-				} else if (CurrentMode == Mode.Right) {
-					SnakeTest.X += 1;
-				} else if (CurrentMode == Mode.Up) {
-					SnakeTest.Y -= 1;
-				} else if (CurrentMode == Mode.Down) {
-					SnakeTest.Y += 1;
-				}
-				
-				if (SnakeTest.X >= New.X - 1 && SnakeTest.X <= New.X + 1) {
-					if (SnakeTest.Y >= New.Y - 1 && SnakeTest.Y <= New.Y + 1) {
-						Good = false;
-						break;
-					}
-				}
-			}
-		}
-		return New;
-	}
-
 	private final static int TH_ShowDeathDialog = 1;
 	private final static int TH_UpdateActionBar = 2;
 	
 	private static final class ThreadHelper extends Handler {
-		private ArcadeModeActivity myGame;
+		private AdventureModeActivity myGame;
 		
-		ThreadHelper(ArcadeModeActivity myGameReferance) {
-			myGame = new WeakReference<ArcadeModeActivity>(myGameReferance).get();
+		ThreadHelper(AdventureModeActivity myGameReferance) {
+			myGame = new WeakReference<AdventureModeActivity>(myGameReferance).get();
 		}
 		
 		@Override
@@ -245,7 +191,7 @@ public class ArcadeModeActivity extends GameActivity {
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
 				builder.setMessage((String) msg.obj);
 				builder.setCancelable(false);
-				builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+				builder.setPositiveButton("Retry current level", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = myGame.getIntent();
 						myGame.finish();
@@ -260,19 +206,13 @@ public class ArcadeModeActivity extends GameActivity {
 				builder.create();
 				builder.show();
 			} else if (msg.what == TH_UpdateActionBar) {
-				if (myGame.Snake.size() > myGame.Highscore) {
-					myGame.Highscore = myGame.Snake.size();
-					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
-
-					myGame.HighscoreEditor.putInt("Classic", myGame.Highscore);
-					myGame.HighscoreEditor.commit();
-				}
-				
 				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
+				//TODO: Update progress
 			}
 		}
 	};
 	
+	@Override
 	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
@@ -304,12 +244,15 @@ public class ArcadeModeActivity extends GameActivity {
 		Paint color_SnakeBody1;
 		Paint color_SnakeBody2;
 		Paint color_Mouse;
+		Paint color_Hole1;
+		Paint color_Hole2;
 		Paint[] colors_Wall;
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
 		double SpeedCount = 0;
 		ThreadHelper myThreadHelper;
 
+		//TODO: Write game logic
 		public myDrawer() {
 			myThreadHelper = new ThreadHelper(myGameReferance);
 			
@@ -319,9 +262,15 @@ public class ArcadeModeActivity extends GameActivity {
 			color_SnakeBody1.setColor(Color.rgb(214, 60, 0));
 			color_SnakeBody2 = new Paint();
 			color_SnakeBody2.setColor(Color.rgb(214, 80, 0));
+			
 			color_Mouse = new Paint();
 			color_Mouse.setColor(Color.WHITE);
 			
+			color_Hole1 = new Paint();
+			color_Hole1.setColor(Color.parseColor("#5A3C1E"));
+			color_Hole2 = new Paint();
+			color_Hole2.setColor(Color.parseColor("#704B25"));
+
 			colors_Wall = new Paint[3];
 			colors_Wall[0] = new Paint();
 			colors_Wall[0].setColor(Color.parseColor("#393939"));
@@ -362,10 +311,12 @@ public class ArcadeModeActivity extends GameActivity {
 				}
 			}
 			CanvasIn.drawBitmap(bmpBackground, 0, 0, new Paint());
-
+			
 			//Code that's stopped on pause
 			if (CurrentMode != Mode.Paused) {
 				SpeedCount += Speed;
+				
+				//Normal game code
 				if (SpeedCount >= 1) {
 					SpeedCount--;
 					
@@ -411,54 +362,14 @@ public class ArcadeModeActivity extends GameActivity {
 							}
 						}
 						
-						Food = RanLoc();
 						myThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
-
-						//Wall management code
-						int MaxWallBlocks = 15 * 9;
-						WallSpawnTicker--;
-						
-						if (WallSpawnTicker == 0) {
-							WallSpawnTicker = 2 + (int)(Math.random() * ((5 - 2) + 1));
-							
-							//Add 1-3 walls based on current wall count
-							int wallsToAdd = 1;
-							if (Walls.size() == 0) { wallsToAdd = 3; }
-							if (Walls.size() == MaxWallBlocks) { wallsToAdd = 3; }
-							
-							for (int count = 0; count != wallsToAdd; count++) {
-								//Remove a wall if there's too many
-								if (Walls.size() >= MaxWallBlocks) {
-									for (int RemoveCount = 1; RemoveCount != 10; RemoveCount++) {
-										Walls.remove(0);
-									}
-								}
-								
-								//Spawn a wall
-								AnnotatedLocation Wall = RanWallLoc();
-								
-								//Add 3x3 block of walls
-								for (int countX = -1; countX <= 1; countX++) {
-									for (int countY = -1; countY <= 1; countY++) {
-										AnnotatedLocation WallPart = new AnnotatedLocation(0, 0);
-										Wall.CopyTo(WallPart);
-										WallPart.NumValue = (int)(Math.random() * ((2) + 1));
-										
-										WallPart.X += countX;
-										WallPart.Y += countY;
-								
-										Walls.add(WallPart);
-									}
-								}
-							}
-						}
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 						//Wall hit!
 						CurrentMode = Mode.Paused;
 						myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 					} else {
-						for (AnnotatedLocation Block : Walls) {
-							if (Block.equals(Snake.get(0))) {
+						for (Location Block : Walls) {
+							if (Snake.get(0).equals(Block)) {
 								//Wall hit!
 								CurrentMode = Mode.Paused;
 								myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
@@ -468,10 +379,10 @@ public class ArcadeModeActivity extends GameActivity {
 				}
 			}
 
-			//Draw mouse
+			//Draw Mouse
 			GraphicsHelper.addPixel(CanvasIn, Food, color_Mouse, Unit);
-			
-			//Draw snake
+
+			//Draw Snake
 			for (int SnakeDrawCount = Snake.size() - 1; SnakeDrawCount >= 0; SnakeDrawCount--) {
 				Location SnakePart = Snake.get(SnakeDrawCount);
 				if (SnakeDrawCount == 0) {
@@ -482,14 +393,9 @@ public class ArcadeModeActivity extends GameActivity {
 					GraphicsHelper.addPixel(CanvasIn, SnakePart, color_SnakeBody2, Unit);
 				}
 			}
-			
-			//Draw and update walls
-			for (AnnotatedLocation Block : Walls) {
-				GraphicsHelper.addPixel(CanvasIn, Block, colors_Wall[Block.NumValue], Unit);
-			}
-			
+
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
 			return CanvasIn;
-		}
+		}	
 	}
 }

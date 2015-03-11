@@ -2,13 +2,16 @@ package com.byte_games.snake2;
 
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
-
 import android.net.Uri;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -45,11 +48,40 @@ public class SplashActivity extends Activity {
 		});
 	}
 	
+	@SuppressLint("InflateParams")
 	public void play(View sourceView) {
 		if (sourceView.getId() == R.id.buttonPlayArcade) {
 			startActivity(new Intent(this, ArcadeModeActivity.class));
 		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
 			startActivity(new Intent(this, ClassicModeActivity.class));
+		} else if (sourceView.getId() == R.id.buttonPlayAdventure) {
+			final SplashActivity ActivityPointer = this;
+			
+			//Make and show start adventure dialog
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = getLayoutInflater();
+			View DialogLayout = inflater.inflate(R.layout.start_adventure_dialog, null);
+			
+			final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
+			
+			builder.setView(DialogLayout);
+			builder.setTitle("Choose your adventure:");
+			builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
+					
+					Intent myIntent = new Intent(ActivityPointer, AdventureModeActivity.class);
+					myIntent.putExtra("com.byte_games.snake2.Adventure_NumOfLevels", NumOfLevels);
+			    	startActivity(myIntent);
+				}
+			});
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					//Nothing interesting here...
+				}
+			});
+			final AlertDialog Boxy = builder.create();
+			Boxy.show();
 		}
 	}
 	

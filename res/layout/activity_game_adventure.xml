@@ -29,6 +29,7 @@
             android:id="@+id/textScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:paddingLeft="3dp"
@@ -41,10 +42,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:paddingRight="3dp"
             android:text="Adventure"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#969696" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
 

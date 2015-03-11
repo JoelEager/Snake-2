@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#505050"
     tools:context=".ClassicModeActivity"
-    tools:ignore="HardcodedText,ContentDescription" >
+    tools:ignore="HardcodedText,ContentDescription,RtlSymmetry" >
 
     <com.byte_games.snake2.engine.SESurfaceView
         android:id="@+id/surfaceView"
@@ -29,6 +29,7 @@
             android:id="@+id/textScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:paddingLeft="3dp"
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:paddingRight="3dp"
             android:text="Highscore"
             android:textAppearance="?android:attr/textAppearanceMedium"

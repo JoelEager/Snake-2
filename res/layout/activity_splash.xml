@@ -10,7 +10,7 @@
     tools:context=".SplashActivity" >
 
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/textDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textTitle"
+        android:layout_below="@+id/textDialogTitle"
         android:onClick="play"
         android:text="@string/arcadeMode" />
 
@@ -42,14 +42,24 @@
         android:onClick="play"
         android:text="@string/classicMode" />
 
+    <Button
+        android:id="@+id/buttonPlayAdventure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonPlayClassic"
+        android:layout_alignRight="@+id/buttonPlayClassic"
+        android:layout_below="@+id/buttonPlayClassic"
+        android:onClick="play"
+        android:text="@string/adventureMode" />
+
     <ScrollView
         android:id="@+id/textBetaInfoScroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/buttonPlayClassic"
-        android:layout_below="@+id/buttonPlayClassic"
+        android:layout_alignRight="@+id/buttonPlayAdventure"
+        android:layout_below="@+id/buttonPlayAdventure"
         android:layout_marginTop="25dp"
         android:fillViewport="true"
         android:scrollbars="vertical" >

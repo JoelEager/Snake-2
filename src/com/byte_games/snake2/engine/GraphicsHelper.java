@@ -62,36 +62,31 @@ public class GraphicsHelper {
 			}
 		}
 		
+		//A location with an additional value tacked on. Used by ArcadeMode for rendering walls.
 		public static class AnnotatedLocation extends Location {
-			public String Type;
-			public String TextValue;
 			public int NumValue;
 			
 			public AnnotatedLocation(int XLocation, int YLocation) {
 				super(XLocation, YLocation);
 			}
 			
-			public AnnotatedLocation(int XLocation, int YLocation, String initType, String initTextValue, int initNumValue) {
+			public AnnotatedLocation(int XLocation, int YLocation, int initNumValue) {
 				super(XLocation, YLocation);
-				Type = initType;
-				TextValue = initTextValue;
 				NumValue = initNumValue;
 			}
 			
 			public boolean equals(AnnotatedLocation Other) {
-				return Other.X == X && Other.Y == Y && Type.equals(Other.Type) && TextValue.equals(Other.TextValue) && Other.NumValue == NumValue;
+				return Other.X == X && Other.Y == Y && Other.NumValue == NumValue;
 			}
 			
 			@Override
 			public String toString() {
-				return "X = " + X + ", Y = " + Y + " - Annotation: " + Type + ", " + TextValue + " @ " + NumValue;
+				return "X = " + X + ", Y = " + Y + " - Annotation: " + NumValue;
 			}
 			
 			public void CopyTo(AnnotatedLocation Target) {
 				Target.X = X;
 				Target.Y = Y;
-				Target.Type = Type;
-				Target.TextValue = TextValue;
 				Target.NumValue = NumValue;
 			}
 		}

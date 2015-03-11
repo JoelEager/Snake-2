@@ -17,17 +17,7 @@ public class Adventure {
 		}
 	}
 	
-	//Create adventure object from the data of a saved adventure
-	public Adventure(String SaveData) {
-		for (int count = 1; count <= 5; count++) {
-			Levels.add(new Level(LevelType.Size, 1));
-		}
-	}
-	
-	//Export adventure as string for saving
-	public String ExportAdventure() {
-		return "Save data";
-	}
+	//TODO: Saving? Maybe?
 
 	//This class represents one level of the adventure and contains data needed to build the level.
 	public class Level {
