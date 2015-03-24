@@ -171,7 +171,7 @@ public class ClassicModeActivity extends GameActivity {
 	}
 	
 	private final static int TH_ShowDeathDialog = 1;
-	private final static int TH_UpdateActionBar = 2;
+	private final static int TH_UpdateBar = 2;
 	
 	private static final class ThreadHelper extends Handler {
 		private ClassicModeActivity myGame;
@@ -202,7 +202,7 @@ public class ClassicModeActivity extends GameActivity {
 				});
 				builder.create();
 				builder.show();
-			} else if (msg.what == TH_UpdateActionBar) {
+			} else if (msg.what == TH_UpdateBar) {
 				if (myGame.Snake.size() > myGame.Highscore) {
 					myGame.Highscore = myGame.Snake.size();
 					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
@@ -220,8 +220,6 @@ public class ClassicModeActivity extends GameActivity {
 	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
-			CurrentMode = Mode.Paused;
-
 			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReferance);
 			builder.setMessage("Game Paused");
 			builder.setCancelable(false);
@@ -285,7 +283,7 @@ public class ClassicModeActivity extends GameActivity {
 			colors_Wall[2] = new Paint();
 			colors_Wall[2].setColor(Color.parseColor("#303030"));
 			
-			myThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
+			myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
 		}
 
 		@Override
@@ -397,7 +395,7 @@ public class ClassicModeActivity extends GameActivity {
 								Food = RanLoc();
 							}
 							
-							myThreadHelper.obtainMessage(TH_UpdateActionBar).sendToTarget();
+							myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
 						} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 							//Wall hit!
 							CurrentMode = Mode.Paused;
