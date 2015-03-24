@@ -199,7 +199,7 @@ public class AdventureModeActivity extends GameActivity {
 						myGame.startActivity(intent);
 					}
 				});
-				builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
+				builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						NavUtils.navigateUpFromSameTask(myGame);
 					}
@@ -229,7 +229,7 @@ public class AdventureModeActivity extends GameActivity {
 					HideNavBar();
 				}
 			});
-			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					NavUtils.navigateUpFromSameTask(myGameReferance);
 					Boxy = null;

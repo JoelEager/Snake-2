@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SplashActivity" >
+    tools:context=".SplashActivity"
+    tools:ignore="ButtonStyle" >
 
     <TextView
         android:id="@+id/textTitle"
@@ -19,66 +20,7 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge" >
-
     </TextView>
-
-    <Button
-        android:id="@+id/buttonPlayArcade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textTitle"
-        android:onClick="play"
-        android:text="@string/arcadeMode" />
-
-    <Button
-        android:id="@+id/buttonPlayClassic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonPlayArcade"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonPlayArcade"
-        android:onClick="play"
-        android:text="@string/classicMode" />
-
-    <Button
-        android:id="@+id/buttonPlayAdventure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonPlayClassic"
-        android:layout_alignRight="@+id/buttonPlayClassic"
-        android:layout_below="@+id/buttonPlayClassic"
-        android:onClick="play"
-        android:text="@string/adventureMode" />
-
-    <ScrollView
-        android:id="@+id/textBetaInfoScroll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/buttonPlayAdventure"
-        android:layout_below="@+id/buttonPlayAdventure"
-        android:layout_marginTop="25dp"
-        android:fillViewport="true"
-        android:scrollbars="vertical" >
-    
-	    <TextView
-	        android:id="@+id/textBetaInfo"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:autoLink="web|email"
-	        android:background="#99193438"
-	        android:linksClickable="true"
-	        android:padding="5dp"
-	        android:scrollbarAlwaysDrawVerticalTrack="true"
-	        android:scrollbarStyle="insideInset"
-	        android:scrollbars="vertical"
-	        android:text="@string/BetaText"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-	    
-    </ScrollView>
 
     <Button
         android:id="@+id/buttonReport"
@@ -87,8 +29,71 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Report bug or\nsubmit idea"
         android:onClick="email"
+        android:text="Report bug or\nsubmit idea"
         tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/buttonPlayAdventure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttonReport"
+        android:onClick="play"
+        android:text="@string/adventureMode" />
+
+    <LinearLayout
+        android:id="@+id/ButtonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttonPlayAdventure" >
+
+        <Button
+            android:id="@+id/buttonPlayArcade"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:onClick="play"
+            android:text="@string/arcadeMode" />
+
+        <Button
+            android:id="@+id/buttonPlayClassic"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:onClick="play"
+            android:text="@string/classicMode" />
+
+    </LinearLayout>
+    
+    <ScrollView
+        android:id="@+id/textBetaInfoScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ButtonLayout"
+        android:layout_marginTop="25dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical" >
+
+        <TextView
+            android:id="@+id/textBetaInfo"
+            android:layout_width="fill_parent"
+            android:layout_height="310dp"
+            android:autoLink="web|email"
+            android:background="#99193438"
+            android:linksClickable="true"
+            android:padding="5dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:text="@string/BetaText"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </ScrollView>
 
 </RelativeLayout>

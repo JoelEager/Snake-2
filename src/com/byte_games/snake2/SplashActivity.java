@@ -2,6 +2,7 @@ package com.byte_games.snake2;
 
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
