@@ -26,4 +26,24 @@
         android:layout_toRightOf="@+id/textViewAdventureLength"
         android:entries="@array/adventureLengthChoices" />
 
+    <TextView
+        android:id="@+id/textViewDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerDifficulty"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewAdventureLength"
+        android:gravity="center_vertical"
+        android:text="@string/adventureDifficulty"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/spinnerDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinnerAdventureLength"
+        android:layout_toRightOf="@+id/textViewDifficulty"
+        android:entries="@array/adventureDifficultyChoices" />
+
 </RelativeLayout>

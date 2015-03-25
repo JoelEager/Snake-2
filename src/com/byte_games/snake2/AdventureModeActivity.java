@@ -64,8 +64,9 @@ public class AdventureModeActivity extends GameActivity {
         
         //Setup adventure object
 		Intent recivedIntent = getIntent();
-		int NumOfLevels = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 0);
-		myAdventure = new Adventure(NumOfLevels);
+		int NumOfLevels = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 3);
+		int Difficulty = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_Difficulty", 0);
+		myAdventure = new Adventure(NumOfLevels, Difficulty);
 		
 		//Configure initial level
 		InitialSize = Snake.size();

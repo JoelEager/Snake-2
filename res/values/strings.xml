@@ -13,6 +13,13 @@
         <item>5 levels</item>
         <item>7 levels</item>
     </string-array>
+    <string name="adventureDifficulty">Difficulty:</string>
+    <string-array name="adventureDifficultyChoices">
+        <item>Easy</item>
+        <item>Normal</item>
+        <item>Hard</item>
+        <item>Impossible</item>
+    </string-array>
     
     <string name="BetaText">Thank you for beta testing snake 2!\n
 \n

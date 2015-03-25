@@ -13,9 +13,10 @@ public class Adventure {
 	private int CurrentLevel = 0;
 	
 	//Create new adventure object
-	public Adventure(int length) {
+	public Adventure(int length, int Difficulty) {
+		//TODO: Improve generation
 		for (int count = 1; count <= length; count++) {
-			Levels.add(new Level(LevelType.Size, 5));
+			Levels.add(new Level(LevelType.Size, 3 + Difficulty));
 		}
 	}
 	

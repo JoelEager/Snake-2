@@ -64,15 +64,19 @@ public class SplashActivity extends Activity {
 			View DialogLayout = inflater.inflate(R.layout.start_adventure_dialog, null);
 			
 			final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
+			final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
 			
+			spinnerDifficulty.setSelection(1);
 			builder.setView(DialogLayout);
 			builder.setTitle("Choose your adventure:");
 			builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
+					int Difficulty = spinnerDifficulty.getSelectedItemPosition();
 					
 					Intent myIntent = new Intent(ActivityPointer, AdventureModeActivity.class);
 					myIntent.putExtra("com.byte_games.snake2.Adventure_NumOfLevels", NumOfLevels);
+					myIntent.putExtra("com.byte_games.snake2.Adventure_Difficulty", Difficulty);
 			    	startActivity(myIntent);
 				}
 			});
