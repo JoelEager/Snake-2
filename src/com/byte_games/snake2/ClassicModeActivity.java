@@ -491,7 +491,7 @@ public class ClassicModeActivity extends GameActivity {
 						
 						//Prep for new level
 						for (int count = Snake.size() - 1; count >= 0; count--) {
-							Snake.set(count, new Location(5,5));
+							Snake.set(count, new Location(5, 5));
 						}
 						ChangingLevel = false;
 						DrawExitHole = true;

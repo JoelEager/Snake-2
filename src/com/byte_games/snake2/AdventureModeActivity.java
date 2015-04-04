@@ -34,7 +34,6 @@ public class AdventureModeActivity extends GameActivity {
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
 	private List<Location> Snake = new ArrayList<Location>();
-	private List<Location> Walls = new ArrayList<Location>();
 	private Location Food;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
@@ -53,20 +52,20 @@ public class AdventureModeActivity extends GameActivity {
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		ProgressText = (TextView) findViewById(R.id.textProgress);
-		
-		//Setup game variables
-		Snake.add(new Location(10, 10));
-		Snake.add(new Location(9, 10));
-		Snake.add(new Location(8, 10));
-		Snake.add(new Location(7, 10));
-		Snake.add(new Location(6, 10));
-		Food = RanLoc();
         
         //Setup adventure object
 		Intent recivedIntent = getIntent();
 		int NumOfLevels = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 3);
 		int Difficulty = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_Difficulty", 0);
 		myAdventure = new Adventure(NumOfLevels, Difficulty);
+		
+		//Setup game variables
+		Snake.add(new Location(5, 5));
+		Snake.add(new Location(4, 5));
+		Snake.add(new Location(3, 5));
+		Snake.add(new Location(2, 5));
+		Snake.add(new Location(1, 5));
+		Food = RanLoc();
 		
 		//Configure initial level
 		InitialSize = Snake.size();
@@ -166,7 +165,7 @@ public class AdventureModeActivity extends GameActivity {
 					Good = false;
 				}
 			}
-			for (Location Point : Walls) {
+			for (Location Point : myAdventure.getCurrentLevel().Walls) {
 				if (New.equals(Point)) {
 					Good = false;
 				}
@@ -220,7 +219,7 @@ public class AdventureModeActivity extends GameActivity {
 					} else {
 						myGame.ScoreText.setText("Eat " + MiceToGo + " more mice");
 					}
-				}
+				} //TODO: Implement the goal display for new level types
 			} else if (msg.what == TH_ShowWinDialog) {
 				//TODO: Display win info
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
@@ -264,6 +263,7 @@ public class AdventureModeActivity extends GameActivity {
 		}
 	}
 
+	//TODO: Implement the new level types
 	public class myDrawer extends Ticker {
 		Paint color_SnakeHead;
 		Paint color_SnakeBody1;
@@ -274,6 +274,7 @@ public class AdventureModeActivity extends GameActivity {
 		Paint[] colors_Wall;
 		Bitmap bmpBackground = null;
 		Bitmap bmpBottomWall = null;
+		Bitmap bmpWall = null;
 		double SpeedCount = 0;
 		boolean DrawExitHole = false;
 		ThreadHelper myThreadHelper;
@@ -333,6 +334,13 @@ public class AdventureModeActivity extends GameActivity {
 					for (int countY = 0; countY <= EndY; countY++) {
 						GraphicsHelper.addPixel(canvasWallBackground, new Location(countX, countY), Rocks[(int) (Math.random() * ((2) + 1))], Unit);
 					}
+				}
+				
+				//Draw walls to bmp
+				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
+				Canvas canvasWall = new Canvas(bmpWall);
+				for (Location Block : myAdventure.getCurrentLevel().Walls) {
+					GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
 				}
 			}
 			CanvasIn.drawBitmap(bmpBackground, 0, 0, new Paint());
@@ -413,7 +421,7 @@ public class AdventureModeActivity extends GameActivity {
 						CurrentMode = Mode.Paused;
 						myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 					} else {
-						for (Location Block : Walls) {
+						for (Location Block : myAdventure.getCurrentLevel().Walls) {
 							if (Snake.get(0).equals(Block)) {
 								//Wall hit!
 								CurrentMode = Mode.Paused;
@@ -430,13 +438,14 @@ public class AdventureModeActivity extends GameActivity {
 						}
 					}
 				}
+				
 				//Level switch code
 				} else {
 					//Check for dig completion
 					if (Snake.get(0).equals(Snake.get(Snake.size() - 1))) {
 						//Prep for new level
 						for (int count = Snake.size() - 1; count >= 0; count--) {
-							Snake.set(count, new Location(5,5));
+							Snake.set(count, new Location(5, 5));
 						}
 						ChangingLevel = false;
 						DrawExitHole = true;
@@ -449,6 +458,13 @@ public class AdventureModeActivity extends GameActivity {
 						canvasBackground.drawColor(Color.parseColor("#005000"));
 						TerrainGen myTerrainGen = new TerrainGen(Unit, GraphicsHelper.SizeOfGame, GraphicsHelper.BackgroundBiomeSize, getBaseContext());
 						canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
+
+						//Draw new walls to bmp
+						bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
+						Canvas canvasWall = new Canvas(bmpWall);
+						for (Location Block : myAdventure.getCurrentLevel().Walls) {
+							GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
+						}
 						
 						//Update UI
 						myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
@@ -493,6 +509,7 @@ public class AdventureModeActivity extends GameActivity {
 				}
 			}
 
+			CanvasIn.drawBitmap(bmpWall, 0, 0, new Paint());
 			CanvasIn.drawBitmap(bmpBottomWall, 0, (GraphicsHelper.SizeOfGame.Y + 1) * Unit, new Paint());
 			return CanvasIn;
 		}	
@@ -506,6 +523,7 @@ public class AdventureModeActivity extends GameActivity {
 			} else {
 				InitialSize = Snake.size();
 				ChangingLevel = true;
+				Food = new Location(-1, -1);
 			}
 			myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
 		}
