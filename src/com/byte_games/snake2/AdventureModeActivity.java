@@ -263,7 +263,6 @@ public class AdventureModeActivity extends GameActivity {
 		}
 	}
 
-	//TODO: Implement the new level types
 	public class myDrawer extends Ticker {
 		Paint color_SnakeHead;
 		Paint color_SnakeBody1;
@@ -430,6 +429,7 @@ public class AdventureModeActivity extends GameActivity {
 						}
 					}
 				
+					//TODO: Implement the new level types
 					//Check for level completion
 					if (myAdventure.getCurrentLevel().getType() == LevelType.Size) {
 						//Check current size against initial size and goal size
@@ -516,14 +516,15 @@ public class AdventureModeActivity extends GameActivity {
 		
 		private void AdvanceAdventure() {
 			boolean DoContinue = myAdventure.advanceLevel();
+			Food = new Location(-1, -1);
 			
 			if (!DoContinue) {
+				//Winner!
 				CurrentMode = Mode.Paused;
 				myThreadHelper.obtainMessage(TH_ShowWinDialog).sendToTarget();
 			} else {
 				InitialSize = Snake.size();
 				ChangingLevel = true;
-				Food = new Location(-1, -1);
 			}
 			myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
 		}

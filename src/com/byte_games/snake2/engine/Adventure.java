@@ -15,6 +15,7 @@ public class Adventure {
 	public final int Difficulty;
 	
 	private int CurrentLevel = 0;
+	private int LastLevelWallNum = 0; //Used in wall generation
 	
 	//Create new adventure object
 	public Adventure(int length, int Difficulty) {
@@ -86,10 +87,24 @@ public class Adventure {
 				final int Levels = 9; //Total num of levels
 				int MaxLevel = (Levels / 3) * Difficulty;
 				if (LevelCount == 1) {
-					MaxLevel = 3;
+					MaxLevel = 4;
 				}
 				int Level = 1 + (int)(Math.random() * ((MaxLevel - 1) + 1));
 				
+				//Check for repeated wall layouts
+				boolean Good = false;
+				while (!Good) {
+					if (LevelCount == 1) {
+						Good = true;
+					} else if (Level == LastLevelWallNum) {
+						Level = 1 + (int)(Math.random() * ((MaxLevel - 1) + 1));
+					} else {
+						Good = true;
+					}
+				}
+				LastLevelWallNum = Level;
+				
+				//Generate walls
 				if (Level == 1) {
 					// O    O
 					//
@@ -109,6 +124,12 @@ public class Adventure {
 					//
 					GraphicsHelper.AddRect(Walls, new Location(10, 19), new Size(41, 3));
 				} else if (Level == 4) {
+					// |     |
+					// |     |
+					// |     |
+					GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+					GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
+				} else if (Level == 5) {
 					// [=]   [=]
 					// 
 					// [=]   [=]
@@ -116,12 +137,6 @@ public class Adventure {
 					GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
 					GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
 					GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
-				} else if (Level == 5) {
-					// |     |
-					// |     |
-					// |     |
-					GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
-					GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
 				} else if (Level == 6) {
 					// ---------
 					// 
