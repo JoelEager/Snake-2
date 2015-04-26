@@ -66,7 +66,6 @@ public class SplashActivity extends Activity {
 			final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
 			final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
 			
-			spinnerDifficulty.setSelection(1);
 			builder.setView(DialogLayout);
 			builder.setTitle("Choose your adventure:");
 			builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {

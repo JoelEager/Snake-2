@@ -10,7 +10,7 @@ import android.graphics.Paint;
 
 public class GraphicsHelper {
 	//Hardcoded global values for Snake 2 graphics
-		public static final Size SizeOfGame = new Size(60, 40); //Zero-based
+		public static final Size SizeOfGame = new Size(60, 40); //Bounds are 0, 0 and 60, 40 inclusive
 		public static final Size BackgroundBiomeSize = new Size(15, 10);
 	
 	//Useful objects
