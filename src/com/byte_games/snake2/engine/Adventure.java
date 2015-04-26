@@ -90,7 +90,7 @@ public class Adventure {
 			//For debugging: 
 			/*Type = LevelType.Movement;
 			Goal = 1;
-			Walls = new ArrayList<Location>();
+			Walls.clear();
 			<wall code> */
 			//----------------
 		}

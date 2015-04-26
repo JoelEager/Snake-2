@@ -54,11 +54,11 @@ public class ArcadeModeActivity extends GameActivity {
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);
 		
 		//Setup game variables
-		Snake.add(new Location(10, 10));
-		Snake.add(new Location(9, 10));
-		Snake.add(new Location(8, 10));
-		Snake.add(new Location(7, 10));
-		Snake.add(new Location(6, 10));
+		Snake.add(new Location(5, 5));
+		Snake.add(new Location(4, 5));
+		Snake.add(new Location(3, 5));
+		Snake.add(new Location(2, 5));
+		Snake.add(new Location(1, 5));
 		Food = RanLoc();
 
 		//Setup renderer and start draw thread

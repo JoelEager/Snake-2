@@ -52,12 +52,21 @@ public class ClassicModeActivity extends GameActivity {
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);
 		
+		//Add initial walls
+		// O    O
+		//
+		// O    O
+		GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 4));
+		GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 4));
+		GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(3, 4));
+		GraphicsHelper.AddRect(Walls, new Location(48, 27), new Size(3, 4));
+		
 		//Setup game variables
-		Snake.add(new Location(10, 10));
-		Snake.add(new Location(9, 10));
-		Snake.add(new Location(8, 10));
-		Snake.add(new Location(7, 10));
-		Snake.add(new Location(6, 10));
+		Snake.add(new Location(5, 5));
+		Snake.add(new Location(4, 5));
+		Snake.add(new Location(3, 5));
+		Snake.add(new Location(2, 5));
+		Snake.add(new Location(1, 5));
 		Food = RanLoc();
 
 		//Setup renderer and start draw thread
@@ -316,6 +325,13 @@ public class ClassicModeActivity extends GameActivity {
 				
 				//Prep Wall Bmp
 				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
+				
+				//Draw wall to Bmp
+				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
+				Canvas canvasWall = new Canvas(bmpWall);
+				for (Location Block : Walls) {
+					GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
+				}
 			}
 			CanvasIn.drawBitmap(bmpBackground, 0, 0, new Paint());
 			
@@ -418,24 +434,16 @@ public class ClassicModeActivity extends GameActivity {
 						int Level = Snake.size() / 18;
 						Walls.clear();
 						if (Level == 1) {
-							// O    O
-							//
-							// O    O
-							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 4));
-							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 4));
-							GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(3, 4));
-							GraphicsHelper.AddRect(Walls, new Location(48, 27), new Size(3, 4));
-						} else if (Level == 2) {
 							//   |
 							//   |
 							//   |
 							GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
-						} else if (Level == 3) {
+						} else if (Level == 2) {
 							//
 							// ---------
 							//
 							GraphicsHelper.AddRect(Walls, new Location(10, 19), new Size(41, 3));
-						} else if (Level == 4) {
+						} else if (Level == 3) {
 							// [=]   [=]
 							// 
 							// [=]   [=]
@@ -443,26 +451,26 @@ public class ClassicModeActivity extends GameActivity {
 							GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
 							GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
 							GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
-						} else if (Level == 5) {
+						} else if (Level == 4) {
 							// |     |
 							// |     |
 							// |     |
 							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
 							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
-						} else if (Level == 6) {
+						} else if (Level == 5) {
 							// ---------
 							// 
 							// ---------
 							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
 							GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
-						} else if (Level == 7) {
+						} else if (Level == 6) {
 							// |     |
 							// |=====|
 							// |     |
 							GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
 							GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
 							GraphicsHelper.AddRect(Walls, new Location(13, 19), new Size(35, 3));
-						} else if (Level == 8) {
+						} else if (Level == 7) {
 							// ---------
 							//  O     O
 							// ---------
@@ -470,7 +478,7 @@ public class ClassicModeActivity extends GameActivity {
 							GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
 							GraphicsHelper.AddRect(Walls, new Location(15, 19), new Size(3, 3));
 							GraphicsHelper.AddRect(Walls, new Location(43, 19), new Size(3, 3));
-						} else if (Level == 9) {
+						} else if (Level == 8) {
 							// [=] | [=]
 							//     |
 							// [=] | [=]
