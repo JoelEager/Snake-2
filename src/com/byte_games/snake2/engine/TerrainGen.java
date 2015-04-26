@@ -66,9 +66,9 @@ public class TerrainGen {
 				int BiomeTypeIndex = 0;
 				while (!Good) {
 					BiomeTypeIndex = (int) (Math.random() * OptionsIndex);
-					//Use each non-grass biome at most twice
+					//Use each non-grass biome at most once
 					if (BiomeTypeIndex <= BiomeTypes.length - 1) {
-						if (BiomeCounter[BiomeTypeIndex] != 2) {
+						if (BiomeCounter[BiomeTypeIndex] != 1) {
 							Good = true;
 							BiomeCounter[BiomeTypeIndex]++;
 						}
