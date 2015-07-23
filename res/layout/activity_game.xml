@@ -46,7 +46,7 @@
             android:paddingRight="3dp"
             android:text="Highscore"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#969696" />
+            android:textColor="#B5B5B5" />
 
     </RelativeLayout>
 
