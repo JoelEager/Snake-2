@@ -83,7 +83,7 @@ public class TerrainGen {
 					//It's a biome
 					for (int countInnerX = myUpperLeft.X; countInnerX <= myLowerRight.X; countInnerX++) {
 						for (int countInnerY = myUpperLeft.Y; countInnerY <= myLowerRight.Y; countInnerY++) {
-							String ThisPoint = "~" + (countInnerY - myUpperLeft.Y) + "," + (countInnerX - myUpperLeft.X) + "~";
+							String ThisPoint = "~" + (countInnerX - myUpperLeft.X) + "," + (countInnerY - myUpperLeft.Y) + "~";
 							if (BiomeData[BiomeTypeIndex].contains(ThisPoint)) {
 								GraphicsHelper.addPixel(canvasBackground, new Location(countInnerX, countInnerY), choseColor(BiomeTypes[BiomeTypeIndex]), Unit);
 							} else {
