@@ -229,6 +229,8 @@ public class ClassicModeActivity extends GameActivity {
 	public void PauseGame() {
 		if (CurrentMode != Mode.Paused) {
 			OldMode = CurrentMode;
+			CurrentMode = Mode.Paused;
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReferance);
 			builder.setMessage("Game Paused");
 			builder.setCancelable(false);
@@ -405,7 +407,7 @@ public class ClassicModeActivity extends GameActivity {
 							}
 							
 							//Every 3 feet change level
-							if (!FinalLevel && Snake.size() % 18 == 0) {
+							if (!FinalLevel && Snake.size() % 5 == 0) {
 								ChangingLevel = true;
 							} else {
 								Food = RanLoc();
@@ -431,7 +433,7 @@ public class ClassicModeActivity extends GameActivity {
 					//Check for dig completion
 					if (Snake.get(0).equals(Snake.get(Snake.size() - 1))) {
 						//Add walls
-						int Level = Snake.size() / 18;
+						int Level = Snake.size() / 5;
 						Walls.clear();
 						if (Level == 1) {
 							//   |
