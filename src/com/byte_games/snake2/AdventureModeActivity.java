@@ -193,10 +193,15 @@ public class AdventureModeActivity extends GameActivity {
 				builder.setCancelable(false);
 				builder.setPositiveButton("Retry current level", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = myGame.getIntent();
-						myGame.finish();
-						myGame.startActivity(intent);
-						//TODO: Update for adventure retrying
+						//Return snake to original size
+						while (myGame.InitialSize != myGame.Snake.size()) {
+							myGame.Snake.remove(myGame.Snake.size() - 1);
+						}
+						
+						//Reset to dig end state
+						myGame.Snake.get(0).CopyTo(myGame.Snake.get(myGame.Snake.size() - 1));
+						myGame.ChangingLevel = true;
+						myGame.CurrentMode = Mode.Right;
 					}
 				});
 				builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {

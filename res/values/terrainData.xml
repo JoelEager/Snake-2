@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <!-- Format for terrainData:
     		- Each pixel that is to be part of the element is listed in the format ~X,Y~
     		- X values are 0 to 14

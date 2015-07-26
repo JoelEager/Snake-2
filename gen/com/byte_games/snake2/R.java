@@ -74,7 +74,7 @@ public final class R {
     public static final class string {
         public static final int BetaText=0x7f050006;
         /**  Format for terrainData:
-    		- Each pixel that is to be part of the element is listed in the format ~Y,X~
+    		- Each pixel that is to be part of the element is listed in the format ~X,Y~
     		- X values are 0 to 14
     		- Y values are 0 to 9
     		
