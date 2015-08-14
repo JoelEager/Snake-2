@@ -104,7 +104,7 @@ public class ClassicModeActivity extends GameActivity {
 	
 	@Override
 	@SuppressWarnings("deprecation")
-	public void finshSetup() {
+	public void finishSetup() {
 		if (!DoneSetup) {
 			//Setup game GUI
 			RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.bigBox);

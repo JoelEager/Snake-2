@@ -16,6 +16,7 @@ public class Adventure {
 
 	private int CurrentLevel = 0;
 	private int LastLevelLayoutIndex = -1; //Used in wall generation to prevent repeats
+    private int DeathCount = 0;
 
 	//Create new adventure object
 	public Adventure(int length, int Difficulty) {
@@ -55,6 +56,14 @@ public class Adventure {
 	public Level getCurrentLevel() {
 		return Levels.get(CurrentLevel);
 	}
+
+    public int getDeathCount() {
+        return DeathCount;
+    }
+
+    public void advanceDeathCount() {
+        DeathCount++;
+    }
 
 	//Returns false if adventure is completed
 	public boolean advanceLevel() {

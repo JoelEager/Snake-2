@@ -99,7 +99,7 @@ public class AdventureModeActivity extends GameActivity {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void finshSetup() {
+	public void finishSetup() {
 		if (!DoneSetup) {
 			//Setup game GUI
 			RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.bigBox);
@@ -228,9 +228,12 @@ public class AdventureModeActivity extends GameActivity {
 					myGame.ScoreText.setText("Reach the exit hole");
 				} //TODO: Implement the goal display for new level types
 			} else if (msg.what == TH_ShowWinDialog) {
-				//TODO: Display win info
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
-				builder.setMessage("You won!");
+				builder.setTitle("Adventure Completed");
+                String Difficulty = myGame.getResources().getStringArray(R.array.adventureDifficultyChoices)[myGame.myAdventure.Difficulty];
+				builder.setMessage("Deaths: " + myGame.myAdventure.getDeathCount() +
+                        "\nDifficulty: " + Difficulty +
+                        "\nLength: " + myGame.myAdventure.Levels.size() + " levels");
 				builder.setCancelable(false);
 				builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
@@ -428,12 +431,14 @@ public class AdventureModeActivity extends GameActivity {
 						} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 							//Wall hit!
 							CurrentMode = Mode.Paused;
+                            myAdventure.advanceDeathCount();
 							myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 						} else {
 							for (Location Block : myAdventure.getCurrentLevel().Walls) {
 								if (Snake.get(0).equals(Block)) {
 									//Wall hit!
 									CurrentMode = Mode.Paused;
+                                    myAdventure.advanceDeathCount();
 									myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 								}
 							}

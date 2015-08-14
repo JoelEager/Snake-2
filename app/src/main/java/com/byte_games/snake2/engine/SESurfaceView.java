@@ -29,7 +29,7 @@ public class SESurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		//Run setup code that requires the completed GUI
-		myOwner.finshSetup();
+		myOwner.finishSetup();
 	}
 
 	@Override

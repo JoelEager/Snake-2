@@ -32,7 +32,7 @@ abstract public class GameActivity extends Activity {
 		};
 	}
 	
-	public void finshSetup() {
+	public void finishSetup() {
 		//Empty sub to be over-ridden by sub-classes
 	}
 
