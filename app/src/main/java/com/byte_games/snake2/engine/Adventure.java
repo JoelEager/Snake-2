@@ -117,14 +117,14 @@ public class Adventure {
 		}
 
 		private void ConfigSizeLevel(int Difficulty) {
-			int MaxLayout = 6 + (Difficulty * 3);
-			int Layout = 1 + (int)(Math.random() * ((MaxLayout - 1) + 1));
+            final int Layouts = 6; //Total num of layouts
+            int Layout = 6;//1 + (int)(Math.random() * ((Layouts - 1) + 1));
 
 			//Check for repeated wall layouts
 			boolean Good = false;
 			while (!Good) {
 				if (Layout == LastLevelLayoutIndex) {
-					Layout = 1 + (int)(Math.random() * ((MaxLayout - 1) + 1));
+                    Layout = 1 + (int)(Math.random() * ((Layouts - 1) + 1));
 				} else {
 					Good = true;
 				}
@@ -132,69 +132,94 @@ public class Adventure {
 			LastLevelLayoutIndex = Layout;
 
 			//Generate walls
-			if (Layout == 1) {
-				// O    O
-				//
-				// O    O
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 4));
-				GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 4));
-				GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(3, 4));
-				GraphicsHelper.AddRect(Walls, new Location(48, 27), new Size(3, 4));
-			} else if (Layout == 2) {
-				//   |
-				//   |
-				//   |
-				GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
-			} else if (Layout == 3) {
-				//
-				// ---------
-				//
-				GraphicsHelper.AddRect(Walls, new Location(10, 19), new Size(41, 3));
-			} else if (Layout == 4) {
-				// |     |
-				// |     |
-				// |     |
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
-				GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
-			} else if (Layout == 5) {
-				// [=]   [=]
-				// 
-				// [=]   [=]
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
-			} else if (Layout == 6) {
-				// ---------
-				// 
-				// ---------
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
-				GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
-			} else if (Layout == 7) {
-				// |     |
-				// |=====|
-				// |     |
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
-				GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
-				GraphicsHelper.AddRect(Walls, new Location(13, 19), new Size(35, 3));
-			} else if (Layout == 8) {
-				// ---------
-				//  O     O
-				// ---------
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
-				GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
-				GraphicsHelper.AddRect(Walls, new Location(15, 19), new Size(3, 3));
-				GraphicsHelper.AddRect(Walls, new Location(43, 19), new Size(3, 3));
-			} else if (Layout == 9) {
-				// [=] | [=]
-				//     |
-				// [=] | [=]
-				GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
-				GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
-			}
+            if (Difficulty == 0) {
+                if (Layout == 1) {
+                    // O    O
+                    //
+                    // O    O
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(3, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(48, 27), new Size(3, 4));
+                } else if (Layout == 2) {
+                    //   |
+                    //   |
+                    //   |
+                    GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
+                } else if (Layout == 3) {
+                    //
+                    // ---------
+                    //
+                    GraphicsHelper.AddRect(Walls, new Location(10, 19), new Size(41, 3));
+                } else if (Layout == 4) {
+                    // |     |
+                    // |     |
+                    // |     |
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
+                } else if (Layout == 5) {
+                    // [=]   [=]
+                    //
+                    // [=]   [=]
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
+                } else if (Layout == 6) {
+                    // ---------
+                    //
+                    // ---------
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
+                }
+            } else if (Difficulty == 1) {
+                if (Layout == 1) {
+                    // [=]   [=]
+                    //
+                    // [=]   [=]
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
+                } else if (Layout == 2) {
+                    // ---------
+                    //
+                    // ---------
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
+                } else if (Layout == 3) {
+                    // |     |
+                    // |=====|
+                    // |     |
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(13, 19), new Size(35, 3));
+                } else if (Layout == 4) {
+                    // ---------
+                    //  O     O
+                    // ---------
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(41, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 28), new Size(41, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(15, 19), new Size(3, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(43, 19), new Size(3, 3));
+                } else if (Layout == 5) {
+                    // [=] | [=]
+                    //     |
+                    // [=] | [=]
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 10), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(44, 27), new Size(7, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
+                } else if (Layout == 6) {
+                    // |  |  |
+                    // |  |  |
+                    // |  |  |
+                    GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(48, 10), new Size(3, 21));
+                }
+            }
 		}
 
 		private void ConfigMovementLevel(int Difficulty) {
