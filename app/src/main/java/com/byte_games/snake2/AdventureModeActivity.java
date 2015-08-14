@@ -43,7 +43,7 @@ public class AdventureModeActivity extends GameActivity {
 	private int InitialSize;
 	private boolean ChangingLevel = false;
 
-	protected AdventureModeActivity myGameReferance = this;
+	protected AdventureModeActivity myGameReference = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,9 @@ public class AdventureModeActivity extends GameActivity {
 		ProgressText = (TextView) findViewById(R.id.textProgress);
 
 		//Setup adventure object
-		Intent recivedIntent = getIntent();
-		int NumOfLevels = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 3);
-		int Difficulty = recivedIntent.getIntExtra("com.byte_games.snake2.Adventure_Difficulty", 0);
+		Intent receivedIntent = getIntent();
+		int NumOfLevels = receivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 3);
+		int Difficulty = receivedIntent.getIntExtra("com.byte_games.snake2.Adventure_Difficulty", 0);
 		myAdventure = new Adventure(NumOfLevels, Difficulty);
 
 		//Setup game variables
@@ -87,7 +87,7 @@ public class AdventureModeActivity extends GameActivity {
 				myEngine.myThread.join();
 				retry = false;
 			} catch(Exception e) {
-				Log.v("Exception while ending engine thread.", e.getMessage());
+				Log.v("Error killing engine", e.getMessage());
 			}
 		}
 		//Take care of any dialogs that need to be cleaned up
@@ -249,7 +249,7 @@ public class AdventureModeActivity extends GameActivity {
 			OldMode = CurrentMode;
 			CurrentMode = Mode.Paused;
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReferance);
+			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReference);
 			builder.setMessage("Game Paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
@@ -261,7 +261,7 @@ public class AdventureModeActivity extends GameActivity {
 			});
 			builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(myGameReferance);
+					NavUtils.navigateUpFromSameTask(myGameReference);
 					Boxy = null;
 				}
 			});
@@ -287,7 +287,7 @@ public class AdventureModeActivity extends GameActivity {
 		ThreadHelper myThreadHelper;
 
 		public myDrawer() {
-			myThreadHelper = new ThreadHelper(myGameReferance);
+			myThreadHelper = new ThreadHelper(myGameReference);
 
 			color_SnakeHead = new Paint();
 			color_SnakeHead.setColor(Color.rgb(190, 14, 14));

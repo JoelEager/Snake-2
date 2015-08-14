@@ -43,7 +43,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private int Highscore;
 	SharedPreferences.Editor HighscoreEditor;
 	
-	protected ArcadeModeActivity myGameReferance = this;
+	protected ArcadeModeActivity myGameReference = this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class ArcadeModeActivity extends GameActivity {
 				myEngine.myThread.join();
 				retry = false;
 			} catch(Exception e) {
-				Log.v("Exception while ending engine thread.", e.getMessage());
+				Log.v("Error killing engine", e.getMessage());
 			}
 		}
 		//Take care of any dialogs that need to be cleaned up
@@ -276,7 +276,7 @@ public class ArcadeModeActivity extends GameActivity {
 			OldMode = CurrentMode;
 			CurrentMode = Mode.Paused;
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReferance);
+			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReference);
 			builder.setMessage("Game Paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
@@ -288,7 +288,7 @@ public class ArcadeModeActivity extends GameActivity {
 			});
 			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(myGameReferance);
+					NavUtils.navigateUpFromSameTask(myGameReference);
 					Boxy = null;
 				}
 			});
@@ -309,7 +309,7 @@ public class ArcadeModeActivity extends GameActivity {
 		ThreadHelper myThreadHelper;
 
 		public myDrawer() {
-			myThreadHelper = new ThreadHelper(myGameReferance);
+			myThreadHelper = new ThreadHelper(myGameReference);
 			
 			color_SnakeHead = new Paint();
 			color_SnakeHead.setColor(Color.rgb(190, 14, 14));
