@@ -264,7 +264,7 @@ public class Adventure {
 		}
 
 		private void ConfigMovementLevel(int Difficulty) {
-			final int Layouts = 2; //Total num of layouts
+			final int Layouts = 3; //Total num of layouts
 			int Layout = 1 + (int)(Math.random() * ((Layouts - 1) + 1));
 
 			//Check for repeated wall layouts
@@ -299,7 +299,16 @@ public class Adventure {
 					GraphicsHelper.AddRect(Walls, new Location(15, 6), new Size(4, 35));
 					GraphicsHelper.AddRect(Walls, new Location(30, 0), new Size(4, 35));
 					GraphicsHelper.AddRect(Walls, new Location(45, 6), new Size(4, 35));
-				}
+				} else if (Layout == 3) {
+                    //    |
+                    //--- |
+                    //-------
+                    //  X
+                    GoalPoint = new Location(10, 34);
+                    GraphicsHelper.AddRect(Walls, new Location(0, 11), new Size(25, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(30, 0), new Size(4, 15));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 25), new Size(45, 3));
+                }
 			} else if (Difficulty == 1) {
 				if (Layout == 1) {
 					// ---------
@@ -322,7 +331,18 @@ public class Adventure {
 					GraphicsHelper.AddRect(Walls, new Location(35, 6), new Size(3, 35));
 					GraphicsHelper.AddRect(Walls, new Location(40, 0), new Size(3, 35));
 					GraphicsHelper.AddRect(Walls, new Location(45, 6), new Size(3, 35));
-				}
+				} else if (Layout == 3) {
+                    //    |
+                    //--- |  |
+                    //-------|
+                    //  X  o
+                    GoalPoint = new Location(10, 32);
+                    GraphicsHelper.AddRect(Walls, new Location(0, 11), new Size(20, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(25, 0), new Size(4, 15));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 20), new Size(45, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(45, 5), new Size(4, 19));
+                    GraphicsHelper.AddRect(Walls, new Location(25, 28), new Size(9, 9));
+                }
 			}
 		}
 	}
