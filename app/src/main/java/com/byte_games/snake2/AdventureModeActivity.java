@@ -257,9 +257,9 @@ public class AdventureModeActivity extends GameActivity {
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					CurrentMode = OldMode;
 					Boxy = null;
 					HideNavBar();
+                    UnpauseGame(OldMode);
 				}
 			});
 			builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {

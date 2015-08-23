@@ -281,11 +281,11 @@ public class ArcadeModeActivity extends GameActivity {
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					CurrentMode = OldMode;
-					Boxy = null;
-					HideNavBar();
-				}
-			});
+                    Boxy = null;
+                    HideNavBar();
+                    UnpauseGame(OldMode);
+                }
+            });
 			builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					NavUtils.navigateUpFromSameTask(myGameReference);
