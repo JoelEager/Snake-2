@@ -264,7 +264,7 @@ public class Adventure {
 		}
 
 		private void ConfigMovementLevel(int Difficulty) {
-			final int Layouts = 3; //Total num of layouts
+			final int Layouts = 5; //Total num of layouts
 			int Layout = 1 + (int)(Math.random() * ((Layouts - 1) + 1));
 
 			//Check for repeated wall layouts
@@ -308,6 +308,25 @@ public class Adventure {
                     GraphicsHelper.AddRect(Walls, new Location(0, 11), new Size(25, 4));
                     GraphicsHelper.AddRect(Walls, new Location(30, 0), new Size(4, 15));
                     GraphicsHelper.AddRect(Walls, new Location(0, 25), new Size(45, 3));
+                } else if (Layout == 4) {
+                    //-----
+                    //  ------
+                    //----
+                    //  X
+                    GoalPoint = new Location(10, 37);
+                    GraphicsHelper.AddRect(Walls, new Location(0, 11), new Size(50, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(10, 21), new Size(51, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 31), new Size(30, 3));
+                } else if (Layout == 5) {
+                    //   |
+                    // --|  |
+                    //------|
+                    //  X
+                    GoalPoint = new Location(5, 34);
+                    GraphicsHelper.AddRect(Walls, new Location(25, 0), new Size(3, 15));
+                    GraphicsHelper.AddRect(Walls, new Location(5, 15), new Size(23, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 25), new Size(50, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(50, 15), new Size(3, 13));
                 }
 			} else if (Difficulty == 1) {
 				if (Layout == 1) {
@@ -342,6 +361,28 @@ public class Adventure {
                     GraphicsHelper.AddRect(Walls, new Location(0, 20), new Size(45, 4));
                     GraphicsHelper.AddRect(Walls, new Location(45, 5), new Size(4, 19));
                     GraphicsHelper.AddRect(Walls, new Location(25, 28), new Size(9, 9));
+                } else if (Layout == 4) {
+                    //-----
+                    //  ------
+                    //------|
+                    //  X |
+                    GoalPoint = new Location(10, 33);
+                    GraphicsHelper.AddRect(Walls, new Location(0, 8), new Size(54, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(6, 15), new Size(55, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 22), new Size(54, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(51, 25), new Size(3, 10));
+                    GraphicsHelper.AddRect(Walls, new Location(40, 30), new Size(3, 11));
+                } else if (Layout == 5) {
+                    // | X
+                    // |------
+                    //-| |
+                    //   |
+                    GoalPoint = new Location(20, 5);
+                    GraphicsHelper.AddRect(Walls, new Location(7, 7), new Size(8, 30));
+                    GraphicsHelper.AddRect(Walls, new Location(14, 0), new Size(1, 7));
+                    GraphicsHelper.AddRect(Walls, new Location(2, 15), new Size(3, 3));
+                    GraphicsHelper.AddRect(Walls, new Location(19, 20), new Size(3, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(15, 14), new Size(30, 3));
                 }
 			}
 		}
