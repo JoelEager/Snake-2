@@ -36,9 +36,11 @@ public class ClassicModeActivity extends GameActivity {
 	private List<Location> Snake = new ArrayList<Location>();
 	private List<Location> Walls = new ArrayList<Location>();
 	private Location Food;
+    private int CurrentLevel = 1;
 	private AlertDialog Boxy = null;
 	private TextView ScoreText;
-	private TextView HighscoreText;
+    private TextView HighscoreText;
+    private TextView LevelText;
 	private int Highscore;
 	SharedPreferences.Editor HighscoreEditor;
 	
@@ -51,6 +53,7 @@ public class ClassicModeActivity extends GameActivity {
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);
+        LevelText = (TextView) findViewById(R.id.textLevel);
 		
 		//Add initial walls
 		// O    O
@@ -221,6 +224,8 @@ public class ClassicModeActivity extends GameActivity {
 				}
 				
 				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
+
+                myGame.LevelText.setText("Zone " + myGame.CurrentLevel);
 			}
 		}
 	};
@@ -435,12 +440,7 @@ public class ClassicModeActivity extends GameActivity {
 						//Add walls
 						int Level = Snake.size() / 5;
 						Walls.clear();
-						if (Level == 1) {
-							//   |
-							//   |
-							//   |
-							GraphicsHelper.AddRect(Walls, new Location(29, 10), new Size(3, 21));
-						} else if (Level == 2) {
+						if (Level == 2) {
 							//
 							// ---------
 							//
@@ -507,6 +507,9 @@ public class ClassicModeActivity extends GameActivity {
 						DrawExitHole = true;
 						CurrentMode = Mode.Right;
 						Food = RanLoc();
+
+                        CurrentLevel = Level;
+                        myThreadHelper.obtainMessage(TH_UpdateBar).sendToTarget();
 						
 						//Make new background
 						bmpBackground = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);

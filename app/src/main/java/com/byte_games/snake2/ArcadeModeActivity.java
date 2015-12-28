@@ -52,6 +52,7 @@ public class ArcadeModeActivity extends GameActivity {
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		HighscoreText = (TextView) findViewById(R.id.textHighscore);
+        ((TextView) findViewById(R.id.textLevel)).setText("");
 		
 		//Setup game variables
 		Snake.add(new Location(5, 5));
