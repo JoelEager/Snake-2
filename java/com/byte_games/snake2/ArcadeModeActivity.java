@@ -418,7 +418,7 @@ public class ArcadeModeActivity extends GameActivity {
 						WallSpawnTicker--;
 						
 						if (WallSpawnTicker == 0) {
-							WallSpawnTicker = 2 + (int)(Math.random() * ((5 - 2) + 1));
+							WallSpawnTicker = 3;
 							
 							//Add 1-3 walls based on current wall count
 							int wallsToAdd = 1;
