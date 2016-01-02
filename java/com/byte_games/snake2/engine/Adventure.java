@@ -9,7 +9,6 @@ import com.byte_games.snake2.engine.GraphicsHelper.Size;
 //This class is used for generating and maintaining Adventure objects which are used to track the progress and data for an adventure.
 
 public class Adventure {
-	//TODO: Add more level types
 	public static enum LevelType {Size, Movement};
 	public List<Level> Levels = new ArrayList<Level>();
 	public final int Difficulty;
@@ -38,7 +37,6 @@ public class Adventure {
 			}
 
 			//Configure goal
-			//TODO: Balance difficulty and goals
 			if (myType == LevelType.Size) {
 				Goal = 5 + (Difficulty * 2);
 			} else if (myType == LevelType.Movement) {
@@ -75,8 +73,6 @@ public class Adventure {
 		}
 		return true;
 	}
-
-	//TODO: Saving? Maybe?
 
 	//This class creates objects that represent one level of the adventure and contain the data needed to build that level.
 	public class Level {
@@ -331,16 +327,15 @@ public class Adventure {
 			} else if (Difficulty == 1) {
 				if (Layout == 1) {
 					// ---------
-					// | X | = |
+					// | X |   |
 					// ------ --
 					GoalPoint = new Location(20, 20);
 					GraphicsHelper.AddRect(Walls, new Location(10, 10), new Size(42, 4));
 					GraphicsHelper.AddRect(Walls, new Location(10, 14), new Size(4, 13));
 					GraphicsHelper.AddRect(Walls, new Location(48, 14), new Size(4, 13));
-					GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(31, 4));
+					GraphicsHelper.AddRect(Walls, new Location(10, 27), new Size(30, 4));
 					GraphicsHelper.AddRect(Walls, new Location(42, 27), new Size(10, 4));
-					GraphicsHelper.AddRect(Walls, new Location(37, 21), new Size(7, 4));
-					GraphicsHelper.AddRect(Walls, new Location(30, 15), new Size(4, 12));
+					GraphicsHelper.AddRect(Walls, new Location(30, 16), new Size(4, 11));
 				} else if (Layout == 2) {
 					// |   |
 					// | | | | X
@@ -352,15 +347,15 @@ public class Adventure {
 					GraphicsHelper.AddRect(Walls, new Location(45, 6), new Size(3, 35));
 				} else if (Layout == 3) {
                     //    |
-                    //--- |  |
+                    //  |    |
                     //-------|
                     //  X  o
                     GoalPoint = new Location(10, 32);
-                    GraphicsHelper.AddRect(Walls, new Location(0, 11), new Size(20, 4));
-                    GraphicsHelper.AddRect(Walls, new Location(25, 0), new Size(4, 15));
-                    GraphicsHelper.AddRect(Walls, new Location(0, 20), new Size(45, 4));
-                    GraphicsHelper.AddRect(Walls, new Location(45, 5), new Size(4, 19));
-                    GraphicsHelper.AddRect(Walls, new Location(25, 28), new Size(9, 9));
+                    GraphicsHelper.AddRect(Walls, new Location(18, 3), new Size(4, 17));
+                    GraphicsHelper.AddRect(Walls, new Location(32, 0), new Size(4, 17));
+                    GraphicsHelper.AddRect(Walls, new Location(0, 20), new Size(46, 4));
+                    GraphicsHelper.AddRect(Walls, new Location(46, 3), new Size(4, 21));
+                    GraphicsHelper.AddRect(Walls, new Location(25, 26), new Size(9, 13));
                 } else if (Layout == 4) {
                     //-----
                     //  ------

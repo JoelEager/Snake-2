@@ -226,7 +226,7 @@ public class AdventureModeActivity extends GameActivity {
 					}
 				} else if (myGame.myAdventure.getCurrentLevel().getType() == LevelType.Movement) {
 					myGame.ScoreText.setText("Reach the exit hole");
-				} //TODO: Implement the goal display for new level types
+				}
 			} else if (msg.what == TH_ShowWinDialog) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
 				builder.setTitle("Adventure Completed");
@@ -444,7 +444,6 @@ public class AdventureModeActivity extends GameActivity {
 							}
 						}
 
-						//TODO: Implement the new level types
 						//Check for level completion
 						if (myAdventure.getCurrentLevel().getType() == LevelType.Size) {
 							//Check current size against initial size and goal size
