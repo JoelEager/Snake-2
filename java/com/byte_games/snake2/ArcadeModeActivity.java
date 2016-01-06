@@ -452,17 +452,26 @@ public class ArcadeModeActivity extends GameActivity {
 							}
 						}
 					} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
-						//Wall hit!
+						//Edge of game wall hit
 						CurrentMode = Mode.Paused;
 						myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 					} else {
-						for (AnnotatedLocation Block : Walls) {
-							if (Block.equals(Snake.get(0))) {
-								//Wall hit!
-								CurrentMode = Mode.Paused;
-								myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
-							}
-						}
+                        for (Location Block : Walls) {
+                            if (Block.equals(Snake.get(0))) {
+                                //Wall hit
+                                CurrentMode = Mode.Paused;
+                                myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
+                                break;
+                            }
+                        }
+                        for (int count = 1; count < Snake.size(); count++) {
+                            if (Snake.get(count).equals(Snake.get(0))) {
+                                //Snake hit
+                                CurrentMode = Mode.Paused;
+                                myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into yourself").sendToTarget();
+                                break;
+                            }
+                        }
 					}
 				}
 			}
