@@ -5,7 +5,7 @@
     
     <string name="classicMode">Classic Mode</string>
     <string name="arcadeMode">Arcade Mode</string>
-    <string name="adventureMode">Adventure Mode</string>
+    <string name="adventureMode">Challenge Mode</string>
 
     <string name="adventureLength">Length:</string>
     <string-array name="adventureLengthChoices">

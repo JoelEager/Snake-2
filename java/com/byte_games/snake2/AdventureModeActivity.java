@@ -204,7 +204,7 @@ public class AdventureModeActivity extends GameActivity {
 						myGame.CurrentMode = Mode.Right;
 					}
 				});
-				builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {
+				builder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						NavUtils.navigateUpFromSameTask(myGame);
 					}
@@ -229,7 +229,7 @@ public class AdventureModeActivity extends GameActivity {
 				}
 			} else if (msg.what == TH_ShowWinDialog) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
-				builder.setTitle("Adventure Completed");
+				builder.setTitle("Challenge Completed");
                 String Difficulty = myGame.getResources().getStringArray(R.array.adventureDifficultyChoices)[myGame.myAdventure.Difficulty];
 				builder.setMessage("Deaths: " + myGame.myAdventure.getDeathCount() +
                         "\nDifficulty: " + Difficulty +
@@ -262,7 +262,7 @@ public class AdventureModeActivity extends GameActivity {
                     UnpauseGame(OldMode);
 				}
 			});
-			builder.setNegativeButton("Quit adventure", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					NavUtils.navigateUpFromSameTask(myGameReference);
 					Boxy = null;
