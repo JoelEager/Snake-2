@@ -263,7 +263,7 @@ public class ArcadeModeActivity extends GameActivity {
 					myGame.Highscore = myGame.Snake.size();
 					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
 
-					myGame.HighscoreEditor.putInt("Classic", myGame.Highscore);
+					myGame.HighscoreEditor.putInt("Arcade", myGame.Highscore);
 					myGame.HighscoreEditor.commit();
 				}
 				
