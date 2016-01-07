@@ -56,38 +56,63 @@ public class SplashActivity extends Activity {
 		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
 			startActivity(new Intent(this, ClassicModeActivity.class));
 		} else if (sourceView.getId() == R.id.buttonPlayAdventure) {
-			final SplashActivity ActivityPointer = this;
-			
-			//Make and show start adventure dialog
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			LayoutInflater inflater = getLayoutInflater();
-			View DialogLayout = inflater.inflate(R.layout.start_adventure_dialog, null);
-			
-			final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
-			final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
-			
-			builder.setView(DialogLayout);
-			builder.setTitle("Choose your challenge:");
-			builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
-					int Difficulty = spinnerDifficulty.getSelectedItemPosition();
-					
-					Intent myIntent = new Intent(ActivityPointer, AdventureModeActivity.class);
-					myIntent.putExtra("com.byte_games.snake2.Adventure_NumOfLevels", NumOfLevels);
-					myIntent.putExtra("com.byte_games.snake2.Adventure_Difficulty", Difficulty);
-			    	startActivity(myIntent);
-				}
-			});
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					//Nothing interesting here...
-				}
-			});
-			final AlertDialog Boxy = builder.create();
-			Boxy.show();
+			adventureTutorial();
 		}
 	}
+
+    private void adventureTutorial() {
+        //Display tutorial for adventure mode
+        if (true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Challenge mode");
+            builder.setMessage("In challenge mode you get to choose a number of levels and difficulty. You then try to complete that challenge with as few deaths as possible.\n\n" +
+                    "In each level completion instructions are displayed in the top right.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Make a challenge", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    launchAdventure();
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            launchAdventure();
+        }
+    }
+
+    private void launchAdventure() {
+        //Make and show start adventure dialog
+
+        final SplashActivity ActivityPointer = this;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View DialogLayout = inflater.inflate(R.layout.start_adventure_dialog, null);
+
+        final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
+        final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
+
+        builder.setView(DialogLayout);
+        builder.setTitle("Choose your challenge");
+        builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
+                int Difficulty = spinnerDifficulty.getSelectedItemPosition();
+
+                Intent myIntent = new Intent(ActivityPointer, AdventureModeActivity.class);
+                myIntent.putExtra("com.byte_games.snake2.Adventure_NumOfLevels", NumOfLevels);
+                myIntent.putExtra("com.byte_games.snake2.Adventure_Difficulty", Difficulty);
+                startActivity(myIntent);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Nothing interesting here...
+            }
+        });
+        final AlertDialog Boxy = builder.create();
+        Boxy.show();
+    }
 	
 	public void email(View sourceView) {
 		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","snake2beta@byte-games.com", null));

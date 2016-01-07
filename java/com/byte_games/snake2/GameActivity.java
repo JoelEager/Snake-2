@@ -2,8 +2,11 @@ package com.byte_games.snake2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
@@ -23,7 +26,7 @@ abstract public class GameActivity extends Activity {
 	protected SnakeEngine myEngine;
 	protected float Unit;
 	protected final int EngineTickRate = 20; //in milisecs - 50 FPS
-	protected Mode CurrentMode = Mode.Right;
+	protected Mode CurrentMode = Mode.Paused;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,4 +165,28 @@ abstract public class GameActivity extends Activity {
 			  return true;
 		}
 	}
+
+    protected void showTutorial() {
+        //Basic movement and gameplay
+        if (true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("How to play");
+            builder.setMessage("Controls: Swipe or tap the arrows to turn.\n\n" +
+                    "Be sure to avoid running into the dark colored walls or your own tail. Both are equally deadly.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    continueTutorial();
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            continueTutorial();
+        }
+    }
+
+    protected void continueTutorial() {
+        CurrentMode = Mode.Right;
+    }
 }

@@ -153,10 +153,32 @@ public class ClassicModeActivity extends GameActivity {
 			PanelR.setBackgroundDrawable(Background);
 			
 			HideNavBar();
+
+            showTutorial();
 			
 			DoneSetup = true;
 		}
 	}
+
+    @Override
+    protected void continueTutorial() {
+        if (true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Classic mode");
+            builder.setMessage("Goal: Eat mice (the white pixels) to grow longer and advance to the next level.\n\n" +
+                    "Your current score is displayed as the snake's current length (top left) and your highscore is in the top right.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    CurrentMode = Mode.Right;
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            CurrentMode = Mode.Right;
+        }
+    }
 	
 	protected Location RanLoc() {
 		Location Min = new Location(0, 0);
@@ -225,7 +247,7 @@ public class ClassicModeActivity extends GameActivity {
 				
 				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
 
-                myGame.LevelText.setText("Zone " + myGame.CurrentLevel);
+                myGame.LevelText.setText("Level " + myGame.CurrentLevel);
 			}
 		}
 	};
@@ -237,7 +259,7 @@ public class ClassicModeActivity extends GameActivity {
 			CurrentMode = Mode.Paused;
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReference);
-			builder.setMessage("Game Paused");
+			builder.setMessage("Game paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {

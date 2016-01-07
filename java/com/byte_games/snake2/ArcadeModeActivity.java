@@ -143,10 +143,33 @@ public class ArcadeModeActivity extends GameActivity {
 			PanelR.setBackgroundDrawable(Background);
 			
 			HideNavBar();
+
+            showTutorial();
 			
 			DoneSetup = true;
 		}
 	}
+
+    @Override
+    protected void continueTutorial() {
+        if (true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Arcade mode");
+            builder.setMessage("Goal: Eat mice (the white pixels) to grow longer.\n\n" +
+                    "Your current score is displayed as the snake's current length (top left) and your highscore is in the top right.\n\n" +
+                    "Additional walls will spawn as you get longer.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    CurrentMode = Mode.Right;
+                }
+            });
+            builder.create();
+            builder.show();
+        } else {
+            CurrentMode = Mode.Right;
+        }
+    }
 	
 	protected Location RanLoc() {
 		Location Min = new Location(0, 0);
@@ -278,7 +301,7 @@ public class ArcadeModeActivity extends GameActivity {
 			CurrentMode = Mode.Paused;
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReference);
-			builder.setMessage("Game Paused");
+			builder.setMessage("Game paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {

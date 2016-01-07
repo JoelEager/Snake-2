@@ -146,6 +146,8 @@ public class AdventureModeActivity extends GameActivity {
 
 			HideNavBar();
 
+            showTutorial();
+
 			DoneSetup = true;
 		}
 	}
@@ -253,7 +255,7 @@ public class AdventureModeActivity extends GameActivity {
 			CurrentMode = Mode.Paused;
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(myGameReference);
-			builder.setMessage("Game Paused");
+			builder.setMessage("Game paused");
 			builder.setCancelable(false);
 			builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
