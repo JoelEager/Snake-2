@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/GameTheme">
         <activity
-            android:name="com.byte_games.snake2.SplashActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape" >
             <intent-filter>
@@ -21,23 +21,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.byte_games.snake2.ClassicModeActivity" 
+        <activity android:name=".ClassicModeActivity"
             android:screenOrientation="sensorLandscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.byte_games.snake2.SplashActivity" />
+                android:value=".SplashActivity" />
         </activity>
-        <activity android:name="com.byte_games.snake2.ArcadeModeActivity" 
+        <activity android:name=".ArcadeModeActivity"
             android:screenOrientation="sensorLandscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.byte_games.snake2.SplashActivity" />
+                android:value=".SplashActivity" />
         </activity>
         <activity android:name=".ChallengeModeActivity"
             android:screenOrientation="sensorLandscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.byte_games.snake2.SplashActivity" />
+                android:value=".SplashActivity" />
         </activity>
     </application>
 
