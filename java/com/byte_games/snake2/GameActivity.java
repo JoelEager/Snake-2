@@ -28,6 +28,7 @@ abstract public class GameActivity extends Activity {
 	protected float Unit;
 	protected final int EngineTickRate = 20; //in milisecs - 50 FPS
 	protected Mode CurrentMode = Mode.Paused;
+    private boolean Units;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,10 @@ abstract public class GameActivity extends Activity {
 				return gestureDetector.onTouchEvent(event);
 			}
 		};
+
+        //Units setting
+        //(true for English, false for Metric)
+        Units = (new SettingsManager(this, "Setings", "Units", false)).getBoolean();
 	}
 	
 	public void finishSetup() {
@@ -108,8 +113,7 @@ abstract public class GameActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 	}
 	
-	protected static String lengthToString(int Length) {
-		boolean Units = true; //true for English, false for Metric
+	protected String lengthToString(int Length) {
 		String Text = "";
 		
 		if (Units) {

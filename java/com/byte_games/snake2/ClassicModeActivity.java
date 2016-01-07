@@ -242,12 +242,12 @@ public class ClassicModeActivity extends GameActivity {
 			} else if (msg.what == TH_UpdateBar) {
 				if (myGame.Snake.size() > myGame.Highscore) {
 					myGame.Highscore = myGame.Snake.size();
-					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
+					myGame.HighscoreText.setText(myGame.lengthToString(myGame.Highscore));
 
 					myGame.myHighscore.putInt(myGame.Highscore);
 				}
 				
-				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
+				myGame.ScoreText.setText(myGame.lengthToString(myGame.Snake.size()));
 
                 myGame.LevelText.setText("Level " + myGame.CurrentLevel);
 			}
