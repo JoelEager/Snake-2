@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.SnakeEngine;
 
 import java.util.concurrent.Executors;
@@ -167,8 +168,10 @@ abstract public class GameActivity extends Activity {
 	}
 
     protected void showTutorial() {
+        final SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Main", false);
+
         //Basic movement and gameplay
-        if (true) {
+        if (!tutorialSettings.getBoolean()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("How to play");
             builder.setMessage("Controls: Swipe or tap the arrows to turn.\n\n" +
@@ -176,6 +179,7 @@ abstract public class GameActivity extends Activity {
             builder.setCancelable(false);
             builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    tutorialSettings.putBoolean(true);
                     continueTutorial();
                 }
             });

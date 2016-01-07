@@ -162,7 +162,9 @@ public class ClassicModeActivity extends GameActivity {
 
     @Override
     protected void continueTutorial() {
-        if (true) {
+        final SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Classic", false);
+
+        if (!tutorialSettings.getBoolean()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Classic mode");
             builder.setMessage("Goal: Eat mice (the white pixels) to grow longer and advance to the next level.\n\n" +
@@ -170,6 +172,7 @@ public class ClassicModeActivity extends GameActivity {
             builder.setCancelable(false);
             builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    tutorialSettings.putBoolean(true);
                     CurrentMode = Mode.Right;
                 }
             });

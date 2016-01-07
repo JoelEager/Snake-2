@@ -1,5 +1,6 @@
 package com.byte_games.snake2;
 
+import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
 
@@ -62,7 +63,9 @@ public class SplashActivity extends Activity {
 
     private void adventureTutorial() {
         //Display tutorial for adventure mode
-        if (true) {
+        final SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Challenge", false);
+
+        if (!tutorialSettings.getBoolean()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Challenge mode");
             builder.setMessage("In challenge mode you get to choose a number of levels and difficulty. You then try to complete that challenge with as few deaths as possible.\n\n" +
@@ -70,6 +73,7 @@ public class SplashActivity extends Activity {
             builder.setCancelable(false);
             builder.setPositiveButton("Make a challenge", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    tutorialSettings.putBoolean(true);
                     launchAdventure();
                 }
             });

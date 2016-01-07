@@ -152,7 +152,9 @@ public class ArcadeModeActivity extends GameActivity {
 
     @Override
     protected void continueTutorial() {
-        if (true) {
+        final SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Arcade", false);
+
+        if (!tutorialSettings.getBoolean()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Arcade mode");
             builder.setMessage("Goal: Eat mice (the white pixels) to grow longer.\n\n" +
@@ -161,6 +163,7 @@ public class ArcadeModeActivity extends GameActivity {
             builder.setCancelable(false);
             builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    tutorialSettings.putBoolean(true);
                     CurrentMode = Mode.Right;
                 }
             });
