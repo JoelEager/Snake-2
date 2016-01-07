@@ -1,5 +1,6 @@
 package com.byte_games.snake2;
 
+import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.SnakeEngine;
 import com.byte_games.snake2.engine.SESurfaceView;
 import com.byte_games.snake2.engine.Ticker;
@@ -42,7 +43,7 @@ public class ClassicModeActivity extends GameActivity {
     private TextView HighscoreText;
     private TextView LevelText;
 	private int Highscore;
-	SharedPreferences.Editor HighscoreEditor;
+	SettingsManager myHighscore;
 	
 	protected ClassicModeActivity myGameReference = this;
 	
@@ -79,9 +80,8 @@ public class ClassicModeActivity extends GameActivity {
         myEngine.Surface.setOnTouchListener(gestureListener);
         
         //Get highscore
-        SharedPreferences mySettings = getSharedPreferences("Highscores", 0);
-        Highscore = mySettings.getInt("Classic", 0);
-        HighscoreEditor = getSharedPreferences("Highscores", 0).edit();
+        myHighscore = new SettingsManager(this, "Highscores", "Classic", 0);
+        Highscore = myHighscore.getInt();
 		HighscoreText.setText(lengthToString(Highscore));
 	}
 	
@@ -241,8 +241,7 @@ public class ClassicModeActivity extends GameActivity {
 					myGame.Highscore = myGame.Snake.size();
 					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
 
-					myGame.HighscoreEditor.putInt("Classic", myGame.Highscore);
-					myGame.HighscoreEditor.commit();
+					myGame.myHighscore.putInt(myGame.Highscore);
 				}
 				
 				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));

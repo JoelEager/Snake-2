@@ -25,6 +25,7 @@ import com.byte_games.snake2.engine.GraphicsHelper;
 import com.byte_games.snake2.engine.GraphicsHelper.AnnotatedLocation;
 import com.byte_games.snake2.engine.GraphicsHelper.Location;
 import com.byte_games.snake2.engine.SESurfaceView;
+import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.SnakeEngine;
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.Ticker;
@@ -41,7 +42,7 @@ public class ArcadeModeActivity extends GameActivity {
 	private TextView ScoreText;
 	private TextView HighscoreText;
 	private int Highscore;
-	SharedPreferences.Editor HighscoreEditor;
+    SettingsManager myHighscore;
 	
 	protected ArcadeModeActivity myGameReference = this;
 	
@@ -69,9 +70,8 @@ public class ArcadeModeActivity extends GameActivity {
         myEngine.Surface.setOnTouchListener(gestureListener);
         
         //Get highscore
-        SharedPreferences mySettings = getSharedPreferences("Highscores", 0);
-        Highscore = mySettings.getInt("Arcade", 0);
-        HighscoreEditor = getSharedPreferences("Highscores", 0).edit();
+        myHighscore = new SettingsManager(this, "Highscores", "Arcade", 0);
+        Highscore = myHighscore.getInt();
 		HighscoreText.setText(lengthToString(Highscore));
 	}
 	
@@ -286,8 +286,7 @@ public class ArcadeModeActivity extends GameActivity {
 					myGame.Highscore = myGame.Snake.size();
 					myGame.HighscoreText.setText(lengthToString(myGame.Highscore));
 
-					myGame.HighscoreEditor.putInt("Arcade", myGame.Highscore);
-					myGame.HighscoreEditor.commit();
+					myGame.myHighscore.putInt(myGame.Highscore);
 				}
 				
 				myGame.ScoreText.setText(lengthToString(myGame.Snake.size()));
