@@ -1,7 +1,7 @@
 package com.byte_games.snake2;
 
-import com.byte_games.snake2.engine.Adventure;
-import com.byte_games.snake2.engine.Adventure.LevelType;
+import com.byte_games.snake2.engine.Challenge;
+import com.byte_games.snake2.engine.Challenge.LevelType;
 import com.byte_games.snake2.engine.SnakeEngine;
 import com.byte_games.snake2.engine.SESurfaceView;
 import com.byte_games.snake2.engine.Ticker;
@@ -29,7 +29,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class AdventureModeActivity extends GameActivity {
+public class ChallengeModeActivity extends GameActivity {
 	private boolean DoneSetup = false;
 	private Mode OldMode = Mode.Paused;
 	private double Speed = 0.30;
@@ -39,25 +39,25 @@ public class AdventureModeActivity extends GameActivity {
 	private TextView ScoreText;
 	private TextView ProgressText;
 
-	private Adventure myAdventure;
+	private Challenge myChallenge;
 	private int InitialSize;
 	private boolean ChangingLevel = false;
 
-	protected AdventureModeActivity myGameReference = this;
+	protected ChallengeModeActivity myGameReference = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_adventure);
+		setContentView(R.layout.activity_game_challenge);
 		myContext = getBaseContext();
 		ScoreText = (TextView) findViewById(R.id.textScore);
 		ProgressText = (TextView) findViewById(R.id.textProgress);
 
-		//Setup adventure object
+		//Setup challenge object
 		Intent receivedIntent = getIntent();
-		int NumOfLevels = receivedIntent.getIntExtra("com.byte_games.snake2.Adventure_NumOfLevels", 3);
-		int Difficulty = receivedIntent.getIntExtra("com.byte_games.snake2.Adventure_Difficulty", 0);
-		myAdventure = new Adventure(NumOfLevels, Difficulty);
+		int NumOfLevels = receivedIntent.getIntExtra("com.byte_games.snake2.Challenge_NumOfLevels", 3);
+		int Difficulty = receivedIntent.getIntExtra("com.byte_games.snake2.Challenge_Difficulty", 0);
+		myChallenge = new Challenge(NumOfLevels, Difficulty);
 
 		//Setup game variables
 		Snake.add(new Location(5, 5));
@@ -167,7 +167,7 @@ public class AdventureModeActivity extends GameActivity {
 					Good = false;
 				}
 			}
-			for (Location Point : myAdventure.getCurrentLevel().Walls) {
+			for (Location Point : myChallenge.getCurrentLevel().Walls) {
 				if (New.equals(Point)) {
 					Good = false;
 				}
@@ -181,10 +181,10 @@ public class AdventureModeActivity extends GameActivity {
 	private final static int TH_ShowWinDialog = 3;
 
 	private static final class ThreadHelper extends Handler {
-		private AdventureModeActivity myGame;
+		private ChallengeModeActivity myGame;
 
-		ThreadHelper(AdventureModeActivity myGameReferance) {
-			myGame = new WeakReference<AdventureModeActivity>(myGameReferance).get();
+		ThreadHelper(ChallengeModeActivity myGameReferance) {
+			myGame = new WeakReference<ChallengeModeActivity>(myGameReferance).get();
 		}
 
 		@Override
@@ -214,28 +214,28 @@ public class AdventureModeActivity extends GameActivity {
 				builder.create();
 				builder.show();
 			} else if (msg.what == TH_UpdateBar) {
-				myGame.ProgressText.setText("Level " + myGame.myAdventure.getCurrentLevelNumber() +  "/" + myGame.myAdventure.Levels.size());
+				myGame.ProgressText.setText("Level " + myGame.myChallenge.getCurrentLevelNumber() +  "/" + myGame.myChallenge.Levels.size());
 
 				if (myGame.ChangingLevel) {
-					myGame.ScoreText.setText("Digging for level " + myGame.myAdventure.getCurrentLevelNumber() + "...");
+					myGame.ScoreText.setText("Digging for level " + myGame.myChallenge.getCurrentLevelNumber() + "...");
 					myGame.ProgressText.setText("");
-				} else if (myGame.myAdventure.getCurrentLevel().getType() == LevelType.Size) {
-					int MiceToGo = myGame.myAdventure.getCurrentLevel().getGoal() - (myGame.Snake.size() - myGame.InitialSize);
+				} else if (myGame.myChallenge.getCurrentLevel().getType() == LevelType.Size) {
+					int MiceToGo = myGame.myChallenge.getCurrentLevel().getGoal() - (myGame.Snake.size() - myGame.InitialSize);
 					if (MiceToGo == 1) {
 						myGame.ScoreText.setText("Eat " + MiceToGo + " mouse");
 					} else {
 						myGame.ScoreText.setText("Eat " + MiceToGo + " mice");
 					}
-				} else if (myGame.myAdventure.getCurrentLevel().getType() == LevelType.Movement) {
+				} else if (myGame.myChallenge.getCurrentLevel().getType() == LevelType.Movement) {
 					myGame.ScoreText.setText("Reach the exit hole");
 				}
 			} else if (msg.what == TH_ShowWinDialog) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(myGame);
 				builder.setTitle("Challenge Completed");
-                String Difficulty = myGame.getResources().getStringArray(R.array.adventureDifficultyChoices)[myGame.myAdventure.Difficulty];
-				builder.setMessage("Deaths: " + myGame.myAdventure.getDeathCount() +
+                String Difficulty = myGame.getResources().getStringArray(R.array.challengeDifficultyChoices)[myGame.myChallenge.Difficulty];
+				builder.setMessage("Deaths: " + myGame.myChallenge.getDeathCount() +
                         "\nDifficulty: " + Difficulty +
-                        "\nLength: " + myGame.myAdventure.Levels.size() + " levels");
+                        "\nLength: " + myGame.myChallenge.Levels.size() + " levels");
 				builder.setCancelable(false);
 				builder.setNegativeButton("Return to menu", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
@@ -353,7 +353,7 @@ public class AdventureModeActivity extends GameActivity {
 				//Draw walls to bmp
 				bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
 				Canvas canvasWall = new Canvas(bmpWall);
-				for (Location Block : myAdventure.getCurrentLevel().Walls) {
+				for (Location Block : myChallenge.getCurrentLevel().Walls) {
 					GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
 				}
 			}
@@ -413,7 +413,7 @@ public class AdventureModeActivity extends GameActivity {
 						}
 
 						//Check for hits
-						if (Snake.get(0).equals(Food) && myAdventure.getCurrentLevel().getType() != LevelType.Movement) {
+						if (Snake.get(0).equals(Food) && myChallenge.getCurrentLevel().getType() != LevelType.Movement) {
 							//Yum!
 							Location NewTail = new Location(0, 0);
 							Snake.get(Snake.size() - 1).CopyTo(NewTail);
@@ -433,14 +433,14 @@ public class AdventureModeActivity extends GameActivity {
 						} else if (Snake.get(0).X <= -1 || Snake.get(0).X >= GraphicsHelper.SizeOfGame.X + 1 || Snake.get(0).Y <= -1 || Snake.get(0).Y >= GraphicsHelper.SizeOfGame.Y + 1) {
 							//Edge of game wall hit
 							CurrentMode = Mode.Paused;
-                            myAdventure.advanceDeathCount();
+                            myChallenge.advanceDeathCount();
 							myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
 						} else {
-							for (Location Block : myAdventure.getCurrentLevel().Walls) {
+							for (Location Block : myChallenge.getCurrentLevel().Walls) {
 								if (Block.equals(Snake.get(0))) {
 									//Wall hit
 									CurrentMode = Mode.Paused;
-                                    myAdventure.advanceDeathCount();
+                                    myChallenge.advanceDeathCount();
 									myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into a wall").sendToTarget();
                                     break;
 								}
@@ -449,7 +449,7 @@ public class AdventureModeActivity extends GameActivity {
                                 if (Snake.get(count).equals(Snake.get(0))) {
                                     //Snake hit
                                     CurrentMode = Mode.Paused;
-                                    myAdventure.advanceDeathCount();
+                                    myChallenge.advanceDeathCount();
                                     myThreadHelper.obtainMessage(TH_ShowDeathDialog, "You ran into yourself").sendToTarget();
                                     break;
                                 }
@@ -457,15 +457,15 @@ public class AdventureModeActivity extends GameActivity {
 						}
 
 						//Check for level completion
-						if (myAdventure.getCurrentLevel().getType() == LevelType.Size) {
+						if (myChallenge.getCurrentLevel().getType() == LevelType.Size) {
 							//Check current size against initial size and goal size
-							if (Snake.size() - InitialSize == myAdventure.getCurrentLevel().getGoal()) {
-								AdvanceAdventure();
+							if (Snake.size() - InitialSize == myChallenge.getCurrentLevel().getGoal()) {
+								AdvanceChallenge();
 							}
-						} else if (myAdventure.getCurrentLevel().getType() == LevelType.Movement) {
+						} else if (myChallenge.getCurrentLevel().getType() == LevelType.Movement) {
 							//Check location
-							if (Snake.get(0).equals(myAdventure.getCurrentLevel().getGoalPoint())) {
-								AdvanceAdventure();
+							if (Snake.get(0).equals(myChallenge.getCurrentLevel().getGoalPoint())) {
+								AdvanceChallenge();
 							}
 						}
 					}
@@ -493,7 +493,7 @@ public class AdventureModeActivity extends GameActivity {
 						//Draw new walls to bmp
 						bmpWall = Bitmap.createBitmap(CanvasIn.getWidth(), CanvasIn.getHeight(), Bitmap.Config.ARGB_8888);
 						Canvas canvasWall = new Canvas(bmpWall);
-						for (Location Block : myAdventure.getCurrentLevel().Walls) {
+						for (Location Block : myChallenge.getCurrentLevel().Walls) {
 							GraphicsHelper.addPixel(canvasWall, Block, colors_Wall[(int) (Math.random() * ((2) + 1))], Unit);
 						}
 
@@ -526,17 +526,17 @@ public class AdventureModeActivity extends GameActivity {
 			}
 
 			//Draw Mouse
-			if (myAdventure.getCurrentLevel().getType() != LevelType.Movement) {
+			if (myChallenge.getCurrentLevel().getType() != LevelType.Movement) {
 				GraphicsHelper.addPixel(CanvasIn, Food, color_Mouse, Unit);
 			}
 
 			//Draw hole
-			if (myAdventure.getCurrentLevel().getType() == LevelType.Movement || ChangingLevel) {
+			if (myChallenge.getCurrentLevel().getType() == LevelType.Movement || ChangingLevel) {
 				Location Hole;
 				if (ChangingLevel) {
 					Hole = Snake.get(0);
 				} else {
-					Hole = myAdventure.getCurrentLevel().getGoalPoint();
+					Hole = myChallenge.getCurrentLevel().getGoalPoint();
 				}
 				
 				GraphicsHelper.addPixel(CanvasIn, new Location(Hole.X + 1, Hole.Y), color_Hole1, Unit);
@@ -567,8 +567,8 @@ public class AdventureModeActivity extends GameActivity {
 			return CanvasIn;
 		}	
 
-		private void AdvanceAdventure() {
-			boolean DoContinue = myAdventure.advanceLevel();
+		private void AdvanceChallenge() {
+			boolean DoContinue = myChallenge.advanceLevel();
 			Food = new Location(-1, -1);
 
 			if (!DoContinue) {

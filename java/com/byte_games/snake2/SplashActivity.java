@@ -56,13 +56,13 @@ public class SplashActivity extends Activity {
 			startActivity(new Intent(this, ArcadeModeActivity.class));
 		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
 			startActivity(new Intent(this, ClassicModeActivity.class));
-		} else if (sourceView.getId() == R.id.buttonPlayAdventure) {
-			adventureTutorial();
+		} else if (sourceView.getId() == R.id.buttonPlayChallenge) {
+			challengeTutorial();
 		}
 	}
 
-    private void adventureTutorial() {
-        //Display tutorial for adventure mode
+    private void challengeTutorial() {
+        //Display tutorial for challenge mode
         final SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Challenge", false);
 
         if (!tutorialSettings.getBoolean()) {
@@ -74,38 +74,38 @@ public class SplashActivity extends Activity {
             builder.setPositiveButton("Make a challenge", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     tutorialSettings.putBoolean(true);
-                    launchAdventure();
+                    launchChallenge();
                 }
             });
             builder.create();
             builder.show();
         } else {
-            launchAdventure();
+            launchChallenge();
         }
     }
 
-    private void launchAdventure() {
-        //Make and show start adventure dialog
+    private void launchChallenge() {
+        //Make and show start challenge dialog
 
         final SplashActivity ActivityPointer = this;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View DialogLayout = inflater.inflate(R.layout.start_adventure_dialog, null);
+        View DialogLayout = inflater.inflate(R.layout.start_challenge_dialog, null);
 
-        final android.widget.Spinner spinnerAdventureLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerAdventureLength);
+        final android.widget.Spinner spinnerChallengeLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerChallengeLength);
         final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
 
         builder.setView(DialogLayout);
         builder.setTitle("Choose your challenge");
         builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
+                int NumOfLevels = Integer.parseInt(spinnerChallengeLength.getSelectedItem().toString().substring(0, 1));
                 int Difficulty = spinnerDifficulty.getSelectedItemPosition();
 
-                Intent myIntent = new Intent(ActivityPointer, AdventureModeActivity.class);
-                myIntent.putExtra("com.byte_games.snake2.Adventure_NumOfLevels", NumOfLevels);
-                myIntent.putExtra("com.byte_games.snake2.Adventure_Difficulty", Difficulty);
+                Intent myIntent = new Intent(ActivityPointer, ChallengeModeActivity.class);
+                myIntent.putExtra("com.byte_games.snake2.Challenge_NumOfLevels", NumOfLevels);
+                myIntent.putExtra("com.byte_games.snake2.Challenge_Difficulty", Difficulty);
                 startActivity(myIntent);
             }
         });

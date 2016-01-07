@@ -33,7 +33,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.byte_games.snake2.SplashActivity" />
         </activity>
-        <activity android:name="com.byte_games.snake2.AdventureModeActivity" 
+        <activity android:name=".ChallengeModeActivity"
             android:screenOrientation="sensorLandscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

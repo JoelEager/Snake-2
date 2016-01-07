@@ -7,24 +7,24 @@
     android:padding="15dp" >
 
     <TextView
-        android:id="@+id/textViewAdventureLength"
+        android:id="@+id/textViewChallengeLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/spinnerAdventureLength"
+        android:layout_alignBottom="@+id/spinnerChallengeLength"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
-        android:text="@string/adventureLength"
+        android:text="@string/challengeLength"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
-        android:id="@+id/spinnerAdventureLength"
+        android:id="@+id/spinnerChallengeLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textViewAdventureLength"
-        android:entries="@array/adventureLengthChoices" />
+        android:layout_toRightOf="@+id/textViewChallengeLength"
+        android:entries="@array/challengeLengthChoices" />
 
     <TextView
         android:id="@+id/textViewDifficulty"
@@ -32,9 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/spinnerDifficulty"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textViewAdventureLength"
+        android:layout_below="@+id/textViewChallengeLength"
         android:gravity="center_vertical"
-        android:text="@string/adventureDifficulty"
+        android:text="@string/challengeDifficulty"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
@@ -42,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/spinnerAdventureLength"
+        android:layout_below="@+id/spinnerChallengeLength"
         android:layout_toRightOf="@+id/textViewDifficulty"
-        android:entries="@array/adventureDifficultyChoices" />
+        android:entries="@array/challengeDifficultyChoices" />
 
 </RelativeLayout>

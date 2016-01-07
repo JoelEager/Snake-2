@@ -6,9 +6,9 @@ import java.util.List;
 import com.byte_games.snake2.engine.GraphicsHelper.Location;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
 
-//This class is used for generating and maintaining Adventure objects which are used to track the progress and data for an adventure.
+//This class is used for generating and maintaining Challenge objects which are used to track the progress and data for an challenge.
 
-public class Adventure {
+public class Challenge {
 	public static enum LevelType {Size, Movement};
 	public List<Level> Levels = new ArrayList<Level>();
 	public final int Difficulty;
@@ -17,8 +17,8 @@ public class Adventure {
 	private int LastLevelLayoutIndex = -1; //Used in wall generation to prevent repeats
     private int DeathCount = 0;
 
-	//Create new adventure object
-	public Adventure(int length, int Difficulty) {
+	//Create new challenge object
+	public Challenge(int length, int Difficulty) {
 		this.Difficulty = Difficulty; //0 to 1
 
 		for (int count = 1; count <= length; count++) {
@@ -63,7 +63,7 @@ public class Adventure {
         DeathCount++;
     }
 
-	//Returns false if adventure is completed
+	//Returns false if challenge is completed
 	public boolean advanceLevel() {
 		CurrentLevel++;
 
@@ -74,7 +74,7 @@ public class Adventure {
 		return true;
 	}
 
-	//This class creates objects that represent one level of the adventure and contain the data needed to build that level.
+	//This class creates objects that represent one level of the challenge and contain the data needed to build that level.
 	public class Level {
 		private LevelType Type;
 		private int Goal;

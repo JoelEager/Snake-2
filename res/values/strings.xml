@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Snake 2 - Beta v2</string>
+    <string name="app_name">Snake 2</string>
     
     <string name="classicMode">Classic Mode</string>
     <string name="arcadeMode">Arcade Mode</string>
-    <string name="adventureMode">Challenge Mode</string>
+    <string name="challengeMode">Challenge Mode</string>
 
-    <string name="adventureLength">Length:</string>
-    <string-array name="adventureLengthChoices">
+    <string name="challengeLength">Length:</string>
+    <string-array name="challengeLengthChoices">
         <item>3 levels</item>
         <item>5 levels</item>
         <item>7 levels</item>
     </string-array>
-    <string name="adventureDifficulty">Difficulty:</string>
-    <string-array name="adventureDifficultyChoices">
+    <string name="challengeDifficulty">Difficulty:</string>
+    <string-array name="challengeDifficultyChoices">
         <item>Normal</item>
         <item>Hard</item>
     </string-array>

@@ -34,14 +34,14 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/buttonPlayAdventure"
+        android:id="@+id/buttonPlayChallenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/buttonReport"
         android:onClick="play"
-        android:text="@string/adventureMode" />
+        android:text="@string/challengeMode" />
 
     <LinearLayout
         android:id="@+id/ButtonLayout"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonPlayAdventure" >
+        android:layout_below="@+id/buttonPlayChallenge" >
 
         <Button
             android:id="@+id/buttonPlayArcade"
