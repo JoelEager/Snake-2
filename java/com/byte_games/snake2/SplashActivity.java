@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 
 public class SplashActivity extends Activity {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +44,7 @@ public class SplashActivity extends Activity {
 		    	canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
 
 		    	android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
-		    	BigBox.setBackgroundDrawable(Background);
+		    	BigBox.setBackground(Background);
 		    } 
 		});
 	}

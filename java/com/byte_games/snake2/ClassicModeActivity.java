@@ -106,7 +106,6 @@ public class ClassicModeActivity extends GameActivity {
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
 	public void finishSetup() {
 		if (!DoneSetup) {
 			//Setup game GUI
@@ -146,11 +145,11 @@ public class ClassicModeActivity extends GameActivity {
 			}
 			
 			android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
-			PanelT.setBackgroundDrawable(Background);
+			PanelT.setBackground(Background);
 			Background.setGravity(Gravity.RIGHT);
-			PanelL.setBackgroundDrawable(Background);
+			PanelL.setBackground(Background);
 			Background.setGravity(Gravity.LEFT);
-			PanelR.setBackgroundDrawable(Background);
+			PanelR.setBackground(Background);
 			
 			HideNavBar();
 
