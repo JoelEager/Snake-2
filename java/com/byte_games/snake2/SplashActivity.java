@@ -67,7 +67,7 @@ public class SplashActivity extends Activity {
 			final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
 			
 			builder.setView(DialogLayout);
-			builder.setTitle("Choose your adventure:");
+			builder.setTitle("Choose your challenge:");
 			builder.setPositiveButton("Play", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					int NumOfLevels = Integer.parseInt(spinnerAdventureLength.getSelectedItem().toString().substring(0, 1));
