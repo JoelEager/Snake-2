@@ -3,9 +3,13 @@
 
     <string name="app_name">Snake 2</string>
     
-    <string name="classicMode">Classic Mode</string>
-    <string name="arcadeMode">Arcade Mode</string>
-    <string name="challengeMode">Challenge Mode</string>
+    <string name="classicMode">Classic</string>
+    <string name="arcadeMode">Arcade</string>
+    <string name="challengeMode">Challenge</string>
+
+    <string name="playHeader">Pick a mode to play</string>
+    <string name="viewHighscores">Highscores</string>
+    <string name="viewSettings">Settings</string>
 
     <string name="challengeLength">Length:</string>
     <string-array name="challengeLengthChoices">
@@ -18,21 +22,4 @@
         <item>Normal</item>
         <item>Hard</item>
     </string-array>
-    
-    <string name="BetaText">Thank you for beta testing snake 2!\n
-\n
-Since the tutorial isn\'t completed yet here\'s how to play:\n
-	- Change the snake\'s direction by swiping or tapping the arrows\n
-	- Avoid the walls\n
-	- Eat the white mice to grow\n
-	- Classic mode has levels that change every time you reach 3 feet\n
-	- Arcade has a balanced random wall spawning algorithm that builds the challenge as you eat more mice\n
-	\n
-This version includes:\n
-	- Classic mode\n
-	- Arcade mode\n
-	- A terrain generator\n
-	- Local high scores\n
-	\n
-Please email any bugs or ideas to: snake2beta@byte-games.com</string>
 </resources>

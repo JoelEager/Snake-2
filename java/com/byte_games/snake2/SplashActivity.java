@@ -49,8 +49,7 @@ public class SplashActivity extends Activity {
 		    } 
 		});
 	}
-	
-	@SuppressLint("InflateParams")
+
 	public void play(View sourceView) {
 		if (sourceView.getId() == R.id.buttonPlayArcade) {
 			startActivity(new Intent(this, ArcadeModeActivity.class));
@@ -117,10 +116,12 @@ public class SplashActivity extends Activity {
         final AlertDialog Boxy = builder.create();
         Boxy.show();
     }
-	
-	public void email(View sourceView) {
-		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","snake2beta@byte-games.com", null));
-		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Bug report or idea for Snake 2");
-		startActivity(Intent.createChooser(emailIntent, "Send email..."));
-	}
+
+    public void viewHighscores(View sourceView) {
+
+    }
+
+    public void viewSettings(View sourceView) {
+
+    }
 }
