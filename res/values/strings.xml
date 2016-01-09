@@ -22,4 +22,11 @@
         <item>Normal</item>
         <item>Hard</item>
     </string-array>
+
+    <string name="settingsUnits">Units:</string>
+    <string-array name="settingsUnitsChoices">
+        <item>Metric</item>
+        <item>English</item>
+    </string-array>
+    <string name="settingsTutorial">Show tutorial again</string>
 </resources>

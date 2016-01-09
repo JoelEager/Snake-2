@@ -1,12 +1,16 @@
 package com.byte_games.snake2;
 
+import com.byte_games.snake2.engine.LengthStringGen;
 import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.TerrainGen;
 import com.byte_games.snake2.engine.GraphicsHelper.Size;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,46 +22,58 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SplashActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
-		
-		//Wait until layout is drawn
-		RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);
-		ViewTreeObserver vto = BigBox.getViewTreeObserver(); 
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { 
-		    @Override
-		    public void onGlobalLayout() {
-		    	//Make background
-		    	RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);
-		    	Bitmap bmpBackground = Bitmap.createBitmap(BigBox.getWidth(), BigBox.getHeight(), Bitmap.Config.ARGB_8888);
-		    	Canvas canvasBackground = new Canvas(bmpBackground);
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
-		    	float Unit = BigBox.getWidth() / 90;
-		    	Size SizeOfScreen = new Size(90, (int) (BigBox.getHeight() / Unit));
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
 
-		    	TerrainGen myTerrainGen = new TerrainGen(Unit, SizeOfScreen, new Size(15, 10), getBaseContext());
-		    	canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
+        //Wait until layout is drawn
+        RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);
+        ViewTreeObserver vto = BigBox.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //Make background
+                RelativeLayout BigBox = (RelativeLayout) findViewById(R.id.SplashLayout);
+                Bitmap bmpBackground = Bitmap.createBitmap(BigBox.getWidth(), BigBox.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvasBackground = new Canvas(bmpBackground);
 
-		    	android.graphics.drawable.BitmapDrawable Background = new android.graphics.drawable.BitmapDrawable(getResources(), bmpBackground);
-		    	BigBox.setBackground(Background);
-		    } 
-		});
-	}
+                float Unit = BigBox.getWidth() / 90;
+                Size SizeOfScreen = new Size(90, (int) (BigBox.getHeight() / Unit));
 
-	public void play(View sourceView) {
-		if (sourceView.getId() == R.id.buttonPlayArcade) {
-			startActivity(new Intent(this, ArcadeModeActivity.class));
-		} else if (sourceView.getId() == R.id.buttonPlayClassic) {
-			startActivity(new Intent(this, ClassicModeActivity.class));
-		} else if (sourceView.getId() == R.id.buttonPlayChallenge) {
-			challengeTutorial();
-		}
-	}
+                TerrainGen myTerrainGen = new TerrainGen(Unit, SizeOfScreen, new Size(15, 10), getBaseContext());
+                canvasBackground = myTerrainGen.makeGameBackground(canvasBackground);
+
+                BitmapDrawable Background = new BitmapDrawable(getResources(), bmpBackground);
+                BigBox.setBackground(Background);
+            }
+        });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    public void play(View sourceView) {
+        if (sourceView.getId() == R.id.buttonPlayArcade) {
+            startActivity(new Intent(this, ArcadeModeActivity.class));
+        } else if (sourceView.getId() == R.id.buttonPlayClassic) {
+            startActivity(new Intent(this, ClassicModeActivity.class));
+        } else if (sourceView.getId() == R.id.buttonPlayChallenge) {
+            challengeTutorial();
+        }
+    }
 
     private void challengeTutorial() {
         //Display tutorial for challenge mode
@@ -84,15 +100,14 @@ public class SplashActivity extends Activity {
 
     private void launchChallenge() {
         //Make and show start challenge dialog
-
         final SplashActivity ActivityPointer = this;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View DialogLayout = inflater.inflate(R.layout.start_challenge_dialog, null);
 
-        final android.widget.Spinner spinnerChallengeLength = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerChallengeLength);
-        final android.widget.Spinner spinnerDifficulty = (android.widget.Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
+        final Spinner spinnerChallengeLength = (Spinner) DialogLayout.findViewById(R.id.spinnerChallengeLength);
+        final Spinner spinnerDifficulty = (Spinner) DialogLayout.findViewById(R.id.spinnerDifficulty);
 
         builder.setView(DialogLayout);
         builder.setTitle("Choose your challenge");
@@ -117,10 +132,141 @@ public class SplashActivity extends Activity {
     }
 
     public void viewHighscores(View sourceView) {
+        final SplashActivity ActivityPointer = this;
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View DialogLayout = inflater.inflate(R.layout.highscores_dialog, null);
+
+        final LengthStringGen lengthGen = new LengthStringGen(this);
+
+        final TextView textViewClassic = (TextView) DialogLayout.findViewById(R.id.textViewClassic);
+        final SettingsManager ClassicHighscore = new SettingsManager(this, "Highscores", "Classic", 0);
+        textViewClassic.setText("Classic mode: " + lengthGen.lengthToString(ClassicHighscore.getInt()));
+
+        final TextView textViewArcade = (TextView) DialogLayout.findViewById(R.id.textViewArcade);
+        final SettingsManager ArcadeHighscore = new SettingsManager(this, "Highscores", "Arcade", 0);
+        textViewArcade.setText("Arcade mode: " + lengthGen.lengthToString(ArcadeHighscore.getInt()));
+
+        builder.setView(DialogLayout);
+        builder.setTitle("Your highscores");
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Nothing interesting here...
+            }
+        });
+        builder.setNegativeButton("Reset", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPointer);
+                builder.setMessage("Are you sure you want to reset your highscores?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ClassicHighscore.putInt(0);
+                        textViewClassic.setText("Classic mode: " + lengthGen.lengthToString(ClassicHighscore.getInt()));
+                        ArcadeHighscore.putInt(0);
+                        textViewArcade.setText("Arcade mode: " + lengthGen.lengthToString(ArcadeHighscore.getInt()));
+
+                        viewHighscores(null);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewHighscores(null);
+                    }
+                });
+                builder.create();
+                builder.show();
+            }
+        });
+        final AlertDialog Boxy = builder.create();
+        Boxy.show();
     }
 
     public void viewSettings(View sourceView) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View DialogLayout = inflater.inflate(R.layout.settings_dialog, null);
 
+        final Spinner spinnerUnits = (Spinner) DialogLayout.findViewById(R.id.spinnerUnits);
+        final SettingsManager UnitsSetting = new SettingsManager(this, "Setings", "Units", false);
+        if (UnitsSetting.getBoolean()) {
+            spinnerUnits.setSelection(1);
+        }
+
+        builder.setView(DialogLayout);
+        builder.setTitle("Settings");
+        builder.setPositiveButton("Save and close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (spinnerUnits.getSelectedItemPosition() == 0) {
+                    UnitsSetting.putBoolean(false);
+                } else {
+                    UnitsSetting.putBoolean(true);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //Nothing interesting here...
+            }
+        });
+        final AlertDialog Boxy = builder.create();
+        Boxy.show();
+    }
+
+    public void resetTutorial(View sourceView) {
+        SettingsManager tutorialSettings = new SettingsManager(this, "Tutorial", "Main", false);
+        tutorialSettings.putBoolean(false);
+
+        tutorialSettings = new SettingsManager(this, "Tutorial", "Classic", false);
+        tutorialSettings.putBoolean(false);
+
+        tutorialSettings = new SettingsManager(this, "Tutorial", "Arcade", false);
+        tutorialSettings.putBoolean(false);
+
+        tutorialSettings = new SettingsManager(this, "Tutorial", "Challenge", false);
+        tutorialSettings.putBoolean(false);
+
+        Toast.makeText(getApplicationContext(), "Tutorial dialogs reset", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Splash Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.byte_games.snake2/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Splash Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.byte_games.snake2/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

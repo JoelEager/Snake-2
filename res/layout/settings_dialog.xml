@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/DialogLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp" >
+
+    <TextView
+        android:id="@+id/textViewUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerUnits"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:text="@string/settingsUnits"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/spinnerUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textViewUnits"
+        android:entries="@array/settingsUnitsChoices" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settingsTutorial"
+        android:id="@+id/buttonTutorial"
+        android:onClick="resetTutorial"
+        android:layout_below="@+id/spinnerUnits"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+</RelativeLayout>

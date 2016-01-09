@@ -82,7 +82,7 @@ public class ClassicModeActivity extends GameActivity {
         //Get highscore
         myHighscore = new SettingsManager(this, "Highscores", "Classic", 0);
         Highscore = myHighscore.getInt();
-		HighscoreText.setText(lengthToString(Highscore));
+		HighscoreText.setText(length.lengthToString(Highscore));
 	}
 	
 	@Override
@@ -241,12 +241,11 @@ public class ClassicModeActivity extends GameActivity {
 			} else if (msg.what == TH_UpdateBar) {
 				if (myGame.Snake.size() > myGame.Highscore) {
 					myGame.Highscore = myGame.Snake.size();
-					myGame.HighscoreText.setText(myGame.lengthToString(myGame.Highscore));
-
+					myGame.HighscoreText.setText(myGame.length.lengthToString(myGame.Highscore));
 					myGame.myHighscore.putInt(myGame.Highscore);
 				}
 				
-				myGame.ScoreText.setText(myGame.lengthToString(myGame.Snake.size()));
+				myGame.ScoreText.setText(myGame.length.lengthToString(myGame.Snake.size()));
 
                 myGame.LevelText.setText("Level " + myGame.CurrentLevel);
 			}

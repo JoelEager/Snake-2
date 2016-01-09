@@ -1,12 +1,10 @@
 package com.byte_games.snake2;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
@@ -14,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.byte_games.snake2.engine.LengthStringGen;
 import com.byte_games.snake2.engine.SettingsManager;
 import com.byte_games.snake2.engine.SnakeEngine;
 
@@ -27,7 +26,7 @@ abstract public class GameActivity extends Activity {
 	protected float Unit;
 	protected final int EngineTickRate = 20; //in milisecs - 50 FPS
 	protected Mode CurrentMode = Mode.Paused;
-    private boolean Units;
+    protected LengthStringGen length;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +40,7 @@ abstract public class GameActivity extends Activity {
 			}
 		};
 
-        //Units setting
-        //(true for English, false for Metric)
-        Units = (new SettingsManager(this, "Setings", "Units", false)).getBoolean();
+        length = new LengthStringGen(this);
 	}
 	
 	public void finishSetup() {
@@ -110,24 +107,6 @@ abstract public class GameActivity extends Activity {
 		View decorView = this.getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE;
 		decorView.setSystemUiVisibility(uiOptions);
-	}
-	
-	protected String lengthToString(int Length) {
-		String Text = "";
-		
-		if (Units) {
-			int Inches = Length * 2; //1 length = 2 inches
-			int Feet = Inches / 12;
-			Inches -= Feet * 12;
-
-			Text = Feet + " ft, " + Inches + " in";
-		} else {
-			int Meters = Length / 18; //18 length = 1 meter
-			int CM = (int) ((Length - (Meters * 18)) * ((double) 100 / 18));
-
-			Text = Meters + " m, " + CM + " cm";
-		}
-		return Text;
 	}
 	
 	private static final int SWIPE_MIN_DISTANCE = 50;
