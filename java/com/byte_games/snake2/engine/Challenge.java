@@ -38,7 +38,7 @@ public class Challenge {
 
 			//Configure goal
 			if (myType == LevelType.Size) {
-				Goal = 5 + (Difficulty * 2);
+				Goal = 5 + (Difficulty * 5);
 			} else if (myType == LevelType.Movement) {
 				Goal = 1;
 			}
@@ -91,13 +91,6 @@ public class Challenge {
 			} else if (Type == LevelType.Movement) {
 				ConfigMovementLevel(Difficulty);
 			}
-
-			//For debugging: 
-			/*Type = LevelType.Movement;
-			Goal = 1;
-			Walls.clear();
-			<wall code> */
-			//----------------
 		}
 
 		public int getGoal() {
